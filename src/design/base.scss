@@ -1,0 +1,19 @@
+@import './theme.scss';
+
+html {
+  overflow: hidden;
+  text-size-adjust: 100%;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  overflow-x: hidden;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
