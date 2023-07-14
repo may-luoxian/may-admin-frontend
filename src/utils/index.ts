@@ -21,3 +21,45 @@ export function treeToList(tree: any, childKey = "children") {
   }
   return data;
 }
+
+// 判断值是否为空
+export function isEmpty(v: any) {
+  switch (typeof v) {
+    case "undefined":
+      return true;
+    case "string":
+      if (v.replace(/(^[ \t\n\r]*)|([ \t\n\r]*$)/g, "").length == 0)
+        return true;
+      break;
+    case "boolean":
+      if (!v) return true;
+      break;
+    case "number":
+      if (0 === v || isNaN(v)) return true;
+      break;
+    case "object":
+      if (null === v || v.length === 0) return true;
+      for (var i in v) {
+        return false;
+      }
+      return true;
+  }
+  return false;
+}
+
+// 判断字符串是否为JSON
+export function isJSON(str: any) {
+  if (typeof str == "string") {
+    try {
+      var obj = JSON.parse(str);
+      if (typeof obj == "object" && obj) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+  return false;
+}

@@ -18,7 +18,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  // TODO:该组件icon暂时不需要设置颜色，若需要建议封装新组件
+  // TODO: 可以直接给组件设置颜色
   // icon color
   // color: {
   //   type: String,

@@ -1,26 +1,29 @@
 import { defineStore } from "pinia";
+import type { LayoutRoute } from "@/hooks/menu";
+
+interface MenuState {
+  userRoutes: LayoutRoute[];
+  fold: boolean;
+}
+
 export const useMenuStore = defineStore("menu", {
-  state: () => {
+  state: (): MenuState => {
     return {
-      menuTable: [],
       userRoutes: [],
+      fold: false,
     };
   },
-  getters: {
-    getMenuTable(): any {
-      return this.menuTable;
+  actions: {
+    setUserRoutes(routerMap: LayoutRoute[]) {
+      this.userRoutes = routerMap;
     },
-    getUserRoutes(): any {
+    toggleMenu() {
+      this.fold = !this.fold;
+    },
+  },
+  getters: {
+    getUserRoutes(): LayoutRoute[] {
       return this.userRoutes;
     },
   },
-  actions: {
-    setMenuTable(menuTable: any) {
-      this.menuTable = menuTable;
-    },
-    setUserRoutes(routerMap: any) {
-      this.userRoutes = routerMap;
-    },
-  },
-  persist: true,
 });

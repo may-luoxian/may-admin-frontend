@@ -1,27 +1,28 @@
 import { defineStore } from "pinia";
+import Cookies from "js-cookie";
 
 export const useUserStore = defineStore("user", {
   state: () => {
     return {
-      token: "",
-      userId: 0,
+      token: "" as string,
+      userInfo: {},
     };
   },
   actions: {
     setToken(token: string) {
       this.token = token;
+      Cookies.set("token", token, {
+        expires: 1,
+      });
     },
-    setUserId(id: number) {
-      this.userId = id;
+    setUserInfo(data: any) {
+      this.userInfo = data;
+      localStorage.setItem("user", JSON.stringify(data))
     },
   },
   getters: {
     getToken(): string {
       return this.token;
-    },
-    getUserId(): number {
-      return this.userId;
-    },
+    }
   },
-  persist: true,
 });

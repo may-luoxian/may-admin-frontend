@@ -13,12 +13,12 @@
        * 1、初始化网站主题、语言
        */
       (() => {
-        var htmlRoot = document.getElementById('htmlRoot');
+        let htmlRoot = document.getElementById('htmlRoot');
         let local = String(localStorage.getItem('locale'))
         if(!local) {
           localStorage.setItem('locale', 'zh_CN')
         }
-        var theme = String(localStorage.getItem('vueuse-color-scheme')) || 'auto';
+        let theme = localStorage.getItem('vueuse-color-scheme') ? String(localStorage.getItem('vueuse-color-scheme')) : 'auto';
         if (htmlRoot && theme) {
           htmlRoot.setAttribute('data-theme', theme === 'auto' ? 'light' : 'dark');
           theme = htmlRoot = null;

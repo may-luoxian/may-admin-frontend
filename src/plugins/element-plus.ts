@@ -24,6 +24,8 @@ import {
   ElMenu,
   ElSubMenu,
   ElMenuItem,
+  ElBreadcrumb,
+  ElBreadcrumbItem,
 } from "element-plus";
 
 export const components = [
@@ -51,5 +53,7 @@ export const components = [
   ElMenu,
   ElSubMenu,
   ElMenuItem,
+  ElBreadcrumb,
+  ElBreadcrumbItem,
 ];
 export const plugins = [ElDropdown];

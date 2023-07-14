@@ -1,12 +1,14 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "types": ["unplugin-vue-define-options/macros-global" /* ... */],
     "paths": {
       "@/*": ["./src/*"],
       "#/*": ["./types/*"]
-    }
+    },
+    "strict": true
   },
   "include": [
     "env.d.ts",

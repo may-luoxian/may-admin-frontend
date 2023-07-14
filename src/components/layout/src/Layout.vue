@@ -1,22 +1,34 @@
 <template>
-  <div class="h-full">
-    <el-container class="h-full">
-      <el-aside width="auto">
-        <Sidebar />
-      </el-aside>
-      <el-container>
-        <el-header>Header</el-header>
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
+  <el-container class="h-full">
+    <el-aside width="auto">
+      <Sidebar :isCollapse="isCollapse" />
+    </el-aside>
+    <el-container>
+      <el-header class="p-0">
+        <Navbar :isCollapse="isCollapse" />
+      </el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { Sidebar, Navbar } from '@/components/layout';
+import { Sidebar, Navbar } from "@/components/layout";
+import { useMenuStore } from "@/stores/menu";
+import { storeToRefs } from "pinia";
+import { ref, nextTick, watch } from "vue";
+
+let isCollapse = ref<boolean>(false)
+nextTick(() => {
+  const menuStore = useMenuStore()
+  let { fold } = storeToRefs(menuStore)
+  watch(fold, (val) => {
+    isCollapse.value = val
+  })
+})
+
 </script>
 
 <style lang="scss" scoped></style>

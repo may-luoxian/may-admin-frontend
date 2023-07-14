@@ -1,10 +1,7 @@
 import { createApp } from "vue";
-import App from "./App.vue";
+import App from "@/App.vue";
 import { createPinia } from "pinia";
 import router from "./router";
-
-//pinia持久化插件
-import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 // 国际化
 import { i18n } from "./locales";
@@ -27,10 +24,10 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 
 // 注册icon图标
 import "virtual:svg-icons-register";
+import "@/assets/css/iconfont.css";
 
 export const app = createApp(App);
 const pinia = createPinia();
-pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
 app.use(router);
 app.use(i18n);
