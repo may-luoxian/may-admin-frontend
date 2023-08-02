@@ -1,15 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/login/index.vue"),
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login/index.vue'),
   },
   {
-    path: "/:catchAll(.*)",
+    path: '/:catchAll(.*)',
     hidden: true,
-    component: () => import("@/views/error/404.vue"),
+    component: () => import('@/views/error/404.vue'),
   },
 ];
 

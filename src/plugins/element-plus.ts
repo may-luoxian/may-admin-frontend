@@ -14,6 +14,7 @@ import {
   ElSwitch,
   ElButton,
   ElTable,
+  ElTableColumn,
   ElDialog,
   ElDropdown,
   ElLink,
@@ -26,7 +27,8 @@ import {
   ElMenuItem,
   ElBreadcrumb,
   ElBreadcrumbItem,
-} from "element-plus";
+  ElDivider,
+} from 'element-plus';
 
 export const components = [
   ElDrawer,
@@ -44,6 +46,7 @@ export const components = [
   ElSwitch,
   ElButton,
   ElTable,
+  ElTableColumn,
   ElDialog,
   ElLink,
   ElContainer,
@@ -55,5 +58,6 @@ export const components = [
   ElMenuItem,
   ElBreadcrumb,
   ElBreadcrumbItem,
+  ElDivider,
 ];
 export const plugins = [ElDropdown];

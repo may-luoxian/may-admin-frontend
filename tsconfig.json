@@ -10,13 +10,7 @@
     },
     "strict": true
   },
-  "include": [
-    "env.d.ts",
-    "src/**/*",
-    "src/**/*.vue",
-    "types/**/*.d.ts",
-    "types/**/*.ts"
-  ],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "types/**/*.d.ts", "types/**/*.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"

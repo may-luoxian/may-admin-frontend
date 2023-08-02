@@ -1,15 +1,17 @@
-import api from "@/api/api";
-import router from "@/router";
-import _ from "lodash";
-import { useMenuStore } from "@/stores/menu";
-import { Layout } from "@/components/layout";
-import { createPinia } from "pinia";
-import type { RouteMeta } from "vue-router";
+import api from '@/api/api';
+import router from '@/router';
+import _ from 'lodash';
+import { useMenuStore } from '@/stores/menu';
+import { Layout } from '@/components/layout';
+import { createPinia } from 'pinia';
+import type { RouteMeta } from 'vue-router';
+import { useStorageHook } from '@/hooks/storage';
 const pinia = createPinia();
 
-const modules = import.meta.glob("@/views/**/*.vue");
+const modules = import.meta.glob('@/views/**/*.vue');
 const menuStore = useMenuStore(pinia);
 
+const useStorage = useStorageHook();
 
 // 路由表类型
 export type LayoutRoute = {
@@ -32,9 +34,9 @@ export type LayoutRoute = {
 function initParentRouter(): LayoutRoute {
   return {
     id: 0,
-    name: "root",
+    name: 'root',
     hidden: false,
-    path: "/",
+    path: '/',
     meta: { menuType: 0 },
     component: Layout,
     menuType: 1,
@@ -49,20 +51,18 @@ function initParentRouter(): LayoutRoute {
  * @param routerMap 路由数据
  * 递归替换路由组件、菜单图标
  */
-function buildAsyncRouterMap(
-  routerMap: Array<LayoutRoute> = []
-): Array<LayoutRoute> {
+function buildAsyncRouterMap(routerMap: Array<LayoutRoute> = []): Array<LayoutRoute> {
   if (routerMap.length === 0) {
     return [];
   }
   routerMap.forEach((route: LayoutRoute) => {
-    route.icon = "iconfont " + route.icon;
+    route.icon = 'iconfont ' + route.icon;
     let meta = {
       menuType: route.menuType,
     };
     route.meta = meta;
     if (route.menuType === 1) {
-      route.component = modules["/src/views" + route.component];
+      route.component = modules['/src/views' + route.component];
     } else {
       route.component = null;
     }
@@ -73,7 +73,7 @@ function buildAsyncRouterMap(
   return routerMap;
 }
 
-export const useMenu = () => {
+export const useMenuHook = () => {
   /**
    * 动态添加路由
    * 1、获取菜单数据
@@ -82,11 +82,20 @@ export const useMenu = () => {
    * 4、添加路由
    */
   async function dynamicAddRoute() {
-    let routerData = (await api.getSystemMenu()).data;
-    let routerParent = initParentRouter();
-    routerParent.children = buildAsyncRouterMap(routerData);
-    menuStore.setUserRoutes(routerParent.children);
-    router.addRoute(routerParent);
+    try {
+      let data: any = await api.getSystemMenu();
+      if (data.code === 20000) {
+        let routerData = data.data;
+        let routerParent = initParentRouter();
+        routerParent.children = buildAsyncRouterMap(routerData);
+        menuStore.setUserRoutes(routerParent.children);
+        router.addRoute(routerParent);
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (err) {
+      useStorage.removeStorage(localStorage, 'user');
+    }
   }
   return {
     dynamicAddRoute,

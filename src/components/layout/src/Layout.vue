@@ -7,7 +7,7 @@
       <el-header class="p-0">
         <Navbar :isCollapse="isCollapse" />
       </el-header>
-      <el-main>
+      <el-main class="bg-slate-50">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -15,20 +15,24 @@
 </template>
 
 <script lang="ts" setup>
-import { Sidebar, Navbar } from "@/components/layout";
-import { useMenuStore } from "@/stores/menu";
-import { storeToRefs } from "pinia";
-import { ref, nextTick, watch } from "vue";
+import { Sidebar, Navbar } from '@/components/layout';
+import { useMenuStore } from '@/stores/menu';
+import { storeToRefs } from 'pinia';
+import { ref, nextTick, watch } from 'vue';
 
-let isCollapse = ref<boolean>(false)
+let isCollapse = ref<boolean>(false);
 nextTick(() => {
-  const menuStore = useMenuStore()
-  let { fold } = storeToRefs(menuStore)
+  const menuStore = useMenuStore();
+  let { fold } = storeToRefs(menuStore);
   watch(fold, (val) => {
-    isCollapse.value = val
-  })
-})
-
+    isCollapse.value = val;
+  });
+});
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-header {
+  padding: 0;
+  height: 80px;
+}
+</style>

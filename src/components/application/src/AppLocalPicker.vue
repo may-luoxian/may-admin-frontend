@@ -5,8 +5,7 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item v-for="item in LocaleList" :key="item.event" :command="item.event">{{ item.text
-        }}</el-dropdown-item>
+        <el-dropdown-item v-for="item in LocaleList" :key="item.event" :command="item.event">{{ item.text }}</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
@@ -19,11 +18,11 @@ import { LocaleList } from '@/setting/localeSetting';
 import { storeToRefs } from 'pinia';
 
 const appStore = useAppStore();
-let { getTheme } = storeToRefs(appStore)
+let { getTheme } = storeToRefs(appStore);
 //切换语言
 const changeLocale = (val: string) => {
-  appStore.changeLocale(val)
-}
+  appStore.changeLocale(val);
+};
 </script>
 
 <style lang="scss" scoped></style>

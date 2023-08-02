@@ -4,7 +4,7 @@
  * @param {Array} tree 树状数据
  * @param {String} childKey children的key
  */
-export function treeToList(tree: any, childKey = "children") {
+export function treeToList(tree: any, childKey = 'children') {
   let stack = tree.concat([]);
   let data = [];
   while (stack.length !== 0) {
@@ -25,19 +25,18 @@ export function treeToList(tree: any, childKey = "children") {
 // 判断值是否为空
 export function isEmpty(v: any) {
   switch (typeof v) {
-    case "undefined":
+    case 'undefined':
       return true;
-    case "string":
-      if (v.replace(/(^[ \t\n\r]*)|([ \t\n\r]*$)/g, "").length == 0)
-        return true;
+    case 'string':
+      if (v.replace(/(^[ \t\n\r]*)|([ \t\n\r]*$)/g, '').length == 0) return true;
       break;
-    case "boolean":
+    case 'boolean':
       if (!v) return true;
       break;
-    case "number":
+    case 'number':
       if (0 === v || isNaN(v)) return true;
       break;
-    case "object":
+    case 'object':
       if (null === v || v.length === 0) return true;
       for (var i in v) {
         return false;
@@ -49,10 +48,10 @@ export function isEmpty(v: any) {
 
 // 判断字符串是否为JSON
 export function isJSON(str: any) {
-  if (typeof str == "string") {
+  if (typeof str == 'string') {
     try {
       var obj = JSON.parse(str);
-      if (typeof obj == "object" && obj) {
+      if (typeof obj == 'object' && obj) {
         return true;
       } else {
         return false;

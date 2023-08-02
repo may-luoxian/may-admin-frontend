@@ -1,1 +1,1 @@
-export const prefixCls = 'may'
+export const prefixCls = 'may';

@@ -1,10 +1,10 @@
-import { isEmpty, isJSON } from "@/utils";
+import { isEmpty, isJSON } from '@/utils';
 
 interface LooseObject {
   [key: string]: any;
 }
 
-export const useStorage = () => {
+export const useStorageHook = () => {
   /**
    * 添加缓存
    * @param storageType
@@ -13,12 +13,12 @@ export const useStorage = () => {
    */
   function setStorage(storageType: Storage, key: string, value: any) {
     let storageVal = null;
-    if (typeof value === "object") {
+    if (typeof value === 'object') {
       storageVal = JSON.stringify(value);
     }
     storageType.setItem(key, value);
   }
-  
+
   /**
    * 删除缓存
    * @param storageType
@@ -29,28 +29,33 @@ export const useStorage = () => {
   }
 
   /**
+   * 获取缓存
+   * @param storageType
+   * @param key
+   * @returns
+   */
+  function getStorage(storageType: Storage, key: string): any {
+    let storageVal = storageType.getItem(key);
+    if (!storageVal) return null;
+    storageVal = JSON.parse(storageVal);
+    return storageVal;
+  }
+
+  /**
    * 向指定缓存中添加对象值（缓存中值为对象，若不为对象抛出错误，若缓存不存在，则创建）
    * @param storageType
    * @param key
    * @param stat
    * @param value
    */
-  function setObjectStorage(
-    storageType: Storage,
-    key: string,
-    stat: string,
-    value: any
-  ) {
+  function setObjectStorage(storageType: Storage, key: string, stat: string, value: any) {
     let storageVal = storageType.getItem(key) as string;
     if (isJSON(storageVal)) {
       storageVal = JSON.parse(storageVal);
     }
     let obj: LooseObject = {};
-    if (
-      !isEmpty(storageVal) &&
-      Object.prototype.toString.call(storageVal) !== "[object Object]"
-    ) {
-      throw new Error("该缓存值存在且不为对象");
+    if (!isEmpty(storageVal) && Object.prototype.toString.call(storageVal) !== '[object Object]') {
+      throw new Error('该缓存值存在且不为对象');
     }
     if (!isEmpty(storageVal)) {
       obj = Object.assign(storageVal as unknown as object);
@@ -65,29 +70,46 @@ export const useStorage = () => {
    * @param key
    * @param stat
    */
-  function removeObjectStorage(
-    storageType: Storage,
-    key: string,
-    stat: string
-  ) {
+  function removeObjectStorage(storageType: Storage, key: string, stat: string) {
     let storageVal = storageType.getItem(key) as string;
     if (isJSON(storageVal)) {
       storageVal = JSON.parse(storageVal);
     }
-    if (
-      !isEmpty(storageVal) &&
-      Object.prototype.toString.call(storageVal) !== "[object Object]"
-    ) {
-      throw new Error("该缓存值存在且不为对象");
+    if (!isEmpty(storageVal) && Object.prototype.toString.call(storageVal) !== '[object Object]') {
+      throw new Error('该缓存值存在且不为对象');
     }
+    if (!storageVal) return;
     let obj = Object.assign(storageVal as unknown as object);
-    delete obj[stat];
+    if (obj) {
+      delete obj[stat];
+    }
     storageType.setItem(key, JSON.stringify(obj));
+  }
+
+  /**
+   * 获取指定对象缓存中的属性值
+   * @param storageType
+   * @param key
+   * @param stat
+   * @returns
+   */
+  function getObjectStorage(storageType: Storage, key: string, stat: string): any {
+    let storageVal: any = storageType.getItem(key);
+    if (!storageVal) return null;
+    if (isJSON(storageVal)) {
+      storageVal = JSON.parse(storageVal);
+    }
+    if (Object.prototype.toString.call(storageVal) !== '[object Object]') {
+      throw new Error('该缓存值不为对象');
+    }
+    return storageVal[stat];
   }
   return {
     setStorage,
     removeStorage,
+    getStorage,
     setObjectStorage,
     removeObjectStorage,
+    getObjectStorage,
   };
 };

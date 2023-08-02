@@ -11,7 +11,7 @@ const props = defineProps({
   // icon prefix
   prefix: {
     type: String,
-    default: 'icon'
+    default: 'icon',
   },
   // icon name
   name: {
@@ -27,9 +27,9 @@ const props = defineProps({
   // icon size
   size: {
     type: [Number, String],
-    default: 16
-  }
-})
+    default: 16,
+  },
+});
 const getStyle = computed((): CSSProperties => {
   const { size } = props;
   let s = `${size}`;
@@ -37,9 +37,9 @@ const getStyle = computed((): CSSProperties => {
   return {
     width: s,
     height: s,
-  }
-})
-const symbolId = computed(() => `#${props.prefix}-${props.name}`)
+  };
+});
+const symbolId = computed(() => `#${props.prefix}-${props.name}`);
 </script>
 
 <style lang="scss" scoped>
@@ -50,6 +50,6 @@ const symbolId = computed(() => `#${props.prefix}-${props.name}`)
   fill: currentColor;
 }
 .svg-icon-spin {
-    animation: loadingCircle 1s infinite linear;
-  }
+  animation: loadingCircle 1s infinite linear;
+}
 </style>

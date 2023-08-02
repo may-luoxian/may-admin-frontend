@@ -9,14 +9,14 @@
 <script lang="ts" setup>
 import { SvgIcon } from '@/components/icon';
 import { useAppStore } from '@/stores/app';
-import { useDark, useToggle } from '@vueuse/core'
+import { useDark, useToggle } from '@vueuse/core';
 const isDark = useDark();
 const appstore = useAppStore();
 
 // 切换风格
 function toggleDarkMode() {
-  let toggleDark = useToggle(isDark)
-  toggleDark()
+  let toggleDark = useToggle(isDark);
+  toggleDark();
   appstore.toggleTheme(isDark.value);
   let htmlRoot = document.getElementById('htmlRoot');
   let htmlTheme = isDark.value ? 'dark' : 'light';

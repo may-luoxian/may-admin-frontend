@@ -1,4 +1,4 @@
-import { createI18n } from "vue-i18n";
+import { createI18n } from 'vue-i18n';
 
 interface LocaleItem {
   default: { [key: string]: { [key: string]: string } };
@@ -10,16 +10,13 @@ interface LocaleItem {
 function loadLocaleMessages(): {
   [key: string]: { [key: string]: { [key: string]: string } };
 } {
-  const locales: Record<string, LocaleItem> = import.meta.glob(
-    "./languages/*.ts",
-    { eager: true }
-  );
+  const locales: Record<string, LocaleItem> = import.meta.glob('./languages/*.ts', { eager: true });
   const messages: {
     [key: string]: { [key: string]: { [key: string]: string } };
   } = {};
 
   for (const path in locales) {
-    messages[path.replace(/\.\/languages\/|\.ts/g, "")] = locales[path].default;
+    messages[path.replace(/\.\/languages\/|\.ts/g, '')] = locales[path].default;
   }
   return messages;
 }
@@ -29,11 +26,7 @@ function loadLocaleMessages(): {
  */
 export const i18n = createI18n({
   legacy: false,
-  locale: localStorage.getItem("locale")
-    ? String(localStorage.getItem("locale"))
-    : "zh_CN",
-  fallbackLocale: localStorage.getItem("locale")
-    ? String(localStorage.getItem("locale"))
-    : "zh_CN",
+  locale: localStorage.getItem('locale') ? String(localStorage.getItem('locale')) : 'zh_CN',
+  fallbackLocale: localStorage.getItem('locale') ? String(localStorage.getItem('locale')) : 'zh_CN',
   messages: loadLocaleMessages(),
 });

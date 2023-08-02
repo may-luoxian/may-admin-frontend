@@ -5,8 +5,7 @@ module.exports = {
     extend: {},
   },
   plugins: [createEnterPlugin()],
-}
-
+};
 
 /**
  * Used for animation when the element is displayed.

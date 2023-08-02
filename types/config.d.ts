@@ -1,1 +1,1 @@
-export type LocaleType = "zh_CN" | "en";
+export type LocaleType = 'zh_CN' | 'en';

@@ -27,9 +27,7 @@ import LoginForm from '@/views/login/LoginForm.vue';
 </script>
 <style lang="scss">
 html[data-theme='light'] {
-
   .may-login {
-
     &::before {
       background-image: url('@/assets/svg/login-bg.svg');
     }

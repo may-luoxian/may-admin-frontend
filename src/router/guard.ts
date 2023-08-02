@@ -1,7 +1,7 @@
-import router from "./index";
-import { useMenuStore } from "@/stores/menu";
-import { useMenu } from "@/hooks/menu";
-const whiteList = ["/login"];
+import router from './index';
+import { useMenuStore } from '@/stores/menu';
+import { useMenuHook } from '@/hooks/menu';
+const whiteList = ['/login'];
 
 /**
  * 路径在白名单内：直接放行
@@ -11,7 +11,7 @@ const whiteList = ["/login"];
  */
 router.beforeEach(async (to, from, next) => {
   try {
-    let userInfo = JSON.parse(localStorage.getItem("user") as string);
+    let userInfo = JSON.parse(localStorage.getItem('user') as string);
     if (whiteList.includes(to.path)) {
       next();
     } else {
@@ -19,14 +19,14 @@ router.beforeEach(async (to, from, next) => {
         const menuStore = useMenuStore();
         let isExist = menuStore.getUserRoutes.length === 0;
         if (isExist) {
-          const useMenuHook = useMenu();
-          await useMenuHook.dynamicAddRoute();
+          const useMenu = useMenuHook();
+          await useMenu.dynamicAddRoute();
           next({ ...to, replace: true });
         } else {
           next();
         }
       } else {
-        next({ path: "/login" });
+        next({ path: '/login' });
       }
     }
   } catch (err) {
