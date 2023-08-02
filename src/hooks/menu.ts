@@ -1,12 +1,11 @@
 import api from '@/api/api';
 import router from '@/router';
+import pinia from '@/stores';
 import _ from 'lodash';
 import { useMenuStore } from '@/stores/menu';
 import { Layout } from '@/components/layout';
-import { createPinia } from 'pinia';
 import type { RouteMeta } from 'vue-router';
 import { useStorageHook } from '@/hooks/storage';
-const pinia = createPinia();
 
 const modules = import.meta.glob('@/views/**/*.vue');
 const menuStore = useMenuStore(pinia);

@@ -18,24 +18,22 @@
 
 <script lang="ts" setup>
 import MenuItem from '@/components/layout/src/MenuItem.vue';
-import { ref, nextTick } from 'vue';
+import { ref } from 'vue';
 import { useMenuStore } from '@/stores/menu';
 import type { LayoutRoute } from '@/hooks/menu';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 
-const route = useRoute();
-
 const props = defineProps<{
   isCollapse: boolean;
 }>();
 
+const route = useRoute();
 let menuTable = ref<LayoutRoute[]>([]);
-nextTick(() => {
-  const menuStore = useMenuStore();
-  let { userRoutes } = storeToRefs(menuStore);
-  menuTable.value = userRoutes.value;
-});
+
+const menuStore = useMenuStore();
+let { userRoutes } = storeToRefs(menuStore);
+menuTable.value = userRoutes.value;
 
 /**
  * 选中菜单项

@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, toRefs } from 'vue';
+import { ref, reactive, toRefs, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useMenuHook } from '@/hooks/menu';
 import { useRouter } from 'vue-router';
@@ -69,6 +69,7 @@ function handleLogin() {
       userStore.setToken(data.token);
       userStore.setUserInfo(data);
       await useMenu.dynamicAddRoute();
+      await nextTick();
       router.push('/');
     } catch (err) {
       console.error(err);

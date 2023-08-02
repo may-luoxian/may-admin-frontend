@@ -1,12 +1,17 @@
 <template>
   <div class="w-full bg-white">
-    <div class="flex items-center h-12 border-b border-gray-200 border-solid px-4">
-      <div class="cursor-pointer h-full flex items-center mr-4">
-        <SvgIcon :name="isFold" size="22" @click="toggleMenu" />
+    <div class="flex justify-between items-center h-12 border-b border-gray-200 border-solid px-4">
+      <div class="flex items-center">
+        <div class="cursor-pointer h-full flex items-center mr-4">
+          <SvgIcon :name="isFold" size="22" @click="toggleMenu" />
+        </div>
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item v-for="item in breadcrumb">{{ item.name }}</el-breadcrumb-item>
+        </el-breadcrumb>
       </div>
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item v-for="item in breadcrumb">{{ item.name }}</el-breadcrumb-item>
-      </el-breadcrumb>
+      <div class="flex items-end">
+        <AppLocalPicker />
+      </div>
     </div>
     <div class="flex items-center h-8 border-b border-gray-200 border-solid">
       <div
@@ -34,6 +39,7 @@ import { SvgIcon } from '@/components/icon';
 import { useMenuStore } from '@/stores/menu';
 import { ref, computed, onMounted, nextTick } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate, type RouteRecordNormalized, type RouteLocationNormalized } from 'vue-router';
+import { AppLocalPicker } from '@/components/application';
 import type { Breadcrumb } from '@/components/layout/index';
 import type { MenuTab } from '@/stores/menu';
 
@@ -41,29 +47,32 @@ const props = defineProps<{
   isCollapse: boolean;
 }>();
 
+const menuStore = useMenuStore();
 const route = useRoute();
 const router = useRouter();
+const menuTab = ref<MenuTab[]>([]);
 let breadcrumb = ref<Breadcrumb[]>([]);
-onMounted(() => {
+
+onMounted(async () => {
   getMatched(route.matched);
-  nextTick(() => {
-    initMenuTab();
-    saveTab(route);
-    getMenuTab();
-  });
+  await nextTick();
+  initMenuTab();
+  saveTab(route);
+  getMenuTab();
 });
-onBeforeRouteUpdate((to) => {
+
+onBeforeRouteUpdate(async (to) => {
   getMatched(to.matched);
-  nextTick(() => {
-    saveTab(to);
-    getMenuTab();
-  });
+  await nextTick();
+  saveTab(to);
+  getMenuTab();
 });
-function initMenuTab() {
-  const menuStore = useMenuStore();
+
+const initMenuTab = () => {
   menuStore.initMenuTab();
-}
-function getMatched(currentMatched: RouteRecordNormalized[]) {
+};
+
+const getMatched = (currentMatched: RouteRecordNormalized[]) => {
   let matched = currentMatched.map((item: RouteRecordNormalized) => {
     return {
       path: item.path,
@@ -72,52 +81,47 @@ function getMatched(currentMatched: RouteRecordNormalized[]) {
     };
   });
   breadcrumb.value = matched.splice(1);
-}
-function saveTab(currentRoute: RouteLocationNormalized) {
+};
+const saveTab = (currentRoute: RouteLocationNormalized) => {
   let currentTab = {
     path: currentRoute.fullPath,
     name: currentRoute.name,
   };
-  const menuStore = useMenuStore();
   menuStore.setMenuTab(currentTab);
-}
+};
 
-const menuTab = ref<MenuTab[]>([]);
-function getMenuTab() {
-  const menuStore = useMenuStore();
+const getMenuTab = () => {
   menuTab.value = menuStore.getMenuTab;
-}
+};
 
-const isFold = computed(() => (props.isCollapse ? 'menu-expand' : 'menu-fold'));
-
-function toggleMenu() {
-  const menuStore = useMenuStore();
+const toggleMenu = () => {
   menuStore.toggleMenu();
-}
+};
 
-function removeMenuTab(tab: MenuTab) {
-  const menuStore = useMenuStore();
+const removeMenuTab = (tab: MenuTab) => {
   menuStore.removeMenuTab(tab);
   router.push({ path: menuStore.getMenuTab[menuStore.getMenuTab.length - 1].path });
-}
+};
 
-function isActive(tab: MenuTab) {
+const isActive = (tab: MenuTab) => {
   if (route.fullPath === tab.path) {
     return 'is-active';
   }
   return '';
-}
+};
 
-function isFirstPage(tab: MenuTab) {
+const isFirstPage = (tab: MenuTab) => {
   if (tab.path === '/') {
     return 'pr-2';
   }
   return 'pr-5';
-}
+};
 
-function jumpTo(tab: MenuTab) {
+const jumpTo = (tab: MenuTab) => {
   router.push({ path: tab.path });
-}
+};
+
+const isFold = computed(() => (props.isCollapse ? 'menu-expand' : 'menu-fold'));
 </script>
 
 <style lang="scss" scoped>

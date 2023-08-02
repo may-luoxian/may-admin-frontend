@@ -18,15 +18,14 @@
 import { Sidebar, Navbar } from '@/components/layout';
 import { useMenuStore } from '@/stores/menu';
 import { storeToRefs } from 'pinia';
-import { ref, nextTick, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 let isCollapse = ref<boolean>(false);
-nextTick(() => {
-  const menuStore = useMenuStore();
-  let { fold } = storeToRefs(menuStore);
-  watch(fold, (val) => {
-    isCollapse.value = val;
-  });
+const menuStore = useMenuStore();
+
+let { fold } = storeToRefs(menuStore);
+watch(fold, (val) => {
+  isCollapse.value = val;
 });
 </script>
 
