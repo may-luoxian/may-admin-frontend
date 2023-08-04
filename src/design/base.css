@@ -27,14 +27,15 @@ body {
 }
 
 .may-container {
-  height: 100%;
   box-sizing: border-box;
   background-color: #fff;
+  @apply m-4;
 }
 
 .may-title {
-  @apply text-lg;
+  @apply text-lg w-full h-16 font-semibold;
   line-height: 60px;
+  background-color: #fff;
 }
 
 .el-button.is-text {

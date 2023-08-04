@@ -25,11 +25,9 @@ const testRemoveS = function () {
 
 function testGet() {
   let result = getStorage(sessionStorage, MAY_STORAGE);
-  console.log(result);
 }
 function getStatStorage() {
   let result = getObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab');
-  console.log(result);
 }
 </script>
 

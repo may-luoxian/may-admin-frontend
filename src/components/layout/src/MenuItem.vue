@@ -23,11 +23,8 @@ import type { LayoutRoute } from '@/hooks/menu';
 import { toRef } from 'vue';
 const props = withDefaults(
   defineProps<{
-    //菜单表
     menuTable: Array<LayoutRoute>;
-    //选中菜单项
     selectedMenu: string;
-    // 菜单收放（只有最上层需要处理）
     isCollapse: boolean;
   }>(),
   {
@@ -38,12 +35,12 @@ let menuTable = toRef(props, 'menuTable');
 /**
  * 当前激活菜单
  */
-function isActiveMenu(path: string) {
+const isActiveMenu = (path: string) => {
   if (path === props.selectedMenu) {
     return 'active-bg-menu';
   }
   return '';
-}
+};
 </script>
 
 <style lang="scss" scoped>

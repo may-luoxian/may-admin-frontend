@@ -8,8 +8,8 @@ module.exports = {
 };
 
 /**
- * Used for animation when the element is displayed.
- * @param maxOutput The larger the maxOutput output, the larger the generated css volume.
+ * 用于显示元素时的动画。
+ * @param maxOutput maxOutput越大，css的延迟时间越长。
  */
 function createEnterPlugin(maxOutput = 6) {
   const createCss = (index, d = 'x') => {

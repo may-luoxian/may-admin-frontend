@@ -28,6 +28,8 @@ import {
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElDivider,
+  ElRadio,
+  ElRadioGroup,
 } from 'element-plus';
 
 export const components = [
@@ -59,5 +61,7 @@ export const components = [
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElDivider,
+  ElRadio,
+  ElRadioGroup,
 ];
 export const plugins = [ElDropdown];

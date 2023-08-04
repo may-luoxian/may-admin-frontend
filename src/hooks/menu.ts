@@ -5,12 +5,11 @@ import _ from 'lodash';
 import { useMenuStore } from '@/stores/menu';
 import { Layout } from '@/components/layout';
 import type { RouteMeta } from 'vue-router';
-import { useStorageHook } from '@/hooks/storage';
+import { useUserStore } from '@/stores/user';
 
 const modules = import.meta.glob('@/views/**/*.vue');
 const menuStore = useMenuStore(pinia);
-
-const useStorage = useStorageHook();
+const userStore = useUserStore();
 
 // 路由表类型
 export type LayoutRoute = {
@@ -93,7 +92,10 @@ export const useMenuHook = () => {
         throw new Error(data.message);
       }
     } catch (err) {
-      useStorage.removeStorage(localStorage, 'user');
+      router.push('/login')
+      userStore.removeToken();
+      userStore.removeUserInfo();
+      console.error(err);
     }
   }
   return {

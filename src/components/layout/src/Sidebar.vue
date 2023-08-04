@@ -11,7 +11,7 @@
       unique-opened
       @select="handleSelectedMenu"
     >
-      <MenuItem :menuTable="menuTable" :selectedMenu="selectedMenu" :isCollapse="props.isCollapse"> </MenuItem>
+      <MenuItem :menuTable="menuTable" :selectedMenu="getSelectedMenu" :isCollapse="props.isCollapse"> </MenuItem>
     </el-menu>
   </div>
 </template>
@@ -30,18 +30,16 @@ const props = defineProps<{
 
 const route = useRoute();
 let menuTable = ref<LayoutRoute[]>([]);
-
 const menuStore = useMenuStore();
-let { userRoutes } = storeToRefs(menuStore);
+let { userRoutes, getSelectedMenu } = storeToRefs(menuStore);
 menuTable.value = userRoutes.value;
 
 /**
  * 选中菜单项
  */
-let selectedMenu = ref(route.fullPath);
-function handleSelectedMenu(index: string) {
-  selectedMenu.value = index;
-}
+const handleSelectedMenu = (index: string) => {
+  menuStore.setSelectedMenu(index);
+};
 </script>
 
 <style lang="scss" scoped></style>

@@ -22,7 +22,7 @@ export function treeToList(tree: any, childKey = 'children') {
   return data;
 }
 
-// 判断值是否为空
+// 判断值为空
 export function isEmpty(v: any) {
   switch (typeof v) {
     case 'undefined':
@@ -44,6 +44,11 @@ export function isEmpty(v: any) {
       return true;
   }
   return false;
+}
+
+// 判断值非空
+export function isNotEmpty(v: any) {
+  return !isEmpty(v);
 }
 
 // 判断字符串是否为JSON

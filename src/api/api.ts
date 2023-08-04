@@ -2,12 +2,10 @@ import axios from 'axios';
 import { app } from '@/main';
 import Cookies from 'js-cookie';
 import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import router from '@/router';
-// import { ResData } from "@/api/types";
 
 const instance = axios.create({
   baseURL: '/api',
-  timeout: 5000,
+  timeout: 20000,
 });
 
 instance.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
@@ -23,6 +21,7 @@ instance.interceptors.response.use(
         message: config.data.message,
         type: 'error',
       });
+      throw new Error(config.data.message);
     }
     return config.data;
   },
@@ -46,5 +45,9 @@ export default {
   // 获取菜单列表
   getMenus: () => {
     return instance.get('/admin/menus');
+  },
+  // 新增或修改菜单
+  saveOrUpdateMenu: (formData: any) => {
+    return instance.post('/admin/menus', formData);
   },
 };

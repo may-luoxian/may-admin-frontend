@@ -7,9 +7,9 @@
       <el-header class="p-0">
         <Navbar :isCollapse="isCollapse" />
       </el-header>
-      <el-main class="bg-slate-50">
+      <div class="bg-slate-50">
         <router-view></router-view>
-      </el-main>
+      </div>
     </el-container>
   </el-container>
 </template>

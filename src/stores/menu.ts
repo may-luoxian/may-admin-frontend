@@ -13,6 +13,7 @@ interface MenuState {
   userRoutes: LayoutRoute[];
   fold: boolean;
   menuTab: MenuTab[];
+  selectedMenu: string;
 }
 
 const useStorage = useStorageHook();
@@ -24,6 +25,7 @@ export const useMenuStore = defineStore('menu', {
       userRoutes: [],
       fold: false,
       menuTab: [{ name: '首页', path: '/' }],
+      selectedMenu: '/',
     };
   },
   actions: {
@@ -51,6 +53,9 @@ export const useMenuStore = defineStore('menu', {
       this.menuTab.splice(index, 1);
       useStorage.setObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab', this.menuTab);
     },
+    setSelectedMenu(path: string) {
+      this.selectedMenu = path;
+    },
   },
   getters: {
     getUserRoutes(): LayoutRoute[] {
@@ -58,6 +63,9 @@ export const useMenuStore = defineStore('menu', {
     },
     getMenuTab(): MenuTab[] {
       return this.menuTab;
+    },
+    getSelectedMenu(): string {
+      return this.selectedMenu;
     },
   },
 });
