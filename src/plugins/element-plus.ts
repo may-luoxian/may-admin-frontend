@@ -30,6 +30,7 @@ import {
   ElDivider,
   ElRadio,
   ElRadioGroup,
+  ElPagination,
 } from 'element-plus';
 
 export const components = [
@@ -63,5 +64,6 @@ export const components = [
   ElDivider,
   ElRadio,
   ElRadioGroup,
+  ElPagination,
 ];
 export const plugins = [ElDropdown];
