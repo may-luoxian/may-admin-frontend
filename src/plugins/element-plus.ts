@@ -31,6 +31,9 @@ import {
   ElRadio,
   ElRadioGroup,
   ElPagination,
+  ElTabs,
+  ElTabPane,
+  ElTree,
 } from 'element-plus';
 
 export const components = [
@@ -65,5 +68,8 @@ export const components = [
   ElRadio,
   ElRadioGroup,
   ElPagination,
+  ElTabs,
+  ElTabPane,
+  ElTree,
 ];
 export const plugins = [ElDropdown];

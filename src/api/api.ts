@@ -50,10 +50,14 @@ export default {
   saveOrUpdateMenu: (formData: any) => {
     return instance.post('/admin/menus', formData);
   },
-  // 查询角色列表
+  // 获取角色列表
   getRoles: (params: any) => {
     return instance.get('/admin/roles', {
       params,
     });
+  },
+  // 获取角色菜单列表
+  getRoleMenu: () => {
+    return instance.get('/admin/role/menus');
   },
 };
