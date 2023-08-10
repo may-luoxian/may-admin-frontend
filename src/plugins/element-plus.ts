@@ -34,6 +34,7 @@ import {
   ElTabs,
   ElTabPane,
   ElTree,
+  ElTag,
 } from 'element-plus';
 
 export const components = [
@@ -71,5 +72,6 @@ export const components = [
   ElTabs,
   ElTabPane,
   ElTree,
+  ElTag,
 ];
 export const plugins = [ElDropdown];

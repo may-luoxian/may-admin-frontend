@@ -6,7 +6,7 @@
     </div>
     <div class="w-6 cursor-col-resize" @mousedown="mouseDown" @mouseup="mouseUp"></div>
     <div class="w-1/2 h-full border-slate-200 border-2 rounded border-solid">
-      <el-tabs ref="resourceTabsRef" type="border-card" :style="{ height: resourceMaxHeight - 54 + 'px' }">
+      <el-tabs ref="resourceTabsRef" type="border-card" :style="{ height: resourceMaxHeight - 100 + 'px' }">
         <el-tab-pane label="菜单列表">
           <MenuList />
         </el-tab-pane>
@@ -14,6 +14,7 @@
           <ResourceList />
         </el-tab-pane>
       </el-tabs>
+      <el-button class="my-2 float-right mr-2" type="primary">保存</el-button>
     </div>
   </div>
 </template>

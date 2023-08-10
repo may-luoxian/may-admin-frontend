@@ -16,7 +16,7 @@ import { onMounted, reactive, toRefs } from 'vue';
 const defaultProps = {
   children: 'children',
   label: 'label',
-}
+};
 const menuData = reactive<any>({
   menuTree: [],
 });
@@ -42,7 +42,7 @@ const getRoleMenu = () => {
   @apply text-lg;
   &:deep(.el-tree-node__content) {
     @apply py-4;
-    label.el-checkbox  {
+    label.el-checkbox {
       @apply mr-4;
     }
   }

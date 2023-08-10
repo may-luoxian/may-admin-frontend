@@ -5,3 +5,5 @@ export interface ResData<T> {
   message: string;
   data: T;
 }
+
+export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';

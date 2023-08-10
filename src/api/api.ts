@@ -26,6 +26,11 @@ instance.interceptors.response.use(
     return config.data;
   },
   (error: AxiosResponse): Promise<AxiosResponse> => {
+    app.config.globalProperties.$notify({
+      title: 'Error',
+      message: error,
+      type: 'error',
+    });
     return Promise.reject(error);
   }
 );
@@ -59,5 +64,13 @@ export default {
   // 获取角色菜单列表
   getRoleMenu: () => {
     return instance.get('/admin/role/menus');
+  },
+  // 获取角色资源列表
+  getRoleResource: () => {
+    return instance.get('/admin/role/resources');
+  },
+  // 获取资源列表
+  getResources: () => {
+    return instance.get('/admin/resources');
   },
 };
