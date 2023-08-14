@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button @click="handleOpenDialig">打开弹窗</el-button>
-    <el-dialog v-model="visibleDialog" title="菜单一">
+    <el-dialog v-model="visibleDialog" title="菜单一123">
       <MenuComponent v-if="visibleDialog"/>
     </el-dialog>
     <el-button @click="getRoles">获取角色列表</el-button>
