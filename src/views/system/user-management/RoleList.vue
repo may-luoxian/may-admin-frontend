@@ -10,7 +10,7 @@
         <el-button type="danger">批量删除</el-button>
       </div>
     </div>
-    <el-table ref="roleTableRef" :data="roleList" :height="roleMaxHeight - 100" size="large" border stripe>
+    <el-table ref="roleTableRef" :data="roleList" :row-style="rowStyle" :height="roleMaxHeight - 100" size="large" border @row-click="handleRowClick">
       <el-table-column type="selection" width="55" />
       <el-table-column label="角色名" prop="roleName" align="center" min-width="100"></el-table-column>
       <el-table-column label="是否禁用" prop="isDisable" align="center" min-width="80">
@@ -52,6 +52,8 @@ import { ref, onMounted, reactive, toRefs } from 'vue';
 const roleTableRef = ref<any>();
 const roleMaxHeight = useDomControlsHook(roleTableRef);
 
+const emit = defineEmits(['handleRowClick']);
+
 let rolesParams = reactive<any>({
   page: {
     current: 0,
@@ -63,6 +65,7 @@ let { page } = toRefs(rolesParams);
 let roleData = reactive({
   roleList: [],
   total: 0,
+  selectedRowId: null,
 });
 let { roleList, total } = toRefs(roleData);
 
@@ -79,6 +82,19 @@ const getRoleList = () => {
     roleData.roleList = res.data.records;
     roleData.total = res.data.count;
   });
+};
+
+const handleRowClick = (row: any) => {
+  roleData.selectedRowId = row.id;
+  emit('handleRowClick', row);
+};
+const rowStyle = ({ row }: any) => {
+  if (row.id === roleData.selectedRowId) {
+    return {
+      'background-color': '#f4f4f4',
+    };
+  }
+  return {};
 };
 
 const handleSizeChange = () => {};

@@ -1,20 +1,56 @@
 import axios from 'axios';
 import { app } from '@/main';
 import Cookies from 'js-cookie';
-import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+
+let requestQueue = new Map();
+function getRequestKey(config: cancelAxiosRequestConfig) {
+  let { method, url, params, data } = config;
+  return [method, url, JSON.stringify(params), JSON.stringify(data)].join('&');
+}
+
+interface cancelAxiosRequestConfig extends InternalAxiosRequestConfig {
+  isOpenCancel?: boolean;
+}
+
+function addRequestMessage(config: cancelAxiosRequestConfig) {
+  if (!config.isOpenCancel) {
+    return;
+  }
+  let requestKey = getRequestKey(config);
+  config.cancelToken =
+    config.cancelToken ||
+    new axios.CancelToken((cancel) => {
+      if (!requestQueue.has(requestKey)) {
+        requestQueue.set(requestKey, cancel);
+      }
+    });
+}
+
+function removePendingRequest(config: cancelAxiosRequestConfig | {}) {
+  let requestKey = getRequestKey(config as cancelAxiosRequestConfig);
+  if (requestQueue.has(requestKey)) {
+    let cancel = requestQueue.get(requestKey);
+    cancel(requestKey);
+    requestQueue.delete(requestKey);
+  }
+}
 
 const instance = axios.create({
   baseURL: '/api',
   timeout: 20000,
 });
 
-instance.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+instance.interceptors.request.use((config: cancelAxiosRequestConfig): cancelAxiosRequestConfig => {
   config.headers['Authorization'] = Cookies.get('token');
+  removePendingRequest(config);
+  addRequestMessage(config);
   return config;
 });
 
 instance.interceptors.response.use(
   (config: AxiosResponse): AxiosResponse => {
+    removePendingRequest(config.config);
     if (config.data.code !== 20000) {
       app.config.globalProperties.$notify({
         title: 'Error',
@@ -25,10 +61,15 @@ instance.interceptors.response.use(
     }
     return config.data;
   },
-  (error: AxiosResponse): Promise<AxiosResponse> => {
+  (error: AxiosError): Promise<AxiosError> => {
+    removePendingRequest(error.config || {});
+    let errMsg: any = error;
+    if (error.code === 'ERR_CANCELED') {
+      errMsg = '操作过快，请勿重复请求';
+    }
     app.config.globalProperties.$notify({
       title: 'Error',
-      message: error,
+      message: errMsg,
       type: 'error',
     });
     return Promise.reject(error);
@@ -72,5 +113,17 @@ export default {
   // 获取资源列表
   getResources: () => {
     return instance.get('/admin/resources');
+  },
+  // 新增或修改资源
+  saveOrUpdateResource: (formData: any) => {
+    return instance.post('/admin/resource', formData);
+  },
+  // 新增或修改角色菜单权限
+  saveOrUpdateMenuAuth: (params: any) => {
+    return instance.post('/admin/role/menus', params);
+  },
+  // 新增或修改角色资源权限
+  saveOrUpdateResourceAuth: (params: any) => {
+    return instance.post('/admin/role/resources', params);
   },
 };

@@ -2,19 +2,19 @@
   <el-header class="may-title"> 角色管理 </el-header>
   <div ref="draggedRef" class="may-container p-4 flex">
     <div class="w-1/2 h-full border-slate-200 border-2 rounded border-solid">
-      <RoleList />
+      <RoleList @handleRowClick="handleRowClick" />
     </div>
     <div class="w-6 cursor-col-resize" @mousedown="mouseDown" @mouseup="mouseUp"></div>
     <div class="w-1/2 h-full border-slate-200 border-2 rounded border-solid">
-      <el-tabs ref="resourceTabsRef" type="border-card" :style="{ height: resourceMaxHeight - 100 + 'px' }">
-        <el-tab-pane label="菜单列表">
-          <MenuList />
+      <el-tabs ref="resourceTabsRef" v-model="listTab" :style="{ height: resourceMaxHeight - 100 + 'px' }" type="border-card" @tab-change="handleTabChange">
+        <el-tab-pane :name="LIST_TAB.MENU" label="菜单列表">
+          <MenuList ref="menuListRef" />
         </el-tab-pane>
-        <el-tab-pane label="资源列表">
-          <ResourceList />
+        <el-tab-pane :name="LIST_TAB.RESOURCE" label="资源列表">
+          <ResourceList ref="resourceListRef" />
         </el-tab-pane>
       </el-tabs>
-      <el-button class="my-2 float-right mr-2" type="primary">保存</el-button>
+      <el-button class="my-2 float-right mr-2" type="primary" @click="handleSave">保存</el-button>
     </div>
   </div>
 </template>
@@ -23,15 +23,63 @@
 import RoleList from '@/views/system/user-management/RoleList.vue';
 import MenuList from '@/views/system/user-management/MenuList.vue';
 import ResourceList from '@/views/system/user-management/ResourceList.vue';
+import api from '@/api/api';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { useDomDraggedHook } from '@/hooks/domDragged';
 import { ref } from 'vue';
+import { ElNotification } from 'element-plus';
+
+enum LIST_TAB {
+  MENU,
+  RESOURCE,
+}
 
 const resourceTabsRef = ref<any>();
 const draggedRef = ref<any>();
 const resourceMaxHeight = useDomControlsHook(resourceTabsRef);
-
+const menuListRef = ref<any>();
+const resourceListRef = ref<any>();
+let listTab = ref<number>(LIST_TAB.MENU);
+let roleId = ref<number>();
 const { mouseDown, mouseUp } = useDomDraggedHook(draggedRef);
+
+const handleRowClick = (row: any) => {
+  let { id, menuIds, resourceIds } = row;
+  roleId.value = id;
+  menuListRef.value.handleSetChecked(menuIds);
+  resourceListRef.value.handleSetChecked(resourceIds);
+};
+
+const handleTabChange = (tab: number) => {
+  listTab.value = tab;
+};
+
+const handleSave = async () => {
+  if (!roleId.value) {
+    ElNotification({
+      title: 'Error',
+      message: '未选择角色',
+      type: 'error',
+    });
+    return;
+  }
+  try {
+    let params: any = { roleId: roleId.value };
+    let res = {};
+    if (listTab.value === LIST_TAB.MENU) {
+      let ids = resourceListRef.value.getCheckedKeys();
+      params.ids = ids;
+      res = await api.saveOrUpdateMenuAuth(params);
+    } else if (listTab.value === LIST_TAB.RESOURCE) {
+      let ids = resourceListRef.value.getCheckedKeys();
+      params.ids = ids;
+      res = await api.saveOrUpdateResourceAuth(params);
+    }
+    console.log(res);
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <style lang="scss" scope></style>

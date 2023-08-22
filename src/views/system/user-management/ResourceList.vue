@@ -1,20 +1,22 @@
 <template>
   <div>
-    <el-tree :data="treeData" class="tree-node" :props="defaultProps" show-checkbox />
+    <el-tree ref="treeRef" class="tree-node" node-key="id" :data="treeData" :props="defaultProps" show-checkbox />
   </div>
 </template>
 
 <script setup lang="ts">
 import api from '@/api/api';
-import { onMounted, reactive, toRefs } from 'vue';
+import { onMounted, reactive, ref, toRefs } from 'vue';
 const defaultProps = {
   children: 'children',
   label: 'label',
 };
+
 let resourceData = reactive<any>({
   treeData: [],
 });
 let { treeData } = toRefs(resourceData);
+let treeRef = ref();
 
 onMounted(() => {
   init();
@@ -29,6 +31,19 @@ const getResourceLabel = () => {
     resourceData.treeData = res.data;
   });
 };
+
+const handleSetChecked = (resourceIds: Array<number>) => {
+  treeRef.value.setCheckedKeys(resourceIds);
+};
+
+const getCheckedKeys = () => {
+  return treeRef.value.getCheckedKeys();
+};
+
+defineExpose({
+  handleSetChecked,
+  getCheckedKeys
+});
 </script>
 
 <style lang="scss" scoped>
