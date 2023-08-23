@@ -20,9 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import RoleList from '@/views/system/user-management/RoleList.vue';
-import MenuList from '@/views/system/user-management/MenuList.vue';
-import ResourceList from '@/views/system/user-management/ResourceList.vue';
+import RoleList from '@/views/system/role-management/RoleList.vue';
+import MenuList from '@/views/system/role-management/MenuList.vue';
+import ResourceList from '@/views/system/role-management/ResourceList.vue';
 import api from '@/api/api';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { useDomDraggedHook } from '@/hooks/domDragged';
@@ -64,18 +64,22 @@ const handleSave = async () => {
     return;
   }
   try {
-    let params: any = { roleId: roleId.value };
-    let res = {};
+    let params: any = { id: roleId.value };
+    let res: any = {};
     if (listTab.value === LIST_TAB.MENU) {
-      let ids = resourceListRef.value.getCheckedKeys();
-      params.ids = ids;
+      let ids = menuListRef.value.getCheckedKeys();
+      params.roleMenuIds = ids;
       res = await api.saveOrUpdateMenuAuth(params);
     } else if (listTab.value === LIST_TAB.RESOURCE) {
       let ids = resourceListRef.value.getCheckedKeys();
-      params.ids = ids;
+      params.roleResourceIds = ids;
       res = await api.saveOrUpdateResourceAuth(params);
     }
-    console.log(res);
+    ElNotification({
+      title: 'success',
+      message: res.message,
+      type: 'success',
+    });
   } catch (error) {
     console.error(error);
   }

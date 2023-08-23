@@ -35,7 +35,7 @@
 import api from '@/api/api';
 import { ref, reactive, toRefs, computed, unref } from 'vue';
 import { SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
-import type { FormInstance, FormRules } from 'element-plus';
+import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
 
 const props = withDefaults(
   defineProps<{
@@ -46,6 +46,8 @@ const props = withDefaults(
     selectedRow: {},
   }
 );
+
+const emit = defineEmits(['init']);
 
 const { status, selectedRow } = toRefs(props);
 
@@ -90,9 +92,14 @@ const handleConfirm = (formRef: FormInstance | undefined) => {
   }
   formRef.validate((valid) => {
     if (valid) {
-      console.log(form.formData)
-      api.saveOrUpdateResource(form.formData).then((res) => {
-        console.log(res);
+      api.saveOrUpdateResource(form.formData).then((res: any) => {
+        ElNotification({
+          title: 'success',
+          type: 'success',
+          message: res.message,
+        });
+        close();
+        emit('init');
       });
     }
   });

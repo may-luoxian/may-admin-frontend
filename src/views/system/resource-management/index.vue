@@ -33,7 +33,7 @@
   </div>
 
   <!-- 新增、修改弹窗 -->
-  <SaveUpdateDialog ref="SavaUpdateRef" :status="status" :selectedRow="selectedRow" />
+  <SaveUpdateDialog ref="SavaUpdateRef" :status="status" :selectedRow="selectedRow" @init="init" />
 </template>
 
 <script setup lang="ts">

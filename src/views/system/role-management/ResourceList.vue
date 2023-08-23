@@ -33,16 +33,35 @@ const getResourceLabel = () => {
 };
 
 const handleSetChecked = (resourceIds: Array<number>) => {
-  treeRef.value.setCheckedKeys(resourceIds);
+  let checkTreeNode = [];
+  let parentNodes = [];
+  for (let item of resourceIds) {
+    let node = treeRef.value.getNode(item);
+    if (node && node.isLeaf) {
+      checkTreeNode.push(item);
+    } else if (node) {
+      parentNodes.push(node);
+    }
+  }
+  treeRef.value.setCheckedKeys(checkTreeNode);
+  for (let node of parentNodes) {
+    do {
+      if (!node.checked && !node.indeterminate) {
+        node.indeterminate = true;
+      }
+      node = node.parent;
+    } while (node);
+  }
 };
 
 const getCheckedKeys = () => {
-  return treeRef.value.getCheckedKeys();
+  let checkedNodes = treeRef.value.getCheckedNodes(false, true);
+  return checkedNodes.map((node: any) => node.id);
 };
 
 defineExpose({
   handleSetChecked,
-  getCheckedKeys
+  getCheckedKeys,
 });
 </script>
 
