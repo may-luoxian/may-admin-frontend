@@ -79,7 +79,6 @@ const open = () => {
     form.formData.parentId = unref(selectedRow).id;
   } else {
     title.value = '修改资源';
-    console.log(unref(selectedRow));
     let { id, resourceName, requestMethod, url, isAnonymous } = unref(selectedRow);
     form.formData = { id, resourceName, requestMethod, url, isAnonymous };
   }

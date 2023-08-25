@@ -7,7 +7,7 @@
   </el-header>
 
   <el-main class="may-container">
-    <el-table ref="tableRef" :data="tableData" :tree-props="{ children: 'children' }" :height="tableHeight" row-key="id" size="large">
+    <el-table ref="tableRef" :data="tableData" :tree-props="{ children: 'children' }" :height="tableHeight - 40" row-key="id" size="large">
       <el-table-column label="菜单名称" align="center" prop="name" min-width="80"></el-table-column>
       <el-table-column label="图标" align="center" prop="icon" min-width="120">
         <template #default="scope">

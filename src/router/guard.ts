@@ -1,9 +1,11 @@
 import router from './index';
 import { useMenuStore } from '@/stores/menu';
 import { useMenuHook } from '@/hooks/menu';
+import { useUserStore } from '@/stores/user';
 const whiteList = ['/login'];
 const menuStore = useMenuStore();
 const useMenu = useMenuHook();
+const userStore = useUserStore();
 
 /**
  * 路径在白名单内：直接放行
@@ -21,7 +23,7 @@ router.beforeEach(async (to, from, next) => {
         let isExist = menuStore.getUserRoutes.length === 0;
         if (isExist) {
           await useMenu.dynamicAddRoute();
-          // userStore.setUserInfo(userInfo);
+          userStore.setUserInfo(userInfo);
           next({ ...to, replace: true });
         } else {
           next();

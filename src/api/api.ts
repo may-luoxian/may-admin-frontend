@@ -126,4 +126,16 @@ export default {
   saveOrUpdateResourceAuth: (params: any) => {
     return instance.post('/admin/role/resources', params);
   },
+  // 获取用户列表
+  getUserList: (params: any) => {
+    return instance.get('/admin/users', {
+      params,
+    });
+  },
+  getRoleAllow: () => {
+    return instance.get('/admin/role/allow');
+  },
+  updateRoleAllow: (params: any) => {
+    return instance.put('/admin/role/allow', params);
+  },
 };
