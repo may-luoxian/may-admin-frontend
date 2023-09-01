@@ -125,6 +125,7 @@ function isMultipleRoute(routeModule: LayoutRoute) {
   return flag;
 }
 
+// 对于多级路由，进行等级提升
 function promoteRouteLevel(routeModule: any) {
   let router: Router | null = createRouter({
     routes: [routeModule as unknown as RouteRecordNormalized],
