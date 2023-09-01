@@ -76,7 +76,7 @@ function transformRouteToMenu(routes: any) {
         name: node.name,
         path: node.path,
         meta: node.meta,
-        icon: node.icon
+        icon: node.icon,
       };
     },
   });

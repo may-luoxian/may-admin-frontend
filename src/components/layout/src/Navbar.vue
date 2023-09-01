@@ -60,7 +60,7 @@ onMounted(async () => {
   getMatched(route.matched);
   await nextTick();
   initMenuTab();
-  saveTab(route);
+  saveTab(route.matched);
   getMenuTab();
 });
 
@@ -71,8 +71,7 @@ watch(
     await nextTick();
     saveTab(newVal);
     getMenuTab();
-  },
-  { immediate: true }
+  }
 );
 
 const initMenuTab = () => {
@@ -88,9 +87,10 @@ const getMatched = (currentMatched: RouteRecordNormalized[]) => {
   let currentPath = breadcrumb.value[breadcrumb.value.length - 1].path;
   menuStore.setSelectedMenu(currentPath);
 };
-const saveTab = (currentRoute: RouteLocationNormalized) => {
+const saveTab = (currentRoutes: any) => {
+  let currentRoute = currentRoutes.slice(-1)[0];
   let currentTab = {
-    path: currentRoute.fullPath,
+    path: currentRoute.path,
     name: currentRoute.name,
   };
   menuStore.setMenuTab(currentTab);
