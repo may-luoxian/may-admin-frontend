@@ -111,8 +111,10 @@ export default {
     return instance.get('/admin/role/resources');
   },
   // 获取资源列表
-  getResources: () => {
-    return instance.get('/admin/resources');
+  getResources: (params: any) => {
+    return instance.get('/admin/resources', {
+      params,
+    });
   },
   // 新增或修改资源
   saveOrUpdateResource: (formData: any) => {

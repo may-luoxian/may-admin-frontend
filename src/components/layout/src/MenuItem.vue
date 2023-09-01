@@ -1,17 +1,17 @@
 <template>
   <div>
     <template v-for="item in menuTable" :key="item.id">
-      <el-sub-menu v-if="item.children && item.children.length !== 0" :index="item.path">
+      <el-sub-menu v-if="item.name && item.children && item.children.length !== 0" :index="item.path">
         <template #title>
           <i :class="item.icon" class="mr-2"></i>
           <span v-if="!props.isCollapse">{{ item.name }}</span>
         </template>
         <MenuItem :menuTable="item.children" :selectedMenu="selectedMenu" :isCollapse="false"> </MenuItem>
       </el-sub-menu>
-      <el-menu-item :class="isActiveMenu(item.path)" v-else :index="item.path">
+      <el-menu-item v-else :class="isActiveMenu(item.path)" :index="item.path">
         <i :class="item.icon" class="mr-2"></i>
         <template #title>
-          <span>{{ item.name }}</span>
+          <span>{{ item.name || item.children[0].name  }}</span>
         </template>
       </el-menu-item>
     </template>

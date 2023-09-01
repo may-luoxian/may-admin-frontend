@@ -1,11 +1,16 @@
+import Cookies from 'js-cookie';
 import router from './index';
 import { useMenuStore } from '@/stores/menu';
 import { useMenuHook } from '@/hooks/menu';
 import { useUserStore } from '@/stores/user';
-const whiteList = ['/login'];
+import { useStorageHook } from '@/hooks/storage';
 const menuStore = useMenuStore();
 const useMenu = useMenuHook();
 const userStore = useUserStore();
+const storageHook = useStorageHook();
+const { getStorage } = storageHook;
+
+const whiteList = ['/login'];
 
 /**
  * 路径在白名单内：直接放行
@@ -15,11 +20,11 @@ const userStore = useUserStore();
  */
 router.beforeEach(async (to, from, next) => {
   try {
-    let userInfo = JSON.parse(localStorage.getItem('user') as string);
+    let userInfo = getStorage(localStorage, 'user');
     if (whiteList.includes(to.path)) {
       next();
     } else {
-      if (userInfo && userInfo.id) {
+      if (userInfo && userInfo.id && Cookies.get('token')) {
         let isExist = menuStore.getUserRoutes.length === 0;
         if (isExist) {
           await useMenu.dynamicAddRoute();

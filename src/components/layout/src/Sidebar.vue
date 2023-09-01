@@ -31,8 +31,8 @@ const props = defineProps<{
 const route = useRoute();
 let menuTable = ref<LayoutRoute[]>([]);
 const menuStore = useMenuStore();
-let { userRoutes, getSelectedMenu } = storeToRefs(menuStore);
-menuTable.value = userRoutes.value;
+let { getSelectedMenu } = storeToRefs(menuStore);
+menuTable.value = menuStore.getMenuList;
 
 /**
  * 选中菜单项

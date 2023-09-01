@@ -30,6 +30,21 @@ body {
   background-color: #fff;
 }
 
+.may-condition {
+  @apply p-4;
+}
+
 .el-button.is-text {
   padding: 8px;
+}
+
+.fix {
+  *zoom: 1;
+}
+.fix::after {
+  content: '';
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }

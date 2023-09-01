@@ -38,12 +38,13 @@
 <script lang="ts" setup>
 import { SvgIcon } from '@/components/icon';
 import { useMenuStore } from '@/stores/menu';
-import { ref, computed, onMounted, nextTick } from 'vue';
-import { useRoute, useRouter, onBeforeRouteUpdate, type RouteRecordNormalized, type RouteLocationNormalized } from 'vue-router';
+import { ref, computed, onMounted, nextTick, watch } from 'vue';
+import { useRoute, useRouter, type RouteRecordNormalized, type RouteLocationNormalized } from 'vue-router';
 import { AppLocalPicker } from '@/components/application';
 import { Logout } from '@/components/layout/index';
 import type { Breadcrumb } from '@/components/layout/index';
 import type { MenuTab } from '@/stores/menu';
+import { getPathByKey } from '@/utils';
 
 const props = defineProps<{
   isCollapse: boolean;
@@ -63,26 +64,27 @@ onMounted(async () => {
   getMenuTab();
 });
 
-onBeforeRouteUpdate(async (to) => {
-  getMatched(to.matched);
-  await nextTick();
-  saveTab(to);
-  getMenuTab();
-});
+watch(
+  () => route.matched,
+  async (newVal: any) => {
+    getMatched(newVal);
+    await nextTick();
+    saveTab(newVal);
+    getMenuTab();
+  },
+  { immediate: true }
+);
 
 const initMenuTab = () => {
   menuStore.initMenuTab();
 };
 
 const getMatched = (currentMatched: RouteRecordNormalized[]) => {
-  let matched = currentMatched.map((item: RouteRecordNormalized) => {
-    return {
-      path: item.path,
-      name: item.name,
-      meta: item.meta,
-    };
-  });
-  breadcrumb.value = matched.splice(1);
+  let menuList = menuStore.getMenuList;
+  let matched: any = currentMatched.slice(-1);
+  let footPath = getPathByKey(matched[0].name, menuList, 'name');
+  footPath = footPath.map((item: any) => ({ name: item.name, path: item.path, meta: item.meta }));
+  breadcrumb.value = footPath;
   let currentPath = breadcrumb.value[breadcrumb.value.length - 1].path;
   menuStore.setSelectedMenu(currentPath);
 };

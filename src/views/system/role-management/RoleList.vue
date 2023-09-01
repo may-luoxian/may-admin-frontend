@@ -33,7 +33,7 @@
       <el-pagination
         v-model:current-page="page.current"
         v-model:page-size="page.size"
-        :page-sizes="[10, 20]"
+        :page-sizes="[10, 20, 50]"
         :total="total"
         background
         layout="total, sizes, prev, pager, next"
@@ -56,7 +56,7 @@ const emit = defineEmits(['handleRowClick']);
 
 let rolesParams = reactive<any>({
   page: {
-    current: 0,
+    current: 1,
     size: 10,
     keywords: '',
   },

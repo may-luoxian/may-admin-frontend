@@ -5,8 +5,28 @@
       <el-button type="primary" @click="handleSaveModel">新增模块</el-button>
     </div>
   </el-header>
-  <div class="may-container">
-    <el-table ref="tableRef" :data="tableData" :tree-props="{ children: 'children' }" :height="tableMaxHeight - 20" row-key="id" size="large">
+  <div class="may-container fix">
+    <div class="may-condition">
+      <el-form :model="queryParams" label-width="120" inline>
+        <el-form-item label="资源名称：">
+          <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" />
+        </el-form-item>
+        <el-form-item label="请求类型：">
+          <el-select v-model="queryParams.requestMethod" placeholder="请选择请求类型" clearable>
+            <el-option v-for="item in REQUEST_METHODS_CONSTANT" :key="item.id" :value="item.method" :label="item.method" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否匿名：">
+          <el-select v-model="queryParams.isAnonymous" placeholder="请选择是否匿名" clearable>
+            <el-option v-for="item in IS_ANONYMOUS_CONSTANT" :key="item.id" :value="item.id" :label="item.label"></el-option>
+          </el-select>
+        </el-form-item>
+        <div class="float-right">
+          <el-button type="primary" @click="handleSearch">查询</el-button>
+        </div>
+      </el-form>
+    </div>
+    <el-table ref="tableRef" :data="tableData" :tree-props="{ children: 'children' }" :height="tableMaxHeight - 65" row-key="id" size="large">
       <el-table-column label="资源名称" align="center" prop="resourceName" min-width="120"></el-table-column>
       <el-table-column label="请求类型" align="center" min-width="120">
         <template #default="scope">
@@ -41,8 +61,10 @@ import api from '@/api/api';
 import SaveUpdateDialog from '@/views/system/resource-management/SaveUpdateDialog.vue';
 import type { RequestMethod } from '@/api/types';
 import { SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
-import { REQUEST_METHOD } from '@/enums/requestEnum';
-import { ref, onMounted, reactive, toRefs, nextTick } from 'vue';
+import { REQUEST_METHOD_ENUM } from '@/enums/requestEnum';
+import { IS_ANONYMOUS } from '@/enums/commonEnum';
+import { REQUEST_METHODS_CONSTANT, IS_ANONYMOUS_CONSTANT } from '@/views/constant/systemConstant';
+import { ref, onMounted, reactive, toRefs, nextTick, unref } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 
 const tableRef = ref<any>();
@@ -50,9 +72,19 @@ const tableMaxHeight = useDomControlsHook(tableRef);
 let resourceData = reactive<any>({
   tableData: [],
   selectedRow: {},
+  total: 0,
 });
+let condition = reactive<any>({
+  queryParams: {
+    resourceName: '',
+    requestMethod: '',
+    isAnonymous: null,
+  },
+});
+
 let status = ref<number>(0);
 let { tableData, selectedRow } = toRefs(resourceData);
+let { queryParams } = toRefs(condition);
 const SavaUpdateRef = ref<any>();
 
 onMounted(() => {
@@ -64,9 +96,13 @@ const init = () => {
 };
 
 const getResourceList = () => {
-  api.getResources().then((res) => {
+  api.getResources(condition.queryParams).then((res: any) => {
     resourceData.tableData = res.data;
   });
+};
+
+const handleSearch = () => {
+  getResourceList();
 };
 
 const handleSaveModel = async () => {
@@ -88,13 +124,13 @@ const handleUpdateResource = async (row: any) => {
 };
 
 const filterRequestMethod = (requestMethod: RequestMethod) => {
-  if (requestMethod === REQUEST_METHOD.GET) {
+  if (requestMethod === REQUEST_METHOD_ENUM.GET) {
     return '';
-  } else if (requestMethod === REQUEST_METHOD.POST) {
+  } else if (requestMethod === REQUEST_METHOD_ENUM.POST) {
     return 'success';
-  } else if (requestMethod === REQUEST_METHOD.PUT) {
+  } else if (requestMethod === REQUEST_METHOD_ENUM.PUT) {
     return 'warning';
-  } else if (requestMethod === REQUEST_METHOD.DELETE) {
+  } else if (requestMethod === REQUEST_METHOD_ENUM.DELETE) {
     return 'danger';
   } else {
     return 'info';
@@ -102,7 +138,7 @@ const filterRequestMethod = (requestMethod: RequestMethod) => {
 };
 
 const filterIsAnonymous = (isAnonymous: number) => {
-  if (isAnonymous) {
+  if (isAnonymous === IS_ANONYMOUS.TRUE) {
     return '是';
   }
   return '否';

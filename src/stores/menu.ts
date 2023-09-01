@@ -11,6 +11,7 @@ export type MenuTab = {
 
 interface MenuState {
   userRoutes: LayoutRoute[];
+  menuList: any;
   fold: boolean;
   menuTab: MenuTab[];
   selectedMenu: string;
@@ -23,6 +24,7 @@ export const useMenuStore = defineStore('menu', {
   state: (): MenuState => {
     return {
       userRoutes: [],
+      menuList: [],
       fold: false,
       menuTab: [{ name: '首页', path: '/' }],
       selectedMenu: '/',
@@ -34,6 +36,9 @@ export const useMenuStore = defineStore('menu', {
     },
     setUserRoutes(routerMap: LayoutRoute[]) {
       this.userRoutes = routerMap;
+    },
+    setMenuList(menuList: any) {
+      this.menuList = menuList;
     },
     toggleMenu() {
       this.fold = !this.fold;
@@ -66,6 +71,9 @@ export const useMenuStore = defineStore('menu', {
     },
     getSelectedMenu(): string {
       return this.selectedMenu;
+    },
+    getMenuList(): any {
+      return this.menuList;
     },
   },
 });
