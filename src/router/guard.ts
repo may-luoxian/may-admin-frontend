@@ -4,11 +4,12 @@ import { useMenuStore } from '@/stores/menu';
 import { useMenuHook } from '@/hooks/menu';
 import { useUserStore } from '@/stores/user';
 import { useStorageHook } from '@/hooks/storage';
+import { MAY_STORAGE, MAY_BLOG_TOKEN } from '@/setting/localeSetting';
 const menuStore = useMenuStore();
 const useMenu = useMenuHook();
 const userStore = useUserStore();
 const storageHook = useStorageHook();
-const { getStorage } = storageHook;
+const { getObjectStorage } = storageHook;
 
 const whiteList = ['/login'];
 
@@ -20,11 +21,11 @@ const whiteList = ['/login'];
  */
 router.beforeEach(async (to, from, next) => {
   try {
-    let userInfo = getStorage(localStorage, 'user');
+    let userInfo = getObjectStorage(localStorage, MAY_STORAGE, 'user');
     if (whiteList.includes(to.path)) {
       next();
     } else {
-      if (userInfo && userInfo.id && Cookies.get('token')) {
+      if (userInfo && userInfo.id && Cookies.get(MAY_BLOG_TOKEN)) {
         let isExist = menuStore.getUserRoutes.length === 0;
         if (isExist) {
           await useMenu.dynamicAddRoute();

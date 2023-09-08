@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { app } from '@/main';
 import Cookies from 'js-cookie';
+import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
 import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import system from '@/api/system';
 
 let requestQueue = new Map();
 function getRequestKey(config: cancelAxiosRequestConfig) {
@@ -36,13 +38,13 @@ function removePendingRequest(config: cancelAxiosRequestConfig | {}) {
   }
 }
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: '/api',
   timeout: 20000,
 });
 
 instance.interceptors.request.use((config: cancelAxiosRequestConfig): cancelAxiosRequestConfig => {
-  config.headers['Authorization'] = Cookies.get('token');
+  config.headers['Authorization'] = Cookies.get(MAY_BLOG_TOKEN);
   removePendingRequest(config);
   addRequestMessage(config);
   return config;
@@ -77,13 +79,7 @@ instance.interceptors.response.use(
 );
 
 export default {
-  // 登录
-  login: (username: string, password: string) => {
-    let params = new URLSearchParams();
-    params.append('username', username);
-    params.append('password', password);
-    return instance.post('/users/login', params);
-  },
+  ...system,
   // 获取用戶菜单
   getSystemMenu: () => {
     return instance.get('/admin/user/menus');

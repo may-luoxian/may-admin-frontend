@@ -14,7 +14,7 @@
           <AppLocalPicker />
         </div>
         <div class="h-full flex items-center">
-          <Logout />
+          <Controls />
         </div>
       </div>
     </div>
@@ -39,9 +39,9 @@
 import { SvgIcon } from '@/components/icon';
 import { useMenuStore } from '@/stores/menu';
 import { ref, computed, onMounted, nextTick, watch } from 'vue';
-import { useRoute, useRouter, type RouteRecordNormalized, type RouteLocationNormalized } from 'vue-router';
+import { useRoute, useRouter, type RouteRecordNormalized } from 'vue-router';
 import { AppLocalPicker } from '@/components/application';
-import { Logout } from '@/components/layout/index';
+import { Controls } from '@/components/layout/index';
 import type { Breadcrumb } from '@/components/layout/index';
 import type { MenuTab } from '@/stores/menu';
 import { getPathByKey } from '@/utils';

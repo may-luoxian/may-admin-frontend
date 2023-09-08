@@ -51,6 +51,9 @@ export const useMenuStore = defineStore('menu', {
       this.menuTab.push(menuTab);
       useStorage.setObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab', this.menuTab);
     },
+    setSelectedMenu(path: string) {
+      this.selectedMenu = path;
+    },
     removeMenuTab(menuTab: MenuTab) {
       let index = this.menuTab.findIndex((item) => {
         return item.path == menuTab.path;
@@ -58,8 +61,8 @@ export const useMenuStore = defineStore('menu', {
       this.menuTab.splice(index, 1);
       useStorage.setObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab', this.menuTab);
     },
-    setSelectedMenu(path: string) {
-      this.selectedMenu = path;
+    removeAllMenuTab() {
+      useStorage.removeObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab');
     },
   },
   getters: {
