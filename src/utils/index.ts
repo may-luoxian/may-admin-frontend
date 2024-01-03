@@ -5,13 +5,13 @@
  * @param {String} childKey children的key
  */
 export function treeToList(tree: any, childKey = 'children') {
-  let stack = tree.concat([]);
-  let data = [];
+  const stack = tree.concat([]);
+  const data = [];
   while (stack.length !== 0) {
     // 从stack中拿出来分析
-    let shift = stack.shift(); // stack.pop()  先进后出
+    const shift = stack.shift(); // stack.pop()  先进后出
     data.push(shift);
-    let children = shift[childKey];
+    const children = shift[childKey];
     if (children) {
       for (let i = 0; i < children.length; i++) {
         // 把数据放入stack中
@@ -67,14 +67,14 @@ export function getPathByKey(curKey: any, data: any, stat: string) {
    * @param {*} data 树
    * @returns undefined
    */
-  let traverse = (curKey: any, path: any, data: any) => {
+  const traverse = (curKey: any, path: any, data: any) => {
     // 树为空时，不执行函数
     if (data.length === 0) {
       return;
     }
 
     // 遍历存放树的数组
-    for (let item of data) {
+    for (const item of data) {
       // 遍历的数组元素存入path参数数组中
       path.push(item);
       // 如果目的节点的id值等于当前遍历元素的节点id值
@@ -113,7 +113,7 @@ export function isEmpty(v: any) {
       break;
     case 'object':
       if (null === v || v.length === 0) return true;
-      for (var i in v) {
+      for (const i in v) {
         return false;
       }
       return true;
@@ -130,7 +130,7 @@ export function isNotEmpty(v: any) {
 export function isJSON(str: any) {
   if (typeof str == 'string') {
     try {
-      var obj = JSON.parse(str);
+      const obj = JSON.parse(str);
       if (typeof obj == 'object' && obj) {
         return true;
       } else {

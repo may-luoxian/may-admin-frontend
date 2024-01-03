@@ -15,7 +15,7 @@ const userStore = useUserStore();
 
 // 路由表类型
 export type LayoutRoute = {
-  id: Number;
+  id: number;
   menuType: number;
   parentId: number | null;
   path: string;
@@ -53,7 +53,7 @@ function buildAsyncRouterMap(routerMap: Array<LayoutRoute> = []): Array<LayoutRo
   }
   routerMap.forEach((route: LayoutRoute) => {
     route.icon = 'iconfont ' + route.icon;
-    let meta = {
+    const meta = {
       menuType: route.menuType,
     };
     route.meta = meta;
@@ -69,8 +69,8 @@ function buildAsyncRouterMap(routerMap: Array<LayoutRoute> = []): Array<LayoutRo
 
 // 将路由转换成菜单
 function transformRouteToMenu(routes: any) {
-  let cloneModList = cloneDeep(routes);
-  let list = treeMap(cloneModList, {
+  const cloneModList = cloneDeep(routes);
+  const list = treeMap(cloneModList, {
     conversion: (node: any) => {
       return {
         name: node.name,
@@ -85,17 +85,17 @@ function transformRouteToMenu(routes: any) {
 
 // 将多级路由转换为二级路由，路由分模块加壳
 function flatMultiLevelRoutes(routes: any) {
-  let modules = cloneDeep(routes);
+  const modules = cloneDeep(routes);
   // 判断第一层级是否为菜单
   for (let index = 0; index < modules.length; index++) {
     if (modules[index].menuType === 1) {
       // 菜单加壳
       singleMenuAddShell(modules, modules[index], index);
     }
-    let routeModule = modules[index];
+    const routeModule = modules[index];
     // 一级添加Layout组件
     addLayout(routeModule);
-    // 判断是否 多级 路由
+    // 判断是否多级路由
     if (!isMultipleRoute(routeModule)) {
       continue;
     }
@@ -170,7 +170,7 @@ export const useMenuHook = () => {
    */
   async function dynamicAddRoute() {
     try {
-      let data: any = await api.getSystemMenu();
+      const data: any = await api.getSystemMenu();
       if (data.code === 20000) {
         let routes = data.data;
         // 格式化路由icon、component、meta
@@ -184,7 +184,7 @@ export const useMenuHook = () => {
         // 设置路由列表
         menuStore.setUserRoutes(routes);
         // 添加路由
-        for (let route of routes) {
+        for (const route of routes) {
           router.addRoute(route);
         }
       } else {
@@ -197,6 +197,13 @@ export const useMenuHook = () => {
       console.error(err);
     }
   }
+  /**
+   * 清空路由
+   */
+  // function resetRouter() {
+  //   const routes = router.getRoutes();
+  //   console.log(routes);
+  // }
   return {
     dynamicAddRoute,
   };

@@ -5,9 +5,9 @@ import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
 import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import system from '@/api/system';
 
-let requestQueue = new Map();
+const requestQueue = new Map();
 function getRequestKey(config: cancelAxiosRequestConfig) {
-  let { method, url, params, data } = config;
+  const { method, url, params, data } = config;
   return [method, url, JSON.stringify(params), JSON.stringify(data)].join('&');
 }
 
@@ -19,7 +19,7 @@ function addRequestMessage(config: cancelAxiosRequestConfig) {
   if (!config.isOpenCancel) {
     return;
   }
-  let requestKey = getRequestKey(config);
+  const requestKey = getRequestKey(config);
   config.cancelToken =
     config.cancelToken ||
     new axios.CancelToken((cancel) => {
@@ -29,10 +29,10 @@ function addRequestMessage(config: cancelAxiosRequestConfig) {
     });
 }
 
-function removePendingRequest(config: cancelAxiosRequestConfig | {}) {
-  let requestKey = getRequestKey(config as cancelAxiosRequestConfig);
+function removePendingRequest(config: cancelAxiosRequestConfig | object) {
+  const requestKey = getRequestKey(config as cancelAxiosRequestConfig);
   if (requestQueue.has(requestKey)) {
-    let cancel = requestQueue.get(requestKey);
+    const cancel = requestQueue.get(requestKey);
     cancel(requestKey);
     requestQueue.delete(requestKey);
   }
@@ -135,5 +135,9 @@ export default {
   },
   updateRoleAllow: (params: any) => {
     return instance.put('/admin/role/allow', params);
+  },
+  // 导出模板
+  exportModel: () => {
+    return instance.get('/excel/exportModel');
   },
 };

@@ -11,7 +11,7 @@
       <el-menu-item v-else :class="isActiveMenu(item.path)" :index="item.path">
         <i :class="item.icon" class="mr-2"></i>
         <template #title>
-          <span>{{ item.name || item.children[0].name  }}</span>
+          <span>{{ item.name || item.children[0].name }}</span>
         </template>
       </el-menu-item>
     </template>

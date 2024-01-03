@@ -21,12 +21,12 @@ const whiteList = ['/login'];
  */
 router.beforeEach(async (to, from, next) => {
   try {
-    let userInfo = getObjectStorage(localStorage, MAY_STORAGE, 'user');
+    const userInfo = getObjectStorage(localStorage, MAY_STORAGE, 'user');
     if (whiteList.includes(to.path)) {
       next();
     } else {
       if (userInfo && userInfo.id && Cookies.get(MAY_BLOG_TOKEN)) {
-        let isExist = menuStore.getUserRoutes.length === 0;
+        const isExist = menuStore.getUserRoutes.length === 0;
         if (isExist) {
           await useMenu.dynamicAddRoute();
           userStore.setUserInfo(userInfo);

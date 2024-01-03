@@ -19,7 +19,7 @@ const userStore = useUserStore();
 const { getUserInfo, clearOnlineStorage } = userStore;
 
 const handleLogout = () => {
-  api.logout(getUserInfo.id).then((res) => {
+  api.logout(getUserInfo.id).then(() => {
     router.replace('/login');
     clearOnlineStorage();
   });

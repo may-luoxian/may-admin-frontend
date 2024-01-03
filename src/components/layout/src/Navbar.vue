@@ -6,7 +6,7 @@
           <SvgIcon :name="isFold" size="22" @click="toggleMenu" />
         </div>
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item v-for="item in breadcrumb">{{ item.name }}</el-breadcrumb-item>
+          <el-breadcrumb-item v-for="item in breadcrumb" :key="item.path">{{ item.name }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <div class="flex h-full">

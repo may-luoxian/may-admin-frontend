@@ -63,16 +63,15 @@ let tableData = ref([]);
 let saveUpdateDialogTitle = ref('');
 let saveUpdateDialogState = ref(SAVEORUPDATE_DIALOG_STATE.SAVE_ROOT);
 let tableHeight = useDomControlsHook(tableRef) || 0;
+
 onMounted(() => {
   init();
 });
-
 const init = () => {
   api.getMenus().then((res) => {
     tableData.value = res.data;
   });
 };
-
 const saveRootMenu = () => {
   saveUpdateDialogTitle.value = '新增菜单';
   saveUpdateDialogState.value = SAVEORUPDATE_DIALOG_STATE.SAVE_ROOT;
@@ -85,6 +84,7 @@ const handleMenuAdd = (row: any) => {
   saveUpdateDialogRef.value.open(row);
 };
 const handleMenuUpdate = (row: any) => {
+  console.log(123);
   saveUpdateDialogTitle.value = '修改菜单';
   saveUpdateDialogState.value = SAVEORUPDATE_DIALOG_STATE.UPDATE;
   saveUpdateDialogRef.value.open(row);

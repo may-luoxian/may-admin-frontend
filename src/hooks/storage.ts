@@ -15,8 +15,10 @@ export const useStorageHook = () => {
     let storageVal = null;
     if (typeof value === 'object') {
       storageVal = JSON.stringify(value);
+    } else {
+      storageVal = value;
     }
-    storageType.setItem(key, value);
+    storageType.setItem(key, storageVal);
   }
 
   /**
@@ -79,7 +81,7 @@ export const useStorageHook = () => {
       throw new Error('该缓存值存在且不为对象');
     }
     if (!storageVal) return;
-    let obj = Object.assign(storageVal as unknown as object);
+    const obj = Object.assign(storageVal as unknown as object);
     if (obj) {
       delete obj[stat];
     }

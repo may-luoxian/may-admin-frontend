@@ -3,7 +3,7 @@
   <span v-else ref="elRef" :class="[$attrs.class, 'app-iconify anticon', spin && 'app-iconify-spin']" :style="getWrapStyle"></span>
 </template>
 <script lang="ts">
-import type { PropType, CSSProperties } from 'vue';
+import type { PropType, CSSProperties, Ref } from 'vue';
 import { defineComponent, ref, watch, onMounted, nextTick, unref, computed } from 'vue';
 import SvgIcon from './SvgIcon.vue';
 import Iconify from '@purge-icons/generated';
@@ -36,7 +36,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const elRef = ref<ElRef>(null);
+    const elRef = ref<Ref | null>(null);
 
     const isSvgIcon = computed(() => props.icon?.endsWith(SVG_END_WITH_FLAG));
     const getSvgIcon = computed(() => props.icon.replace(SVG_END_WITH_FLAG, ''));

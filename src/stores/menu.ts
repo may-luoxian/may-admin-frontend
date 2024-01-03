@@ -44,7 +44,7 @@ export const useMenuStore = defineStore('menu', {
       this.fold = !this.fold;
     },
     setMenuTab(menuTab: MenuTab) {
-      let index = this.menuTab.findIndex((item) => {
+      const index = this.menuTab.findIndex((item) => {
         return item.path == menuTab.path;
       });
       if (index !== -1) return;
@@ -55,7 +55,7 @@ export const useMenuStore = defineStore('menu', {
       this.selectedMenu = path;
     },
     removeMenuTab(menuTab: MenuTab) {
-      let index = this.menuTab.findIndex((item) => {
+      const index = this.menuTab.findIndex((item) => {
         return item.path == menuTab.path;
       });
       this.menuTab.splice(index, 1);

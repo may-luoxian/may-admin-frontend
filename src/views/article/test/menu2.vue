@@ -7,17 +7,16 @@
   </div>
 </template>
 
-<script setup lang='ts'>
-import { ref } from "vue";
+<script setup lang="ts">
+import { ref } from 'vue';
 
 // 引入组件
-import MenuComponent from '@/views/components/MenuComponent.vue'
-
+import MenuComponent from '@/views/components/MenuComponent.vue';
 
 let visibleDialog = ref<boolean>(false);
 const handleOpenDialig = () => {
-  visibleDialog.value = true
-}
+  visibleDialog.value = true;
+};
 </script>
 
-<style lang='scss' scoped></style>
+<style lang="scss" scoped></style>

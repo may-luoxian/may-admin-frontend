@@ -56,7 +56,7 @@ const confirm = () => {
   api.updateRoleAllow({ id, roleIds }).then((res: any) => {
     ElNotification({
       title: 'success',
-      message: res.message, 
+      message: res.message,
       type: 'success',
     });
     close();

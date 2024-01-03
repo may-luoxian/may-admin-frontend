@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column label="创建时间" prop="createTime" align="center" min-width="140"></el-table-column>
       <el-table-column label="操作" align="center" width="140">
-        <template #default="scope">
+        <template>
           <div>
             <el-button type="primary" link>操作</el-button>
             <el-divider direction="vertical"></el-divider>
@@ -107,5 +107,3 @@ const filterIsDisable = (isDisable: number) => {
   return '否';
 };
 </script>
-
-<style lang="scss" scoped></style>

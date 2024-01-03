@@ -31,7 +31,7 @@ const handleConnectSSE = () => {
     // 创建EventSource实例
     SSEConnection.value = new EventSource('http://localhost:8080/sse');
     // 监听事件
-    SSEConnection.value.onopen = (event) => {
+    SSEConnection.value.onopen = () => {
       // 连接建立
       if (SSEConnection.value?.readyState === SSEConnection.value?.OPEN) {
         isConnection.value = true;
