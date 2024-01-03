@@ -1,8 +1,8 @@
 import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue';
 
 export const useDomControlsHook = (elRef: Ref<HTMLElement>) => {
-  let maxHeight = ref(0);
-  let fn = () => {
+  const maxHeight = ref(0);
+  const fn = () => {
     computedMaxHeight();
   };
   onMounted(() => {
@@ -15,8 +15,8 @@ export const useDomControlsHook = (elRef: Ref<HTMLElement>) => {
   });
 
   function computedMaxHeight() {
-    let el: any = elRef.value;
-    let offsetTop = el.offsetTop || el.$el.offsetTop;
+    const el: any = elRef.value;
+    const offsetTop = el.offsetTop || el.$el.offsetTop;
     maxHeight.value = window.innerHeight - offsetTop;
   }
   return maxHeight;

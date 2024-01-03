@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column label="角色" align="center" prop="roles" min-width="280">
         <template #default="scope">
-          <el-tag class="mr-2" size="large" v-for="role in scope.row.roles">{{ role.roleName }}</el-tag>
+          <el-tag class="mr-2" size="large" v-for="role in scope.row.roles" :key="role.id">{{ role.roleName }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="是否禁用" align="center" prop="isDisable" min-width="80">
@@ -36,7 +36,7 @@
         <template #default="scope">
           <el-button type="primary" link @click="handleAllotRole(scope.row)">分配角色</el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button type="primary" link @click="handleControl(scope.row)">操作</el-button>
+          <el-button type="primary" link @click="handleControl()">操作</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -76,7 +76,7 @@ const getUserList = () => {
   });
 };
 
-const handleControl = (row: any) => {};
+const handleControl = () => {};
 
 const handleAllotRole = (row: any) => {
   allowRoleRef.value.open(row);
@@ -98,5 +98,3 @@ const filterIsDisable = (isDisable: number) => {
   return '否';
 };
 </script>
-
-<style lang="scss" scoped></style>

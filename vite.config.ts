@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import purgeIcons from 'vite-plugin-purge-icons';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import eslintPlugin from 'vite-plugin-eslint';
 
 //项目运行时路径
 function pathResolve(dir: string) {
@@ -27,7 +28,14 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
   const isBuild = command === 'build';
   return {
     base: './',
-    plugins: [vue(), configSvgIconsPlugin(isBuild), purgeIcons()],
+    plugins: [
+      vue(),
+      configSvgIconsPlugin(isBuild),
+      purgeIcons(),
+      eslintPlugin({
+        include: ['src/**/*.ts', 'src/**/*.vue', 'src/*.ts', 'src/*.vue'],
+      }),
+    ],
     // vite通过postcss引入tailwindcss
     css: {
       postcss: {

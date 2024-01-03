@@ -1,11 +1,11 @@
 import { ref } from 'vue';
 
 export const useDomDraggedHook = (parentDom: any) => {
-  let isMouseDown = ref<boolean>(false);
-  let startClientX = ref<number>(0);
-  let moveClientX = ref<number>(0);
-  let dragBarIndex = ref<number>(-1);
-  let parentLeft = ref<number>(0);
+  const isMouseDown = ref<boolean>(false);
+  const startClientX = ref<number>(0);
+  const moveClientX = ref<number>(0);
+  const dragBarIndex = ref<number>(-1);
+  const parentLeft = ref<number>(0);
 
   // 处理鼠标按下
   const mouseDown = (e: MouseEvent) => {
@@ -18,16 +18,16 @@ export const useDomDraggedHook = (parentDom: any) => {
 
   // 创建拖动时显示的虚拟div
   const createVirtualDom = (e: MouseEvent) => {
-    let childrenDoms = parentDom.value.children;
+    const childrenDoms = parentDom.value.children;
     for (let i = 0; i < childrenDoms.length; i++) {
       if (childrenDoms[i] === e.target) {
         dragBarIndex.value = i;
       }
     }
     parentLeft.value = parentDom.value.getBoundingClientRect().left;
-    let virtualX = e.clientX - parentLeft.value;
+    const virtualX = e.clientX - parentLeft.value;
     parentDom.value.style.position = 'relative';
-    let dragBar = document.createElement('div');
+    const dragBar = document.createElement('div');
     dragBar.style.height = '100%';
     dragBar.style.width = '1px';
     dragBar.style.textAlign = 'center';
@@ -52,9 +52,9 @@ export const useDomDraggedHook = (parentDom: any) => {
 
   // 处理拖动时，拖动条样式
   const setBarStyle = (e: MouseEvent) => {
-    let virtualDom: any = document.getElementsByClassName('virtual-dom')[0];
-    let childrenDoms = parentDom.value.children;
-    let virtualDomWidth = childrenDoms[dragBarIndex.value].getBoundingClientRect().width;
+    const virtualDom: any = document.getElementsByClassName('virtual-dom')[0];
+    const childrenDoms = parentDom.value.children;
+    const virtualDomWidth = childrenDoms[dragBarIndex.value].getBoundingClientRect().width;
     let virtualX = e.clientX - parentDom.value.getBoundingClientRect().left;
     if (virtualX < virtualDomWidth) {
       virtualX = virtualDomWidth;
@@ -67,11 +67,11 @@ export const useDomDraggedHook = (parentDom: any) => {
   // 处理鼠标抬起
   const mouseUp = () => {
     document.removeEventListener('mousemove', handleMouseDragged);
-    let offset = startClientX.value - moveClientX.value;
-    let leftDom = parentDom.value.children[dragBarIndex.value - 1];
-    let rightDom = parentDom.value.children[dragBarIndex.value + 1];
-    let leftDomWidth = leftDom.getBoundingClientRect().width;
-    let rightDomWidth = rightDom.getBoundingClientRect().width;
+    const offset = startClientX.value - moveClientX.value;
+    const leftDom = parentDom.value.children[dragBarIndex.value - 1];
+    const rightDom = parentDom.value.children[dragBarIndex.value + 1];
+    const leftDomWidth = leftDom.getBoundingClientRect().width;
+    const rightDomWidth = rightDom.getBoundingClientRect().width;
     leftDom.style.width = leftDomWidth - offset + 'px';
     rightDom.style.width = rightDomWidth + offset + 'px';
     isMouseDown.value = false;
@@ -81,7 +81,7 @@ export const useDomDraggedHook = (parentDom: any) => {
 
   // 移除虚拟div
   const removeVirtualDom = () => {
-    let centerDom = parentDom.value.children[dragBarIndex.value];
+    const centerDom = parentDom.value.children[dragBarIndex.value];
     let child = centerDom.lastElementChild;
     while (child) {
       centerDom.removeChild(child);
