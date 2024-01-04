@@ -6,16 +6,16 @@ import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axio
 import system from '@/api/system';
 
 const requestQueue = new Map();
-function getRequestKey(config: cancelAxiosRequestConfig) {
+function getRequestKey(config: CancelAxiosRequestConfig) {
   const { method, url, params, data } = config;
   return [method, url, JSON.stringify(params), JSON.stringify(data)].join('&');
 }
 
-interface cancelAxiosRequestConfig extends InternalAxiosRequestConfig {
+interface CancelAxiosRequestConfig extends InternalAxiosRequestConfig {
   isOpenCancel?: boolean;
 }
 
-function addRequestMessage(config: cancelAxiosRequestConfig) {
+function addRequestMessage(config: CancelAxiosRequestConfig) {
   if (!config.isOpenCancel) {
     return;
   }
@@ -29,8 +29,8 @@ function addRequestMessage(config: cancelAxiosRequestConfig) {
     });
 }
 
-function removePendingRequest(config: cancelAxiosRequestConfig | object) {
-  const requestKey = getRequestKey(config as cancelAxiosRequestConfig);
+function removePendingRequest(config: CancelAxiosRequestConfig | object) {
+  const requestKey = getRequestKey(config as CancelAxiosRequestConfig);
   if (requestQueue.has(requestKey)) {
     const cancel = requestQueue.get(requestKey);
     cancel(requestKey);
@@ -38,12 +38,13 @@ function removePendingRequest(config: cancelAxiosRequestConfig | object) {
   }
 }
 
+// 请求实例
 export const instance = axios.create({
   baseURL: '/api',
   timeout: 20000,
 });
 
-instance.interceptors.request.use((config: cancelAxiosRequestConfig): cancelAxiosRequestConfig => {
+instance.interceptors.request.use((config: CancelAxiosRequestConfig): CancelAxiosRequestConfig => {
   config.headers['Authorization'] = Cookies.get(MAY_BLOG_TOKEN);
   removePendingRequest(config);
   addRequestMessage(config);
@@ -77,6 +78,22 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// 下载文件实例
+export const downloadInstance = axios.create({
+  baseURL: '/api',
+  timeout: 20000,
+  responseType: 'blob',
+});
+
+downloadInstance.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+  config.headers['Authorization'] = Cookies.get(MAY_BLOG_TOKEN);
+  return config;
+});
+
+downloadInstance.interceptors.response.use((config: AxiosResponse): any => {
+  return config;
+});
 
 export default {
   ...system,
@@ -138,6 +155,11 @@ export default {
   },
   // 导出模板
   exportModel: () => {
-    return instance.get('/excel/exportModel');
+    return downloadInstance.get('/excel/exportModel');
+  },
+  mockDemo: (params: any) => {
+    return instance.get('/tableList', {
+      params,
+    });
   },
 };

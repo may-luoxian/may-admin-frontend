@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue';
 import purgeIcons from 'vite-plugin-purge-icons';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import eslintPlugin from 'vite-plugin-eslint';
+import { viteMockServe } from 'vite-plugin-mock';
 
 //项目运行时路径
 function pathResolve(dir: string) {
@@ -34,6 +35,10 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
       purgeIcons(),
       eslintPlugin({
         include: ['src/**/*.ts', 'src/**/*.vue', 'src/*.ts', 'src/*.vue'],
+      }),
+      viteMockServe({
+        mockPath: 'mock',
+        localEnabled: command === 'serve',
       }),
     ],
     // vite通过postcss引入tailwindcss

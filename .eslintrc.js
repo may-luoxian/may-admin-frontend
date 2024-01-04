@@ -22,7 +22,7 @@ module.exports = {
   },
   'plugins': ['@typescript-eslint', 'vue', 'prettier'],
   'rules': {
-    'prettier/prettier': 'error',
+    'prettier/prettier': 'warn',
     '@typescript-eslint/no-explicit-any': 'off', //关闭any类型警告
     'vue/multi-word-component-names': 'off',
   },
