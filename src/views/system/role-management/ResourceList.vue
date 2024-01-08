@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
+import { defHttp } from '@/utils/http/axios';
 import { onMounted, reactive, ref, toRefs } from 'vue';
 const defaultProps = {
   children: 'children',
@@ -27,9 +27,13 @@ const init = () => {
 };
 
 const getResourceLabel = () => {
-  api.getRoleResource().then((res) => {
-    resourceData.treeData = res.data;
-  });
+  defHttp
+    .get({
+      url: '/admin/role/resources',
+    })
+    .then((res) => {
+      resourceData.treeData = res.data;
+    });
 };
 
 const handleSetChecked = (resourceIds: Array<number>) => {

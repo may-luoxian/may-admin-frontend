@@ -1,4 +1,4 @@
-import api from '@/api/api';
+import { defHttp } from '@/utils/http/axios';
 import router from '@/router';
 import pinia from '@/stores';
 import { cloneDeep, omit } from 'lodash-es';
@@ -170,7 +170,9 @@ export const useMenuHook = () => {
    */
   async function dynamicAddRoute() {
     try {
-      const data: any = await api.getSystemMenu();
+      const data: any = await defHttp.get({
+        url: '/admin/user/menus',
+      });
       if (data.code === 20000) {
         let routes = data.data;
         // 格式化路由icon、component、meta

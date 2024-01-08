@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
+import { defHttp } from '@/utils/http/axios';
 import { ref, onMounted, reactive, toRefs } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 import AllowRoleDialog from '@/views/system/user-management/AllowRoleDialog.vue';
@@ -71,9 +71,14 @@ const init = () => {
 };
 
 const getUserList = () => {
-  api.getUserList({}).then((res: any) => {
-    tableData.userList = res.data;
-  });
+  defHttp
+    .get({
+      url: '/admin/users',
+      params: {},
+    })
+    .then((res: any) => {
+      tableData.userList = res.data;
+    });
 };
 
 const handleControl = () => {};

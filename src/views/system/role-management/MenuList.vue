@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
+import { defHttp } from '@/utils/http/axios';
 import { onMounted, reactive, toRefs, ref } from 'vue';
 
 const defaultProps = {
@@ -33,9 +33,13 @@ const init = () => {
 };
 
 const getRoleMenu = () => {
-  api.getRoleMenu().then(({ data }) => {
-    menuData.menuTree = data;
-  });
+  defHttp
+    .get({
+      url: '/admin/role/menus',
+    })
+    .then(({ data }) => {
+      menuData.menuTree = data;
+    });
 };
 
 const handleSetChecked = (menuIds: Array<number>) => {

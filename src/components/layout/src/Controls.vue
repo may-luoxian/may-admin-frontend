@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
+import { logout } from '@/api/system';
 import router from '@/router';
 import { useUserStore } from '@/stores/user';
 
@@ -19,7 +19,7 @@ const userStore = useUserStore();
 const { getUserInfo, clearOnlineStorage } = userStore;
 
 const handleLogout = () => {
-  api.logout(getUserInfo.id).then(() => {
+  logout(getUserInfo.id).then(() => {
     router.replace('/login');
     clearOnlineStorage();
   });

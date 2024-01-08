@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
+import { defHttp } from '@/utils/http/axios';
 import { ElNotification } from 'element-plus';
 import { reactive, ref, toRefs } from 'vue';
 
@@ -45,23 +45,35 @@ const open = async (userData: any) => {
 };
 
 const getRoleList = () => {
-  return api.getRoleAllow().then((res) => {
-    dialogData.roleList = res.data;
-  });
+  return defHttp
+    .get({
+      url: '/admin/role/allow',
+    })
+    .then((res) => {
+      dialogData.roleList = res.data;
+    });
 };
 
 const confirm = () => {
   let roleIds = treeRef.value.getCheckedKeys();
   let id = dialogData.userData.userInfoId;
-  api.updateRoleAllow({ id, roleIds }).then((res: any) => {
-    ElNotification({
-      title: 'success',
-      message: res.message,
-      type: 'success',
+  defHttp
+    .put({
+      url: '/admin/role/allow',
+      data: {
+        id,
+        roleIds,
+      },
+    })
+    .then((res: any) => {
+      ElNotification({
+        title: 'success',
+        message: res.message,
+        type: 'success',
+      });
+      close();
+      emit('init');
     });
-    close();
-    emit('init');
-  });
 };
 
 const close = () => {

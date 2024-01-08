@@ -57,7 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
 import SaveUpdateDialog from '@/views/system/resource-management/SaveUpdateDialog.vue';
 import type { RequestMethod } from '@/api/types';
 import { SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
@@ -66,6 +65,7 @@ import { IS_ANONYMOUS } from '@/enums/commonEnum';
 import { REQUEST_METHODS_CONSTANT, IS_ANONYMOUS_CONSTANT } from '@/views/constant/systemConstant';
 import { ref, onMounted, reactive, toRefs, nextTick } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
+import { defHttp } from '@/utils/http/axios';
 
 const tableRef = ref<any>();
 const tableMaxHeight = useDomControlsHook(tableRef);
@@ -96,9 +96,14 @@ const init = () => {
 };
 
 const getResourceList = () => {
-  api.getResources(condition.queryParams).then((res: any) => {
-    resourceData.tableData = res.data;
-  });
+  defHttp
+    .get({
+      url: '/admin/resources',
+      params: condition.queryParams,
+    })
+    .then((res: any) => {
+      resourceData.tableData = res.data;
+    });
 };
 
 const handleSearch = () => {

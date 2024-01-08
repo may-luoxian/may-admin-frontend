@@ -36,10 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
 import { type Ref, reactive, ref, toRef, unref, computed, watch, nextTick } from 'vue';
 import { type FormInstance, type FormRules, ElNotification } from 'element-plus';
 import { MENU_TYPE, SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
+import { defHttp } from '@/utils/http/axios';
 
 const props = defineProps<{
   saveUpdateDialogTitle: string;
@@ -95,21 +95,26 @@ const close = () => {
 };
 
 const confirm = () => {
-  let formData = unref(form);
+  let data = unref(form);
   if (unref(dialogState) === SAVEORUPDATE_DIALOG_STATE.UPDATE) {
-    formData.id = menuData.selectedData.id;
+    data.id = menuData.selectedData.id;
   } else if (unref(dialogState) === SAVEORUPDATE_DIALOG_STATE.SAVE_CHILD) {
-    formData.parentId = menuData.selectedData.id;
+    data.parentId = menuData.selectedData.id;
   }
-  api.saveOrUpdateMenu(formData).then((res: any) => {
-    ElNotification({
-      title: 'SUCCESS',
-      type: 'success',
-      message: res.message,
+  defHttp
+    .post({
+      url: '/admin/menus',
+      data,
+    })
+    .then((res: any) => {
+      ElNotification({
+        title: 'SUCCESS',
+        type: 'success',
+        message: res.message,
+      });
+      close();
+      emit('init');
     });
-    close();
-    emit('init');
-  });
 };
 
 let isCatalogue = computed(() => menuData.form.menuType === MENU_TYPE.CATALOGUE);

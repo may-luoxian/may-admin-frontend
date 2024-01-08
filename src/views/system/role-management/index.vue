@@ -23,11 +23,11 @@
 import RoleList from '@/views/system/role-management/RoleList.vue';
 import MenuList from '@/views/system/role-management/MenuList.vue';
 import ResourceList from '@/views/system/role-management/ResourceList.vue';
-import api from '@/api/api';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { useDomDraggedHook } from '@/hooks/domDragged';
 import { ref } from 'vue';
 import { ElNotification } from 'element-plus';
+import { defHttp } from '@/utils/http/axios';
 
 enum LIST_TAB {
   MENU,
@@ -69,11 +69,17 @@ const handleSave = async () => {
     if (listTab.value === LIST_TAB.MENU) {
       let ids = menuListRef.value.getCheckedKeys();
       params.roleMenuIds = ids;
-      res = await api.saveOrUpdateMenuAuth(params);
+      res = await defHttp.post({
+        url: '/admin/role/menus',
+        params,
+      });
     } else if (listTab.value === LIST_TAB.RESOURCE) {
       let ids = resourceListRef.value.getCheckedKeys();
       params.roleResourceIds = ids;
-      res = await api.saveOrUpdateResourceAuth(params);
+      res = await defHttp.post({
+        url: '/admin/role/resources',
+        params,
+      });
     }
     ElNotification({
       title: 'success',

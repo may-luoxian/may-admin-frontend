@@ -32,10 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
 import { ref, reactive, toRefs, computed, unref } from 'vue';
 import { SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
 import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
+import { defHttp } from '@/utils/http/axios';
 
 const props = withDefaults(
   defineProps<{
@@ -91,15 +91,20 @@ const handleConfirm = (formRef: FormInstance | undefined) => {
   }
   formRef.validate((valid) => {
     if (valid) {
-      api.saveOrUpdateResource(form.formData).then((res: any) => {
-        ElNotification({
-          title: 'success',
-          type: 'success',
-          message: res.message,
+      defHttp
+        .post({
+          url: '/admin/resource',
+          data: form.formData,
+        })
+        .then((res: any) => {
+          ElNotification({
+            title: 'success',
+            type: 'success',
+            message: res.message,
+          });
+          close();
+          emit('init');
         });
-        close();
-        emit('init');
-      });
     }
   });
 };

@@ -51,11 +51,11 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
 import SaveUpdateDialog from '@/views/system/menu-management/SaveUpdateDialog.vue';
 import { ref, onMounted } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { MENU_TYPE, SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
+import { defHttp } from '@/utils/http/axios';
 
 const saveUpdateDialogRef = ref();
 const tableRef = ref();
@@ -68,9 +68,13 @@ onMounted(() => {
   init();
 });
 const init = () => {
-  api.getMenus().then((res) => {
-    tableData.value = res.data;
-  });
+  defHttp
+    .get({
+      url: '/admin/menus',
+    })
+    .then((res) => {
+      tableData.value = res.data;
+    });
 };
 const saveRootMenu = () => {
   saveUpdateDialogTitle.value = '新增菜单';

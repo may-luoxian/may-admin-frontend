@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api/api';
+import { defHttp } from '@/utils/http/axios';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { ref, onMounted, reactive, toRefs } from 'vue';
 
@@ -78,10 +78,15 @@ const init = () => {
 };
 
 const getRoleList = () => {
-  api.getRoles(rolesParams.page).then((res) => {
-    roleData.roleList = res.data.records;
-    roleData.total = res.data.count;
-  });
+  defHttp
+    .get({
+      url: '/admin/roles',
+      params: rolesParams.page,
+    })
+    .then((res) => {
+      roleData.roleList = res.data.records;
+      roleData.total = res.data.count;
+    });
 };
 
 const handleRowClick = (row: any) => {
