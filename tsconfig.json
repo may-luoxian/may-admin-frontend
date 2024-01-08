@@ -3,14 +3,14 @@
   "compilerOptions": {
     "ignoreDeprecations": "5.0",
     "baseUrl": ".",
-    "types": ["unplugin-vue-define-options/macros-global" /* ... */],
+    "types": ["vite/client"],
     "paths": {
       "@/*": ["./src/*"],
       "#/*": ["./types/*"]
     },
     "strict": true
   },
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "types/**/*.d.ts", "types/**/*.ts"],
+  "include": ["src/**/*", "src/**/*.vue", "types/**/*.d.ts", "types/**/*.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"

@@ -9,19 +9,27 @@
 import api from '@/api/api';
 import { MIME_MAP } from '@/enums/requestEnum';
 import { downloadBlob } from '@/utils/download';
+import { defHttp } from '@/utils/http/axios';
+
 const handleExportModel = () => {
   api.exportModel().then((res: any) => {
     downloadBlob(res, MIME_MAP.xlsx);
   });
 };
 const handleExport = () => {
-  api
-    .mockDemo({
-      pageNum: 2,
-      pageSize: 10,
+  defHttp
+    .get({
+      url: '/admin/menu',
+      params: {
+        pageNum: 1,
+        pageSize: 10,
+      },
     })
     .then((res) => {
       console.log(res);
+    })
+    .catch((err) => {
+      console.error(err);
     });
 };
 </script>

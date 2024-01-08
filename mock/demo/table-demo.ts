@@ -27,10 +27,10 @@ export default [
     },
   },
   {
-    url: '/api/tableList',
+    url: '/api/tableLis',
     method: 'get',
-    response: ({ query }) => {
-      const token = '123';
+    response: ({ query }) => { 
+      const token = '';
       if (!token) {
         return resultError('Invalid token');
       }

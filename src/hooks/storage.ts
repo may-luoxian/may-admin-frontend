@@ -1,4 +1,6 @@
 import { isEmpty, isJSON } from '@/utils';
+import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
+import Cookies from 'js-cookie';
 
 interface LooseObject {
   [key: string]: any;
@@ -106,6 +108,10 @@ export const useStorageHook = () => {
     }
     return storageVal[stat];
   }
+
+  function getToken() {
+    return Cookies.get(MAY_BLOG_TOKEN);
+  }
   return {
     setStorage,
     removeStorage,
@@ -113,5 +119,6 @@ export const useStorageHook = () => {
     setObjectStorage,
     removeObjectStorage,
     getObjectStorage,
+    getToken,
   };
 };

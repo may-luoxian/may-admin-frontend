@@ -8,6 +8,7 @@ const routes = [
   },
   {
     path: '/:catchAll(.*)',
+    name: 'pageNotFound',
     hidden: true,
     component: () => import('@/views/error/404.vue'),
   },

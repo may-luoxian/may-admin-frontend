@@ -59,6 +59,9 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
         },
       ],
     },
+    define: {
+      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
+    },
     server: {
       host: '0.0.0.0',
       port: 8082,

@@ -59,7 +59,7 @@ let breadcrumb = ref<Breadcrumb[]>([]);
 onMounted(async () => {
   getMatched(route.matched);
   await nextTick();
-  initMenuTab();
+  // initMenuTab();
   saveTab(route.matched);
   getMenuTab();
 });
@@ -74,9 +74,9 @@ watch(
   }
 );
 
-const initMenuTab = () => {
-  menuStore.initMenuTab();
-};
+// const initMenuTab = () => {
+//   menuStore.initMenuTab();
+// };
 
 const getMatched = (currentMatched: RouteRecordNormalized[]) => {
   let menuList = menuStore.getMenuList;

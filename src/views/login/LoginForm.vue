@@ -39,10 +39,9 @@
 <script lang="ts" setup>
 import { ref, reactive, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useMenuHook } from '@/hooks/menu';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import api from '@/api/api';
+import { login } from '@/api/system';
 import LoginFormTitle from '@/views/login/LoginFormTitle.vue';
 
 const router = useRouter();
@@ -61,14 +60,13 @@ const remenberMe = ref(false);
  * 2、若登录成功，保存token，userId到缓存中，作为登录状态
  * 3、构建路由、菜单表，跳转到首页
  */
-const useMenu = useMenuHook();
+// const useMenu = useMenuHook();
 function handleLogin() {
   let { username, password } = toRefs(form);
-  api.login(username.value, password.value).then(async ({ data }) => {
+  login(username.value, password.value).then(async ({ data }) => {
     try {
       userStore.setToken(data.token);
       userStore.setUserInfo(data);
-      await useMenu.dynamicAddRoute();
       router.push('/');
     } catch (err) {
       console.error(err);

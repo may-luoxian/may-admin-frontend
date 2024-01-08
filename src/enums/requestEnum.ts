@@ -19,3 +19,15 @@ export enum MIME_MAP {
   txt = 'application/txt',
   mp3 = 'application/force-download,content-type=audio/mpeg',
 }
+
+/**
+ * @description:  contentType
+ */
+export enum ContentTypeEnum {
+  // json
+  JSON = 'application/json;charset=UTF-8',
+  // form-data qs
+  FORM_URLENCODED = 'application/x-www-form-urlencoded;charset=UTF-8',
+  // form-data  upload
+  FORM_DATA = 'multipart/form-data;charset=UTF-8',
+}
