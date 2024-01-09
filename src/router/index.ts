@@ -20,4 +20,10 @@ const options = {
 };
 const router = createRouter(options);
 
+// export function resetRouter() {
+//   router.getRoutes().forEach((route) => {
+
+//   })
+// }
+
 export default router;

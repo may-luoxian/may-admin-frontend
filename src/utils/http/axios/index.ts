@@ -8,7 +8,11 @@ import { VAxios } from './Axios';
 import { deepMerge, setObjToUrlParams } from '@/utils';
 import { formatRequestDate, joinTimestamp } from './helper';
 import { useStorageHook } from '@/hooks/storage';
+import { ElNotification } from 'element-plus';
+import { useUserStoreWithOut } from '@/stores/modules/user';
+import router from '@/router';
 const { getToken } = useStorageHook();
+const { clearOnlineStorage } = useUserStoreWithOut();
 /**
  * @description: 数据处理，方便区分多种处理方式
  */
@@ -80,6 +84,22 @@ const transform: AxiosTransform = {
    * @description：响应拦截处理
    */
   responseInterceptors: (res: AxiosResponse<any>) => {
+    if (res.data.code && res.data.code === 40001) {
+      ElNotification({
+        title: 'Error',
+        message: res.data.message,
+      });
+      clearOnlineStorage();
+      router.push('/login');
+    }
+    if (res.data.code && res.data.code === 40002) {
+      ElNotification({
+        title: 'Error',
+        message: res.data.message,
+      });
+      clearOnlineStorage();
+      router.push('/login');
+    }
     return res;
   },
   /**
