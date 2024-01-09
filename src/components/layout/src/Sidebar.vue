@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import MenuItem from '@/components/layout/src/MenuItem.vue';
 import { ref } from 'vue';
-import { useMenuStore } from '@/stores/menu';
+import { useMenuStore } from '@/stores/modules/menu';
 import type { LayoutRoute } from '@/hooks/menu';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';

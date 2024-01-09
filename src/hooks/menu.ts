@@ -1,17 +1,16 @@
 import { defHttp } from '@/utils/http/axios';
 import router from '@/router';
-import pinia from '@/stores';
 import { cloneDeep, omit } from 'lodash-es';
-import { useMenuStore } from '@/stores/menu';
+import { useMenuStore } from '@/stores/modules/menu';
 import { Layout } from '@/components/layout';
 import { treeMap } from '@/utils';
 import type { RouteMeta, Router, RouteRecordNormalized } from 'vue-router';
-import { useUserStore } from '@/stores/user';
+import { useUserStoreWithOut } from '@/stores/modules/user';
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { getUserRouter } from '@/api/system';
 
 const modules = import.meta.glob('@/views/**/*.vue');
-const menuStore = useMenuStore(pinia);
-const userStore = useUserStore();
+const userStore = useUserStoreWithOut();
 
 // 路由表类型
 export type LayoutRoute = {
@@ -168,44 +167,25 @@ export const useMenuHook = () => {
   /**
    * 动态添加路由
    */
-  async function dynamicAddRoute() {
-    try {
-      const data: any = await defHttp.get({
-        url: '/admin/user/menus',
-      });
-      if (data.code === 20000) {
-        let routes = data.data;
-        // 格式化路由icon、component、meta
-        routes = buildAsyncRouterMap(routes);
-        // 将路由转换为菜单
-        const menuList = transformRouteToMenu(routes);
-        // 设置菜单列表
-        menuStore.setMenuList(menuList);
-        // 将多级路由转换为二级路由，路由分模块加壳
-        routes = flatMultiLevelRoutes(routes);
-        // 设置路由列表
-        menuStore.setUserRoutes(routes);
-        // 添加路由
-        for (const route of routes) {
-          router.addRoute(route);
-        }
-      } else {
-        throw new Error(data.message);
-      }
-    } catch (err) {
-      router.push('/login');
-      userStore.removeToken();
-      userStore.removeUserInfo();
-      console.error(err);
+  function dynamicAddRoute(routes: Array<LayoutRoute> = []) {
+    // 格式化路由icon、component、meta
+    routes = buildAsyncRouterMap(routes);
+    // 将路由转换为菜单
+    const menuList = transformRouteToMenu(routes);
+    // 设置菜单列表
+    const menuStore = useMenuStore();
+    menuStore.setMenuList(menuList);
+    // 将多级路由转换为二级路由，路由分模块加壳
+    routes = flatMultiLevelRoutes(routes);
+    // 设置路由列表
+    menuStore.setUserRoutes(routes);
+    // 添加路由
+    for (const route of routes) {
+      router.addRoute(route);
     }
+    return routes;
   }
-  /**
-   * 清空路由
-   */
-  // function resetRouter() {
-  //   const routes = router.getRoutes();
-  //   console.log(routes);
-  // }
+
   return {
     dynamicAddRoute,
   };

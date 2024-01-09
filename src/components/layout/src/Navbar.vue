@@ -37,13 +37,12 @@
 
 <script lang="ts" setup>
 import { SvgIcon } from '@/components/icon';
-import { useMenuStore } from '@/stores/menu';
+import { useMenuStore, type MenuTab } from '@/stores/modules/menu';
 import { ref, computed, onMounted, nextTick, watch } from 'vue';
 import { useRoute, useRouter, type RouteRecordNormalized } from 'vue-router';
 import { AppLocalPicker } from '@/components/application';
 import { Controls } from '@/components/layout/index';
 import type { Breadcrumb } from '@/components/layout/index';
-import type { MenuTab } from '@/stores/menu';
 import { getPathByKey } from '@/utils';
 
 const props = defineProps<{
@@ -59,7 +58,7 @@ let breadcrumb = ref<Breadcrumb[]>([]);
 onMounted(async () => {
   getMatched(route.matched);
   await nextTick();
-  // initMenuTab();
+  initMenuTab();
   saveTab(route.matched);
   getMenuTab();
 });
@@ -74,9 +73,9 @@ watch(
   }
 );
 
-// const initMenuTab = () => {
-//   menuStore.initMenuTab();
-// };
+const initMenuTab = () => {
+  menuStore.initMenuTab();
+};
 
 const getMatched = (currentMatched: RouteRecordNormalized[]) => {
   let menuList = menuStore.getMenuList;

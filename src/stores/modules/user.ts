@@ -1,8 +1,9 @@
 import Cookies from 'js-cookie';
 import { defineStore } from 'pinia';
 import { useStorageHook } from '@/hooks/storage';
-import { useMenuStore } from '@/stores/menu';
+import { useMenuStore } from '@/stores/modules/menu';
 import { MAY_STORAGE, MAY_BLOG_TOKEN } from '@/setting/localeSetting';
+import { pinia } from '..';
 
 const storageHook = useStorageHook();
 
@@ -46,5 +47,9 @@ export const useUserStore = defineStore('user', {
     getUserInfo(): any {
       return this.userInfo;
     },
-  },
+  }
 });
+
+export function useUserStoreWithOut() {
+  return useUserStore(pinia);
+}

@@ -3,6 +3,7 @@ import { useStorageHook } from '@/hooks/storage';
 import { MAY_STORAGE } from '@/setting/localeSetting';
 import type { LayoutRoute } from '@/hooks/menu';
 import type { RouteRecordName } from 'vue-router';
+import { pinia } from '..';
 
 export type MenuTab = {
   path: string;
@@ -13,6 +14,7 @@ interface MenuState {
   userRoutes: LayoutRoute[];
   menuList: any;
   fold: boolean;
+  isDynamicAddedRoute: boolean;
   menuTab: MenuTab[];
   selectedMenu: string;
 }
@@ -26,19 +28,23 @@ export const useMenuStore = defineStore('menu', {
       userRoutes: [],
       menuList: [],
       fold: false,
+      isDynamicAddedRoute: false,
       menuTab: [{ name: '首页', path: '/' }],
       selectedMenu: '/',
     };
   },
   actions: {
     initMenuTab() {
-      this.menuTab = getObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab') || [{ name: '首页', path: '/' }];
+      this.menuTab = getObjectStorage(localStorage, MAY_STORAGE, 'menuTab') || [{ name: '首页', path: '/' }];
     },
     setUserRoutes(routerMap: LayoutRoute[]) {
       this.userRoutes = routerMap;
     },
     setMenuList(menuList: any) {
       this.menuList = menuList;
+    },
+    setIsDynamicAddedRoute(added: boolean) {
+      this.isDynamicAddedRoute = added;
     },
     toggleMenu() {
       this.fold = !this.fold;
@@ -49,7 +55,7 @@ export const useMenuStore = defineStore('menu', {
       });
       if (index !== -1) return;
       this.menuTab.push(menuTab);
-      useStorage.setObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab', this.menuTab);
+      useStorage.setObjectStorage(localStorage, MAY_STORAGE, 'menuTab', this.menuTab);
     },
     setSelectedMenu(path: string) {
       this.selectedMenu = path;
@@ -59,7 +65,7 @@ export const useMenuStore = defineStore('menu', {
         return item.path == menuTab.path;
       });
       this.menuTab.splice(index, 1);
-      useStorage.setObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab', this.menuTab);
+      useStorage.setObjectStorage(localStorage, MAY_STORAGE, 'menuTab', this.menuTab);
     },
     removeAllMenuTab() {
       useStorage.removeObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab');
@@ -78,5 +84,13 @@ export const useMenuStore = defineStore('menu', {
     getMenuList(): any {
       return this.menuList;
     },
+    getIsDynamicAddedRoute(): boolean {
+      return this.isDynamicAddedRoute;
+    },
   },
 });
+
+// 解决外部文件调用pinia时pinia未挂载问题
+export function useMenuStoreWithOut() {
+  return useMenuStore(pinia);
+}

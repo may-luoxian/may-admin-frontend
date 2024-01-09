@@ -40,12 +40,15 @@
 import { ref, reactive, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/user';
-import { login } from '@/api/system';
+import { useUserStore } from '@/stores/modules/user';
+import { useMenuStore } from '@/stores/modules/menu';
+import { useMenuHook } from '@/hooks/menu';
+import { login, getUserRouter } from '@/api/system';
 import LoginFormTitle from '@/views/login/LoginFormTitle.vue';
 
 const router = useRouter();
 const userStore = useUserStore();
+const menuStore = useMenuStore();
 const { t } = useI18n();
 
 const form = reactive({
@@ -60,13 +63,16 @@ const remenberMe = ref(false);
  * 2、若登录成功，保存token，userId到缓存中，作为登录状态
  * 3、构建路由、菜单表，跳转到首页
  */
-// const useMenu = useMenuHook();
+const menuHook = useMenuHook();
 function handleLogin() {
   let { username, password } = toRefs(form);
   login(username.value, password.value).then(async ({ data }) => {
     try {
       userStore.setToken(data.token);
       userStore.setUserInfo(data);
+      const routes = (await getUserRouter()).data;
+      menuHook.dynamicAddRoute(routes);
+      menuStore.setIsDynamicAddedRoute(true);
       router.push('/');
     } catch (err) {
       console.error(err);

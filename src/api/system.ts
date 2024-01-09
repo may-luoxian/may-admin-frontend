@@ -23,3 +23,10 @@ export const logout = (userId: number) => {
     },
   });
 };
+
+// 获取用户菜单
+export const getUserRouter = () => {
+  return defHttp.get({
+    url: '/admin/user/menus',
+  });
+};

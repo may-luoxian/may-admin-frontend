@@ -2,13 +2,10 @@ import Cookies from 'js-cookie';
 import router from './index';
 import { useMenuHook } from '@/hooks/menu';
 import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
-import { useMenuStore } from '@/stores/menu';
-import { useUserStore } from '@/stores/user';
-import { isEmpty } from '@/utils/is';
-const menuStore = useMenuStore();
+import { useMenuStoreWithOut } from '@/stores/modules/menu';
+import { getUserRouter } from '@/api/system';
 const menuHook = useMenuHook();
-const userStore = useUserStore();
-
+const menuStore = useMenuStoreWithOut();
 const whiteList = ['/login'];
 
 router.beforeEach(async (to, from, next) => {
@@ -23,17 +20,16 @@ router.beforeEach(async (to, from, next) => {
     next('/login');
     return;
   }
-  const routes = menuStore.getUserRoutes;
-  if (isEmpty(routes)) {
-    // 添加路由
-    await menuHook.dynamicAddRoute();
+
+  const hasDynamicAddedRoute = menuStore.getIsDynamicAddedRoute;
+  if (hasDynamicAddedRoute) {
+    next();
+    return;
   }
 
-  // const userInfo = userStore.getUserInfo
-  // if (isEmpty(userInfo)) {
-
-  // }
-
+  const routes = (await getUserRouter()).data;
+  menuHook.dynamicAddRoute(routes);
+  menuStore.setIsDynamicAddedRoute(true);
   if (to.name === 'pageNotFound') {
     // 动态添加路由后，此处应当重定向到fullPath，否则会加载404页面内容
     next({ path: to.fullPath, replace: true, query: to.query });

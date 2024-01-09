@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import { SvgIcon } from '@/components/icon';
-import { useAppStore } from '@/stores/app';
+import { useAppStore } from '@/stores/modules/app';
 import { useDark, useToggle } from '@vueuse/core';
 const isDark = useDark();
 const appstore = useAppStore();

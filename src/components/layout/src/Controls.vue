@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { logout } from '@/api/system';
 import router from '@/router';
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '@/stores/modules/user';
 
 const userStore = useUserStore();
 const { getUserInfo, clearOnlineStorage } = userStore;

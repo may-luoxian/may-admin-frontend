@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import { Sidebar, Navbar } from '@/components/layout';
-import { useMenuStore } from '@/stores/menu';
+import { useMenuStore } from '@/stores/modules/menu';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 

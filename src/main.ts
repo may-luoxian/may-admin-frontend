@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import router from './router';
-import pinia from './stores';
+import { setupPinia } from './stores';
 // 国际化
 import { i18n } from './locales';
 
@@ -26,7 +26,7 @@ import 'virtual:svg-icons-register';
 import '@/assets/css/iconfont.css';
 
 export const app = createApp(App);
-app.use(pinia);
+setupPinia(app);
 app.use(router);
 app.use(i18n);
 
