@@ -8,7 +8,8 @@
       "@/*": ["./src/*"],
       "#/*": ["./types/*"]
     },
-    "strict": true
+    "strict": true,
+    "lib": ["es2015", "es2016", "dom", "es2018.promise"]
   },
   "include": ["src/**/*", "src/**/*.vue", "types/**/*.d.ts", "types/**/*.ts"],
   "references": [

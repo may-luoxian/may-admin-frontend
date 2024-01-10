@@ -1,6 +1,6 @@
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import type { RequestOptions, Result, UploadFileParams } from '#/axios';
+import type { RequestOptions, Result } from '#/axios';
 import { isString } from '@/utils/is';
 import { ContentTypeEnum, REQUEST_METHOD_ENUM } from '@/enums/requestEnum';
 import { clone } from 'lodash-es';
@@ -84,32 +84,34 @@ const transform: AxiosTransform = {
    * @description：响应拦截处理
    */
   responseInterceptors: (res: AxiosResponse<any>) => {
-    if (res.data.code && res.data.code === 40001) {
-      ElNotification({
-        title: 'Error',
-        message: res.data.message,
-      });
-      clearOnlineStorage();
-      router.push('/login');
-    }
-    if (res.data.code && res.data.code === 40002) {
-      ElNotification({
-        title: 'Error',
-        message: res.data.message,
-      });
-      clearOnlineStorage();
-      router.push('/login');
+    if (res.data.code && res.data.code !== 20000) {
+      throw new Error(JSON.stringify(res.data));
     }
     return res;
   },
   /**
    * @description 请求拦截错误处理
    */
-  requestInterceptorsCatch(error: Error) {},
+  // requestInterceptorsCatch(error: Error) {},
   /**
    * @description：响应拦截错误处理
    */
   responseInterceptorsCatch: (axiosInstance: AxiosInstance, error: Error) => {
+    const err = JSON.parse(error.message);
+    if (err.code && [40001, 40002].includes(err.code)) {
+      ElNotification({
+        title: 'Error',
+        message: err.message,
+      });
+      clearOnlineStorage();
+      router.push('/login');
+    }
+    if (err.code && err.code === 50000) {
+      ElNotification({
+        title: 'Error',
+        message: err.message,
+      });
+    }
     return Promise.reject(error);
   },
   /**
