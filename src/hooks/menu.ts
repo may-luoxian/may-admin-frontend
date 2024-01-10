@@ -1,16 +1,12 @@
-import { defHttp } from '@/utils/http/axios';
 import router from '@/router';
 import { cloneDeep, omit } from 'lodash-es';
 import { useMenuStore } from '@/stores/modules/menu';
 import { Layout } from '@/components/layout';
 import { treeMap } from '@/utils';
 import type { RouteMeta, Router, RouteRecordNormalized } from 'vue-router';
-import { useUserStoreWithOut } from '@/stores/modules/user';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { getUserRouter } from '@/api/system';
 
 const modules = import.meta.glob('@/views/**/*.vue');
-const userStore = useUserStoreWithOut();
 
 // 路由表类型
 export type LayoutRoute = {

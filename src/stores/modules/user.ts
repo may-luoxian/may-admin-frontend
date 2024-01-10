@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', {
   state: () => {
     return {
       token: '' as string,
-      userInfo: {},
+      userInfo: storageHook.getObjectStorage(localStorage, MAY_STORAGE, 'user') || {},
     };
   },
   actions: {
