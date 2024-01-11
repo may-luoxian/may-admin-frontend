@@ -73,7 +73,7 @@ const init = () => {
 const getUserList = () => {
   defHttp
     .get({
-      url: '/admin/users',
+      url: '/admin/users/list',
       params: {},
     })
     .then((res: any) => {

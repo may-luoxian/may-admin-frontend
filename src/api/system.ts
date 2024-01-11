@@ -24,6 +24,12 @@ export const logout = (userId: number) => {
   });
 };
 
+export const getUserInfo = () => {
+  return defHttp.get({
+    url: '/admin/users/info',
+  });
+};
+
 // 获取用户菜单
 export const getUserRouter = () => {
   return defHttp.get({

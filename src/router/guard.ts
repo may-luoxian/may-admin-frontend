@@ -3,9 +3,12 @@ import router from './index';
 import { useMenuHook } from '@/hooks/menu';
 import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
 import { useMenuStoreWithOut } from '@/stores/modules/menu';
-import { getUserRouter } from '@/api/system';
+import { useUserStoreWithOut } from '@/stores/modules/user';
+import { getUserRouter, getUserInfo } from '@/api/system';
+import { isEmpty } from '@/utils';
 const menuHook = useMenuHook();
 const menuStore = useMenuStoreWithOut();
+const userStore = useUserStoreWithOut();
 const whiteList = ['/login'];
 
 router.beforeEach(async (to, from, next) => {
@@ -14,19 +17,32 @@ router.beforeEach(async (to, from, next) => {
     next();
     return;
   }
-  // 不存在token，跳转登录
+  // 不存在token，跳转登录（后续不执行）
   const token = Cookies.get(MAY_BLOG_TOKEN);
   if (!token) {
     next('/login');
     return;
   }
 
+  // 如果用户信息不存在，获取信息
+  const storeUserInfo = userStore.getUserInfo;
+  if (isEmpty(storeUserInfo)) {
+    try {
+      const userInfo = (await getUserInfo()).data;
+      userStore.setUserInfo(userInfo);
+    } catch (err) {
+      next();
+    }
+  }
+
+  // 如果路由存在直接跳转目标页面
   const hasDynamicAddedRoute = menuStore.getIsDynamicAddedRoute;
   if (hasDynamicAddedRoute) {
     next();
     return;
   }
 
+  // 若不存在构建动态路由
   const routes = (await getUserRouter()).data;
   menuHook.dynamicAddRoute(routes);
   menuStore.setIsDynamicAddedRoute(true);

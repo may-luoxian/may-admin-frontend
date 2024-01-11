@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', {
     getUserInfo(): any {
       return this.userInfo;
     },
-  }
+  },
 });
 
 export function useUserStoreWithOut() {
