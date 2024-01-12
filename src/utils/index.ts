@@ -148,7 +148,7 @@ export function deepMerge<T extends object | null | undefined, U extends object 
 }
 
 /**
- * Add the object as a parameter to the URL
+ * 将对象转换为UrlParams
  * @param baseUrl url
  * @param obj
  * @returns {string}

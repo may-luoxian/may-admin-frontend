@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from '@/App.vue';
 import router from './router';
 import { setupPinia } from './stores';
+import VueResizeObserver from 'vue-resize-observer';
 // 国际化
 import { i18n } from './locales';
 
@@ -29,6 +30,7 @@ export const app = createApp(App);
 setupPinia(app);
 app.use(router);
 app.use(i18n);
+app.use(VueResizeObserver);
 
 app.config.globalProperties.$notify = ElNotification;
 

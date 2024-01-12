@@ -28,6 +28,8 @@ import { ElNotification, type FormInstance, type FormRules } from 'element-plus'
 import { reactive, ref } from 'vue';
 import { defHttp } from '@/utils/http/axios';
 
+const emit = defineEmits(['init']);
+
 interface Form {
   roleName?: string;
   isDisable?: number;
@@ -64,7 +66,7 @@ const handleConfirm = () => {
     if (!valid) return;
     defHttp
       .post({
-        url: '/admin/roles',
+        url: '/admin/role/roles',
         data: form,
       })
       .then((res) => {
@@ -74,9 +76,11 @@ const handleConfirm = () => {
           title: 'Success',
           message: res.message,
         });
+        emit('init');
       })
       .finally(() => {
         loading.value = false;
+        handleCancel();
       });
   });
 };

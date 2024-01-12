@@ -39,7 +39,7 @@
             <el-divider direction="vertical" v-if="isShowMenuAdd(scope.row.menuType)" />
             <el-button type="primary" text @click="handleMenuUpdate(scope.row)">修改</el-button>
             <el-divider direction="vertical" />
-            <el-button type="primary" text @click="handleMenuDelete">删除</el-button>
+            <el-button type="primary" text @click="handleMenuDelete(scope.row)">删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -56,6 +56,7 @@ import { ref, onMounted } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { MENU_TYPE, SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
 import { defHttp } from '@/utils/http/axios';
+import { treeToList } from '@/utils/index';
 
 const saveUpdateDialogRef = ref();
 const tableRef = ref();
@@ -88,12 +89,13 @@ const handleMenuAdd = (row: any) => {
   saveUpdateDialogRef.value.open(row);
 };
 const handleMenuUpdate = (row: any) => {
-  console.log(123);
   saveUpdateDialogTitle.value = '修改菜单';
   saveUpdateDialogState.value = SAVEORUPDATE_DIALOG_STATE.UPDATE;
   saveUpdateDialogRef.value.open(row);
 };
-const handleMenuDelete = () => {};
+const handleMenuDelete = (row: any) => {
+  const ids = treeToList([row]).map((item) => item.id);
+};
 
 const isShowMenuAdd = (menuType: MENU_TYPE): boolean => {
   return menuType === MENU_TYPE.CATALOGUE;

@@ -3,14 +3,23 @@
     <div class="flex items-center justify-between font-semibold h-12 px-4">
       <div>
         <span class="mr-4">角色列表</span>
-        <el-input placeholder="请输入角色名（enter查询）" style="width: 240px"></el-input>
+        <el-input v-model="page.keywords" placeholder="请输入角色名（enter查询）" style="width: 240px" @keyup.enter="getRoleList"></el-input>
       </div>
       <div>
         <el-button type="primary" @click="handleOpenRoleDialog">新增角色</el-button>
         <el-button type="danger" @click="handleDeleteRoles">删除角色</el-button>
       </div>
     </div>
-    <el-table ref="roleTableRef" :data="roleList" :row-style="rowStyle" :height="roleMaxHeight - 100" size="large" border @row-click="handleRowClick">
+    <el-table
+      ref="roleTableRef"
+      :data="roleList"
+      :row-style="rowStyle"
+      :height="roleMaxHeight - 100"
+      size="large"
+      border
+      @row-click="handleRowClick"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" />
       <el-table-column label="角色名" prop="roleName" align="center" min-width="100"></el-table-column>
       <el-table-column label="是否禁用" prop="isDisable" align="center" min-width="80">
@@ -20,6 +29,11 @@
       </el-table-column>
       <el-table-column label="创建时间" prop="createTime" align="center" min-width="140"></el-table-column>
       <el-table-column label="角色描述" prop="describe" align="center" min-width="360"></el-table-column>
+      <el-table-column label="操作" prop="describe" align="center" min-width="60">
+        <template #default>
+          <el-button type="primary" text @click.prevent="handleOpenRoleDialog">修改</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="float-right p-2">
       <el-pagination
@@ -33,7 +47,7 @@
         @current-change="handleCurrentChange"
       />
     </div>
-    <AddRoleDialog ref="addRoleDialogRef" />
+    <AddRoleDialog ref="addRoleDialogRef" @init="init" />
   </div>
 </template>
 
@@ -41,13 +55,13 @@
 import AddRoleDialog from '@/views/system/role-management/AddRoleDialog.vue';
 import { defHttp } from '@/utils/http/axios';
 import { useDomControlsHook } from '@/hooks/domControls';
-import { ref, onMounted, reactive, toRefs } from 'vue';
+import { ref, onMounted, reactive, toRefs, unref } from 'vue';
+import { ElNotification } from 'element-plus';
 
 const roleTableRef = ref<any>();
 const roleMaxHeight = useDomControlsHook(roleTableRef);
-
 const addRoleDialogRef = ref<any>();
-
+let selectedIds = ref([]);
 const emit = defineEmits(['handleRowClick']);
 
 let rolesParams = reactive<any>({
@@ -57,6 +71,7 @@ let rolesParams = reactive<any>({
     keywords: '',
   },
 });
+
 let { page } = toRefs(rolesParams);
 let roleData = reactive({
   roleList: [],
@@ -70,13 +85,22 @@ onMounted(() => {
 });
 
 const init = () => {
+  reset();
   getRoleList();
+};
+
+const reset = () => {
+  rolesParams.page = {
+    current: 1,
+    size: 10,
+    keywords: '',
+  };
 };
 
 const getRoleList = () => {
   defHttp
     .get({
-      url: '/admin/roles',
+      url: '/admin/role/roles',
       params: rolesParams.page,
     })
     .then((res) => {
@@ -103,16 +127,33 @@ const handleOpenRoleDialog = () => {
 };
 
 const handleDeleteRoles = () => {
-  defHttp.delete({
-    url: '/admin/roles',
-    params: {
-      
-    }
-  });
+  defHttp
+    .delete({
+      url: '/admin/role/roles',
+      data: unref(selectedIds),
+    })
+    .then((res) => {
+      ElNotification({
+        title: 'success',
+        type: 'success',
+        message: res.message,
+      });
+      init();
+    });
 };
 
-const handleSizeChange = () => {};
-const handleCurrentChange = () => {};
+const handleSizeChange = (size: number) => {
+  page.value.size = size;
+  getRoleList();
+};
+const handleCurrentChange = (current: number) => {
+  page.value.current = current;
+  getRoleList();
+};
+
+const handleSelectionChange = (selection: any) => {
+  selectedIds.value = selection.map((item: any) => item.id);
+};
 
 const filterIsDisable = (isDisable: number) => {
   if (isDisable === 1) {

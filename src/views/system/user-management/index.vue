@@ -10,7 +10,7 @@
       <el-table-column label="昵称" align="center" prop="nickname" min-width="80"></el-table-column>
       <el-table-column label="头像" align="center" prop="avatar" min-width="120">
         <template #default="scope">
-          <img class="w-28 mx-auto my-0" :src="scope.row.avatar" />
+          <img class="w-28 mx-auto my-0" :src="avatar(scope.row.avatar)" />
         </template>
       </el-table-column>
       <el-table-column label="登录方式" align="center" prop="loginType" min-width="120">
@@ -88,6 +88,10 @@ const handleAllotRole = (row: any) => {
 };
 
 const handleSaveModel = () => {};
+
+const avatar = (avatar: any) => {
+  return avatar || '../src/assets/images/default-avatar.jpg';
+};
 
 const filterLoginType = (loginType: number) => {
   if (loginType === 1) {

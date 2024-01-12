@@ -1,11 +1,11 @@
 <template>
   <el-header class="may-title"> 角色管理 </el-header>
   <div ref="draggedRef" class="may-container p-4 flex">
-    <div class="w-1/2 h-full border-slate-200 border-2 rounded border-solid">
+    <div class="w-3/5 h-full border-2 dark:border-slate-700 rounded border-solid">
       <RoleList @handleRowClick="handleRowClick" />
     </div>
     <div class="w-6 cursor-col-resize" @mousedown="mouseDown" @mouseup="mouseUp"></div>
-    <div class="w-1/2 h-full border-slate-200 border-2 rounded border-solid">
+    <div class="w-2/5 h-full border-2 dark:border-slate-700 rounded border-solid">
       <el-tabs ref="resourceTabsRef" v-model="listTab" :style="{ height: resourceMaxHeight - 100 + 'px' }" type="border-card" @tab-change="handleTabChange">
         <el-tab-pane :name="LIST_TAB.MENU" label="菜单列表">
           <MenuList ref="menuListRef" />

@@ -1,8 +1,8 @@
 <template>
   <el-dropdown class="h-full" popper-class="w-32 drowdown-class">
-    <div class="flex items-center w-32 justify-evenly cursor-pointer hover:bg-slate-200">
-      <img class="w-7 h-7 rounded-full" :src="getUserInfo.avatar" alt="error" />
-      <span class="text-sm text-slate-500">{{ getUserInfo.nickname }}</span>
+    <div class="flex items-center w-32 justify-evenly cursor-pointer hover:bg-slate-200 hover:dark:bg-slate-600">
+      <img class="w-7 h-7 rounded-full" :src="avatar" alt="error" />
+      <span class="text-sm">{{ getUserInfo.nickname }}</span>
     </div>
     <template #dropdown>
       <el-dropdown-item @click="handleLogout"><i class="iconfont el-icon-mytuichu"></i> 退出登录</el-dropdown-item>
@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { logout } from '@/api/system';
+import { computed } from 'vue';
 import router from '@/router';
 import { useUserStore } from '@/stores/modules/user';
 
@@ -24,6 +25,10 @@ const handleLogout = () => {
     clearOnlineStorage();
   });
 };
+
+const avatar = computed(() => {
+  return getUserInfo.avatar || '../src/assets/images/default-avatar.jpg';
+});
 </script>
 
 <style lang="scss">

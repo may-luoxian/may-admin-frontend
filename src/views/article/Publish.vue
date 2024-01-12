@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full bg-slate-50">
+  <div class="h-full">
     <el-button @click="testStorage">testStorage</el-button>
     <el-button @click="testRemoveS">testRemoveS</el-button>
   </div>

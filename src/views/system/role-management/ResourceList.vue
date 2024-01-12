@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tree ref="treeRef" class="tree-node" node-key="id" :data="treeData" :props="defaultProps" show-checkbox />
+    <el-tree ref="treeRef" class="tree-node" node-key="id" :data="treeData" :props="defaultProps" show-checkbox default-expand-all />
   </div>
 </template>
 

@@ -106,9 +106,10 @@ const transform: AxiosTransform = {
       clearOnlineStorage();
       router.push('/login');
     }
-    if (err.code && err.code === 50000) {
+    if (err.code && [50000, 51000].includes(err.code)) {
       ElNotification({
         title: 'Error',
+        type: 'error',
         message: err.message,
       });
     }

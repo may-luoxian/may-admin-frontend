@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tree ref="treeRef" class="tree-node" :data="menuTree" node-key="id" :props="defaultProps" show-checkbox>
+    <el-tree ref="treeRef" class="tree-node" :data="menuTree" node-key="id" :props="defaultProps" show-checkbox default-expand-all>
       <template #default="{ node, data }">
         <i class="mr-2" :class="'iconfont ' + data.icon"></i>
         <span>{{ node.label }}</span>

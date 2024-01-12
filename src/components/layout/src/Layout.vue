@@ -7,7 +7,7 @@
       <el-header class="p-0">
         <Navbar :isCollapse="isCollapse" />
       </el-header>
-      <div class="bg-slate-50">
+      <div>
         <router-view></router-view>
       </div>
     </el-container>

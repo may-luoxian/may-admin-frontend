@@ -1,13 +1,18 @@
+$light-bg-color: #ffffff;
+$dark-bg-color: #1d1e1f;
+
 html[data-theme='light'] {
   .global-theme {
-    background-color: #fff;
+    background-color: $light-bg-color;
     color: #000000;
+    border-color: #8e8472;
   }
 }
 
 html[data-theme='dark'] {
   .global-theme {
-    background-color: #293146;
+    background-color: $dark-bg-color;
     color: #ffffffa6;
+    border-color: #6a6a6a;
   }
 }
