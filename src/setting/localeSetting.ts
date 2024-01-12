@@ -1,5 +1,4 @@
-import type { LocaleType } from '#/config';
-
+export type LocaleType = 'zh_CN' | 'en';
 export const MAY_STORAGE = 'may_blog';
 
 export const MAY_BLOG_TOKEN = 'may_blog_token';

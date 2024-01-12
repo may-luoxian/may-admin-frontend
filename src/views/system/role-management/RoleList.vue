@@ -13,7 +13,7 @@
     <el-table
       ref="roleTableRef"
       :data="roleList"
-      :row-style="rowStyle"
+      :row-class-name="rowClassName"
       :height="roleMaxHeight - 100"
       size="large"
       border
@@ -113,11 +113,9 @@ const handleRowClick = (row: any) => {
   roleData.selectedRowId = row.id;
   emit('handleRowClick', row);
 };
-const rowStyle = ({ row }: any) => {
+const rowClassName = ({ row }: any) => {
   if (row.id === roleData.selectedRowId) {
-    return {
-      'background-color': '#f4f4f4',
-    };
+    return 'row-click-style';
   }
   return {};
 };
@@ -162,3 +160,10 @@ const filterIsDisable = (isDisable: number) => {
   return '否';
 };
 </script>
+<style lang="scss">
+.el-table {
+  .row-click-style {
+    @apply bg-slate-100 dark:bg-slate-800;
+  }
+}
+</style>
