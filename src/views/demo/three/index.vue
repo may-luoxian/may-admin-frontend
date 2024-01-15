@@ -66,6 +66,7 @@ const refreshRenderer = (info: any) => {
   renderer.setSize(width, height);
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
+  chinaMap.setRaycaster(width, height, threeMapRef);
 };
 
 const initMap = () => {
