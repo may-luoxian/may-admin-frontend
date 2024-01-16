@@ -10,6 +10,7 @@ export class ChinaMap {
   private onMouseMove: any;
   private options: any;
   private lastPick: any; // 射线上一次命中的map-block
+  private aniFrame: any; // 开启的动画帧
 
   // 传入需要加载地图的场景
   constructor(options: any) {
@@ -72,7 +73,6 @@ export class ChinaMap {
     this.options.scene.add(this.map);
     this.setRaycaster(this.options.width, this.options.height, this.options.dom);
     this.render();
-    this.tweenRender();
   }
 
   /**
@@ -101,10 +101,14 @@ export class ChinaMap {
   // 销毁所有监听
   destroyListener() {
     window.removeEventListener('mousemove', this.onMouseMove, false);
+    if (this.aniFrame) {
+      cancelAnimationFrame(this.aniFrame);
+    }
   }
 
   render() {
-    requestAnimationFrame(this.render.bind(this));
+    this.aniFrame = requestAnimationFrame(this.render.bind(this));
+    TWEEN.update();
     // 通过摄像机和鼠标位置更新射线
     this.raycaster.setFromCamera(this.mouse, this.options.camera);
     // 计算物体和射线的焦点
@@ -126,10 +130,5 @@ export class ChinaMap {
       tween.to({ x: 0, y: 0, z: 3 }, 100).start();
     }
     this.options.renderer.render(this.options.scene, this.options.camera);
-  }
-
-  tweenRender() {
-    TWEEN.update();
-    requestAnimationFrame(this.tweenRender.bind(this));
   }
 }
