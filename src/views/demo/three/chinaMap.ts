@@ -23,9 +23,9 @@ export class ChinaMap {
     // 墨卡托投影转换
     const projection = d3.geoMercator().center([104.0, 37.5]).scale(80).translate([0, 0]);
     chinaJson.features.forEach((elem) => {
-      // 定一个省份3D对象
+      // 省份3D对象
       const province: any = new THREE.Object3D();
-      // 每个省份坐标数组
+      // 省份坐标数组
       const coordinates = elem.geometry.coordinates;
       coordinates.forEach((multiPolygon) => {
         multiPolygon.forEach((polygon) => {

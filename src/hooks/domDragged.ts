@@ -26,7 +26,8 @@ export const useDomDraggedHook = (parentDom: any) => {
     }
     parentLeft.value = parentDom.value.getBoundingClientRect().left;
     const virtualX = e.clientX - parentLeft.value;
-    parentDom.value.style.position = 'relative';
+    //TODO: 若不设置则拖拽条异常，暂时通过外部设置
+    // parentDom.value.style.position = 'relative';
     const dragBar = document.createElement('div');
     dragBar.style.height = '100%';
     dragBar.style.width = '1px';
@@ -67,13 +68,14 @@ export const useDomDraggedHook = (parentDom: any) => {
   // 处理鼠标抬起
   const mouseUp = () => {
     document.removeEventListener('mousemove', handleMouseDragged);
+    const parentWidth = parentDom.value.getBoundingClientRect().width;
     const offset = startClientX.value - moveClientX.value;
     const leftDom = parentDom.value.children[dragBarIndex.value - 1];
     const rightDom = parentDom.value.children[dragBarIndex.value + 1];
     const leftDomWidth = leftDom.getBoundingClientRect().width;
     const rightDomWidth = rightDom.getBoundingClientRect().width;
-    leftDom.style.width = leftDomWidth - offset + 'px';
-    rightDom.style.width = rightDomWidth + offset + 'px';
+    leftDom.style.width = ((leftDomWidth - offset) / parentWidth) * 100 + '%';
+    rightDom.style.width = ((rightDomWidth + offset) / parentWidth) * 100 + '%';
     isMouseDown.value = false;
     document.onselectstart = () => true;
     removeVirtualDom();

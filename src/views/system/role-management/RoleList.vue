@@ -14,7 +14,7 @@
       ref="roleTableRef"
       :data="roleList"
       :row-class-name="rowClassName"
-      :height="roleMaxHeight - 100"
+      :height="roleMaxHeight - 240"
       size="large"
       border
       @row-click="handleRowClick"

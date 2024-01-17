@@ -23,7 +23,8 @@ onMounted(async () => {
   await nextTick(); // 此处需要useDomControlsHook内部处理完成后再获取宽高
   width = threeMapRef.value.offsetWidth;
   height = threeMapRef.value.offsetHeight;
-  scene = new THREE.Scene();
+  initScene();
+  // 添加坐标系
   const axesHelper = new THREE.AxesHelper(150);
   scene.add(axesHelper);
   initCamera();
@@ -40,10 +41,13 @@ onBeforeUnmount(() => {
 });
 
 const initCamera = () => {
-  // 初始相机
   camera = new THREE.PerspectiveCamera(30, width / height, 1, 3000);
   camera.position.set(0, 120, 120);
   camera.lookAt(0, 0, 0);
+};
+
+const initScene = () => {
+  scene = new THREE.Scene();
 };
 
 const initRenderer = () => {
@@ -60,6 +64,7 @@ const initCameraControl = () => {
   });
 };
 
+// 当canvas大小变化时
 const refreshRenderer = (info: any) => {
   width = info.width;
   height = info.height;
@@ -70,21 +75,16 @@ const refreshRenderer = (info: any) => {
 };
 
 const initMap = () => {
-  let options = {
+  chinaMap = new ChinaMap({
     camera,
     renderer,
     scene,
     width,
     height,
     dom: threeMapRef,
-  };
-  chinaMap = new ChinaMap(options);
+  });
   chinaMap.init();
 };
 </script>
 
-<style lang="scss" scoped>
-.three-map {
-  width: 100%;
-}
-</style>
+<style lang="scss" scoped></style>
