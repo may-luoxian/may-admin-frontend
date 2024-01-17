@@ -30,8 +30,8 @@
       <el-table-column label="创建时间" prop="createTime" align="center" min-width="140"></el-table-column>
       <el-table-column label="角色描述" prop="describe" align="center" min-width="360"></el-table-column>
       <el-table-column label="操作" prop="describe" align="center" min-width="60">
-        <template #default>
-          <el-button type="primary" text @click.prevent="handleOpenRoleDialog">修改</el-button>
+        <template #default="scope">
+          <el-button type="primary" text @click.prevent="handleOpenRoleDialog(scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -120,15 +120,17 @@ const rowClassName = ({ row }: any) => {
   return {};
 };
 
-const handleOpenRoleDialog = () => {
-  addRoleDialogRef.value.open();
+const handleOpenRoleDialog = (row: any) => {
+  addRoleDialogRef.value.open(row);
 };
 
 const handleDeleteRoles = () => {
   defHttp
     .delete({
       url: '/admin/role/roles',
-      data: unref(selectedIds),
+      data: {
+        ids: unref(selectedIds),
+      },
     })
     .then((res) => {
       ElNotification({
