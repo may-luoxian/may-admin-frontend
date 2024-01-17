@@ -27,6 +27,7 @@
 import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { defHttp } from '@/utils/http/axios';
+import { isNotEmpty } from '@/utils';
 
 const emit = defineEmits(['init']);
 
@@ -38,7 +39,7 @@ interface Form {
 
 const visible = ref(false);
 const loading = ref(false);
-const form = reactive<Form>({
+let form = reactive<Form>({
   isDisable: 0,
 });
 const roleFormRef = ref<FormInstance>();
@@ -57,8 +58,14 @@ const rules = reactive<FormRules>({
   ],
 });
 
-const open = () => {
+const open = (row: any) => {
   visible.value = true;
+  if (isNotEmpty(row)) {
+    const { roleName, isDisable, describe } = row;
+    form.roleName = roleName;
+    form.isDisable = isDisable;
+    form.describe = describe;
+  }
 };
 
 const handleConfirm = () => {
