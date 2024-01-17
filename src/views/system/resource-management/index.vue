@@ -46,7 +46,18 @@
           <el-divider direction="vertical" v-if="isModel(scope.row.isModel)"></el-divider>
           <el-button type="primary" link @click="handleUpdateResource(scope.row)">修改</el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button type="danger" link>删除</el-button>
+          <el-popconfirm
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            title="确定删除该资源吗？"
+            :width="180"
+            @confirm="handleDeleteResource(scope.row)"
+            @cancel="() => {}"
+          >
+            <template #reference>
+              <el-button type="danger" link>删除</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -66,6 +77,8 @@ import { REQUEST_METHODS_CONSTANT, IS_ANONYMOUS_CONSTANT } from '@/views/constan
 import { ref, onMounted, reactive, toRefs, nextTick } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { defHttp } from '@/utils/http/axios';
+import { treeToList } from '@/utils';
+import { ElNotification } from 'element-plus';
 
 const tableRef = ref<any>();
 const tableMaxHeight = useDomControlsHook(tableRef);
@@ -98,7 +111,7 @@ const init = () => {
 const getResourceList = () => {
   defHttp
     .get({
-      url: '/admin/resources',
+      url: '/admin/resource/resources',
       params: condition.queryParams,
     })
     .then((res: any) => {
@@ -126,6 +139,22 @@ const handleUpdateResource = async (row: any) => {
   resourceData.selectedRow = row;
   await nextTick();
   SavaUpdateRef.value.open();
+};
+const handleDeleteResource = (row: any) => {
+  const ids = treeToList([row]).map((item) => item.id);
+  defHttp
+    .delete({
+      url: '/admin/resource/resources',
+      data: ids,
+    })
+    .then((res) => {
+      ElNotification({
+        title: 'Success',
+        type: 'success',
+        message: res.message,
+      });
+      getResourceList();
+    });
 };
 
 const filterRequestMethod = (requestMethod: RequestMethod) => {

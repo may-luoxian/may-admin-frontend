@@ -103,7 +103,7 @@ const confirm = () => {
   }
   defHttp
     .post({
-      url: '/admin/menus',
+      url: '/admin/menus/menu',
       data,
     })
     .then((res: any) => {

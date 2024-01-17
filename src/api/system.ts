@@ -30,9 +30,9 @@ export const getUserInfo = () => {
   });
 };
 
-// 获取用户菜单
+// 获取当前用户路由
 export const getUserRouter = () => {
   return defHttp.get({
-    url: '/admin/user/menus',
+    url: '/admin/menus/user',
   });
 };

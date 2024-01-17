@@ -93,7 +93,7 @@ const handleConfirm = (formRef: FormInstance | undefined) => {
     if (valid) {
       defHttp
         .post({
-          url: '/admin/resource',
+          url: '/admin/resource/resources',
           data: form.formData,
         })
         .then((res: any) => {

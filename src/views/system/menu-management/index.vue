@@ -39,7 +39,18 @@
             <el-divider direction="vertical" v-if="isShowMenuAdd(scope.row.menuType)" />
             <el-button type="primary" text @click="handleMenuUpdate(scope.row)">修改</el-button>
             <el-divider direction="vertical" />
-            <el-button type="primary" text @click="handleMenuDelete(scope.row)">删除</el-button>
+            <el-popconfirm
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              title="确定删除该菜单吗？"
+              :width="180"
+              @confirm="handleMenuDelete(scope.row)"
+              @cancel="() => {}"
+            >
+              <template #reference>
+                <el-button type="danger" text>删除</el-button>
+              </template>
+            </el-popconfirm>
           </div>
         </template>
       </el-table-column>
@@ -57,6 +68,7 @@ import { useDomControlsHook } from '@/hooks/domControls';
 import { MENU_TYPE, SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
 import { defHttp } from '@/utils/http/axios';
 import { treeToList } from '@/utils/index';
+import { ElNotification } from 'element-plus';
 
 const saveUpdateDialogRef = ref();
 const tableRef = ref();
@@ -71,7 +83,7 @@ onMounted(() => {
 const init = () => {
   defHttp
     .get({
-      url: '/admin/menus',
+      url: '/admin/menus/menu',
     })
     .then((res) => {
       tableData.value = res.data;
@@ -95,6 +107,19 @@ const handleMenuUpdate = (row: any) => {
 };
 const handleMenuDelete = (row: any) => {
   const ids = treeToList([row]).map((item) => item.id);
+  defHttp
+    .delete({
+      url: '/admin/menus/menu',
+      data: ids,
+    })
+    .then((res) => {
+      ElNotification({
+        title: 'Success',
+        type: 'success',
+        message: res.message,
+      });
+      init();
+    });
 };
 
 const isShowMenuAdd = (menuType: MENU_TYPE): boolean => {
