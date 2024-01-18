@@ -27,3 +27,14 @@ export const IS_ANONYMOUS_CONSTANT = [
     label: '否',
   },
 ];
+
+export const LOGIN_TYPE = [
+  {
+    value: 1,
+    label: '邮箱',
+  },
+  {
+    value: 2,
+    label: 'QQ',
+  },
+];

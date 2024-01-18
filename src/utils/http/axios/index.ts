@@ -95,6 +95,10 @@ const transform: AxiosTransform = {
   // requestInterceptorsCatch(error: Error) {},
   /**
    * @description：响应拦截错误处理
+   * 40001：用户未登录
+   * 40002：重复登录
+   * 50000：系统异常
+   * 51000：操作失败
    */
   responseInterceptorsCatch: (axiosInstance: AxiosInstance, error: Error) => {
     const err = JSON.parse(error.message);

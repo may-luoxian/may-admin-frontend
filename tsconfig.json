@@ -9,7 +9,7 @@
       "#/*": ["./types/*"]
     },
     "strict": true,
-    "lib": ["es2015", "es2016", "dom", "es2018.promise"]
+    "lib": ["dom", "ES2023", "es2018.promise"]
   },
   "include": ["src/**/*", "src/**/*.vue", "types/**/*.d.ts", "types/**/*.ts"],
   "references": [

@@ -8,6 +8,7 @@ import { i18n } from './locales';
 
 import { components, plugins } from '@/plugins/element-plus';
 import { ElNotification } from 'element-plus';
+import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
 // 路由守卫
 import '@/router/guard';
@@ -37,6 +38,9 @@ app.config.globalProperties.$notify = ElNotification;
 components.forEach((component) => {
   app.component(component.name, component);
 });
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
 plugins.forEach((plugin) => {
   app.use(plugin);
 });

@@ -36,7 +36,7 @@
         <template #default="scope">
           <el-button type="primary" link @click="handleAllotRole(scope.row)">分配角色</el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button type="primary" link @click="handleControl()">操作</el-button>
+          <el-button type="primary" link @click="handleControl">操作</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,17 +44,22 @@
 
   <!-- 分配角色弹窗 -->
   <AllowRoleDialog ref="allowRoleRef" @init="init" />
+
+  <!-- 创建修改角色弹窗 -->
+  <SaveUpdateDialog ref="saveUpdateRef" @init="init" />
 </template>
 
 <script setup lang="ts">
 import { defHttp } from '@/utils/http/axios';
 import { ref, onMounted, reactive, toRefs } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
-import AllowRoleDialog from '@/views/system/user-management/AllowRoleDialog.vue';
+import AllowRoleDialog from './AllowRoleDialog.vue';
+import SaveUpdateDialog from './SaveUpdateDialog.vue';
 
 const tableRef = ref<any>();
 const tableMaxHeight = useDomControlsHook(tableRef);
-const allowRoleRef = ref<any>();
+const allowRoleRef = ref();
+const saveUpdateRef = ref();
 
 let tableData = reactive({
   userList: [],
@@ -87,7 +92,9 @@ const handleAllotRole = (row: any) => {
   allowRoleRef.value.open(row);
 };
 
-const handleSaveModel = () => {};
+const handleSaveModel = () => {
+  saveUpdateRef.value.open();
+};
 
 const avatar = (avatar: any) => {
   return avatar || '../src/assets/images/default-avatar.jpg';
