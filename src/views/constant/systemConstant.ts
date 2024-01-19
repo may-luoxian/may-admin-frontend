@@ -37,4 +37,8 @@ export const LOGIN_TYPE = [
     value: 2,
     label: 'QQ',
   },
+  {
+    value: 3,
+    label: '系统注册',
+  },
 ];

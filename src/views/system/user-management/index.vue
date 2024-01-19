@@ -10,7 +10,7 @@
       <el-table-column label="昵称" align="center" prop="nickname" min-width="80"></el-table-column>
       <el-table-column label="头像" align="center" prop="avatar" min-width="120">
         <template #default="scope">
-          <img class="w-28 mx-auto my-0" :src="avatar(scope.row.avatar)" />
+          <img class="w-20 mx-auto my-0 object-cover" :src="avatar(scope.row.avatar)" />
         </template>
       </el-table-column>
       <el-table-column label="登录方式" align="center" prop="loginType" min-width="120">
@@ -36,7 +36,18 @@
         <template #default="scope">
           <el-button type="primary" link @click="handleAllotRole(scope.row)">分配角色</el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button type="primary" link @click="handleControl">操作</el-button>
+          <el-popconfirm
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            title="确定删除该用户吗？"
+            :width="180"
+            @confirm="handleDelete(scope.row.id)"
+            @cancel="() => {}"
+          >
+            <template #reference>
+              <el-button type="danger" link>删除</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -53,6 +64,7 @@
 import { defHttp } from '@/utils/http/axios';
 import { ref, onMounted, reactive, toRefs } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
+import { ElNotification } from 'element-plus';
 import AllowRoleDialog from './AllowRoleDialog.vue';
 import SaveUpdateDialog from './SaveUpdateDialog.vue';
 
@@ -86,14 +98,30 @@ const getUserList = () => {
     });
 };
 
-const handleControl = () => {};
-
 const handleAllotRole = (row: any) => {
   allowRoleRef.value.open(row);
 };
 
 const handleSaveModel = () => {
   saveUpdateRef.value.open();
+};
+
+const handleDelete = (id: number) => {
+  defHttp
+    .delete({
+      url: '/admin/users/user',
+      data: {
+        id,
+      },
+    })
+    .then((res) => {
+      ElNotification({
+        title: 'success',
+        message: res.message,
+        type: 'success',
+      });
+      getUserList();
+    });
 };
 
 const avatar = (avatar: any) => {
@@ -103,8 +131,11 @@ const avatar = (avatar: any) => {
 const filterLoginType = (loginType: number) => {
   if (loginType === 1) {
     return '邮箱';
+  } else if (loginType === 2) {
+    return 'QQ';
+  } else {
+    return '后台创建';
   }
-  return 'QQ';
 };
 
 const filterIsDisable = (isDisable: number) => {

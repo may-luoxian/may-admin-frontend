@@ -2,8 +2,8 @@
   <div>
     <el-dialog v-model="visible" width="600" center destroy-on-close title="创建用户" @close="close">
       <el-form ref="formRef" :model="form" :rules="rules" label-width="80px" class="pr-6 pl-6">
-        <el-form-item label="账号类型" prop="loginType">
-          <el-select v-model="form.loginType" class="w-full">
+        <el-form-item label="登录类型" prop="loginType">
+          <el-select v-model="form.loginType" class="w-full" disabled>
             <el-option v-for="item in LOGIN_TYPE" :key="item.value" :value="item.value" :label="item.label" />
           </el-select>
         </el-form-item>
@@ -12,6 +12,9 @@
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="form.nickname"></el-input>
+        </el-form-item>
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="form.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="form.password"></el-input>
@@ -69,6 +72,7 @@ interface Form {
   loginType?: number;
   email?: string;
   nickname?: string;
+  username?: string;
   password?: string;
   avatar?: string;
   intro?: string;
@@ -86,11 +90,19 @@ const upload = reactive({
   },
 });
 const form = reactive<Form>({
-  loginType: 1,
+  loginType: 3,
   isSubscribe: 0,
   isDisable: 0,
 });
-const rules = reactive<FormRules>({});
+const rules = reactive<FormRules>({
+  loginType: [{ required: true, message: '请选择账号类型', trigger: 'change' }],
+  nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+  avatar: [{ required: true, message: '请上传头像', trigger: 'blur' }],
+  isSubscribe: [{ required: true, message: '请选择是否订阅', trigger: 'change' }],
+  isDisable: [{ required: true, message: '请选择是否禁用', trigger: 'change' }],
+});
 
 const emit = defineEmits(['init']);
 
@@ -103,19 +115,22 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (res) => {
 };
 
 const confirm = () => {
-  defHttp
-    .post({
-      url: '/admin/users/user',
-      data: form,
-    })
-    .then((res) => {
-      ElNotification.success({
-        title: 'Success',
-        message: res.data,
+  formRef.value?.validate((valid) => {
+    if (!valid) return;
+    defHttp
+      .post({
+        url: '/admin/users/user',
+        data: form,
+      })
+      .then((res) => {
+        ElNotification.success({
+          title: 'Success',
+          message: res.data,
+        });
+        close();
+        emit('init');
       });
-      close();
-      emit('init');
-    });
+  });
 };
 
 const close = () => {
