@@ -1,18 +1,19 @@
-$light-bg-color: #ffffff;
-$dark-bg-color: #1d1e1f;
+html {
+  &[data-theme='light'] {
+    --default-bg-color: #ffffff;
+    --default-color: #000000;
+    --default-bor-color: #8e8472;
+  }
 
-html[data-theme='light'] {
-  .global-theme {
-    background-color: $light-bg-color;
-    color: #000000;
-    border-color: #8e8472;
+  &[data-theme='dark'] {
+    --default-bg-color: #1d1e1f;
+    --default-color: #ffffffa6;
+    --default-bor-color: #6a6a6a;
   }
 }
 
-html[data-theme='dark'] {
-  .global-theme {
-    background-color: $dark-bg-color;
-    color: #ffffffa6;
-    border-color: #6a6a6a;
-  }
+.global-theme {
+  background-color: var(--default-bg-color);
+  color: var(--default-color);
+  border-color: var(--default-bor-color);
 }

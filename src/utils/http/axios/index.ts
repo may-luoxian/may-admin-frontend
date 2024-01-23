@@ -66,9 +66,29 @@ const transform: AxiosTransform = {
   },
   /**
    * @description：处理响应数据
+   * 40001：用户未登录
+   * 40002：重复登录
+   * 50000：系统异常
+   * 51000：操作失败
    */
   transformResponseHook: (res: AxiosResponse<Result>, options: RequestOptions) => {
-    return res.data;
+    const resData = res?.data || {};
+    if (resData.code && [40001, 40002].includes(resData.code)) {
+      ElNotification({
+        type: 'error',
+        title: 'Error',
+        message: resData.message,
+      });
+      clearOnlineStorage();
+      router.push('/login');
+    } else if (resData.code && [50000, 51000].includes(resData.code)) {
+      ElNotification({
+        type: 'error',
+        title: 'Error',
+        message: resData.message,
+      });
+    }
+    return resData;
   },
   /**
    * @description：请求拦截处理
@@ -84,9 +104,6 @@ const transform: AxiosTransform = {
    * @description：响应拦截处理
    */
   responseInterceptors: (res: AxiosResponse<any>) => {
-    if (res.data.code && res.data.code !== 20000) {
-      throw new Error(JSON.stringify(res.data));
-    }
     return res;
   },
   /**
@@ -95,34 +112,20 @@ const transform: AxiosTransform = {
   // requestInterceptorsCatch(error: Error) {},
   /**
    * @description：响应拦截错误处理
-   * 40001：用户未登录
-   * 40002：重复登录
-   * 50000：系统异常
-   * 51000：操作失败
    */
   responseInterceptorsCatch: (axiosInstance: AxiosInstance, error: Error) => {
-    const err = JSON.parse(error.message);
-    if (err.code && [40001, 40002].includes(err.code)) {
-      ElNotification({
-        title: 'Error',
-        message: err.message,
-      });
-      clearOnlineStorage();
-      router.push('/login');
-    }
-    if (err.code && [50000, 51000].includes(err.code)) {
-      ElNotification({
-        title: 'Error',
-        type: 'error',
-        message: err.message,
-      });
-    }
-    return Promise.reject(error);
+    ElNotification({
+      type: 'error',
+      title: 'Error',
+      message: error.message,
+    });
   },
   /**
    * @description 请求失败处理
    */
-  // requestCatchHook: () => {},
+  requestCatchHook: (err, opt) => {
+    return Promise.reject(err);
+  },
 };
 
 function createAxios(opt?: Partial<CreateAxiosOptions>) {
