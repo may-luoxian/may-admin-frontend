@@ -42,3 +42,23 @@ export const LOGIN_TYPE = [
     label: '系统注册',
   },
 ];
+
+// 首页卡片宽度
+export const CARD_WIDTH = [
+  {
+    value: 1,
+    label: '1/3',
+  },
+  {
+    value: 2,
+    label: '1/2',
+  },
+  {
+    value: 3,
+    label: '2/3',
+  },
+  {
+    value: 4,
+    label: '100%',
+  },
+];

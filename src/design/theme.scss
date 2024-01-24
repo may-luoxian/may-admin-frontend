@@ -1,14 +1,18 @@
 html {
   &[data-theme='light'] {
     --default-bg-color: #ffffff;
+    --default-bg-color2: #f5f5f5;
     --default-color: #000000;
     --default-bor-color: #8e8472;
+    --default-card-bgcolor: #ffffff;
   }
 
   &[data-theme='dark'] {
     --default-bg-color: #1d1e1f;
+    --default-bg-color2: #000000;
     --default-color: #ffffffa6;
     --default-bor-color: #6a6a6a;
+    --default-card-bgcolor: #1d1e1f;
   }
 }
 

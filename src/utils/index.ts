@@ -1,4 +1,4 @@
-import { mergeWith, unionWith, intersectionWith, isEqual } from 'lodash-es';
+import { mergeWith, unionWith, intersectionWith, isEqual, floor } from 'lodash-es';
 import { isArray, isObject } from '@/utils/is';
 
 /**
@@ -210,4 +210,62 @@ export function isJSON(str: any) {
     }
   }
   return false;
+}
+
+/**
+ * 计算元素位置
+ * @param dataList 元素宽度（百分比）列表
+ * @param parentEl 父元素节点
+ * @param cardH 卡片高度
+ * @param scrollWidth 滚动条高度
+ * @param gap 间距
+ */
+export function absoluteElPosition(dataList: any[], parentEl: any, cardH: number, scrollWidth: number = 0, gap: number = 0) {
+  if (isEmpty(dataList)) {
+    return dataList;
+  }
+  let top = 0,
+    left = 0;
+  const pwidth = parentEl.offsetWidth - scrollWidth;
+  const oneThirdW = (pwidth - gap * 2) / 3;
+  const halfW = (pwidth - gap) / 2;
+  const twoThirdW = (pwidth * 2 - gap) / 3;
+  const fullW = pwidth;
+  for (let i = 0; i < dataList.length; i++) {
+    let childWidth = 0;
+    switch (dataList[i].widthValue) {
+      case 1:
+        childWidth = oneThirdW;
+        break;
+      case 2:
+        childWidth = halfW;
+        break;
+      case 3:
+        childWidth = twoThirdW;
+        break;
+      case 4:
+        childWidth = fullW;
+        break;
+      default:
+        childWidth = oneThirdW;
+        break;
+    }
+    if (i === 0) {
+      dataList[i].top = 0;
+      dataList[i].left = 0;
+      dataList[i].width = childWidth;
+      continue;
+    }
+    const surPlus = pwidth - (left + dataList[i - 1].width);
+    if (childWidth <= surPlus) {
+      left += dataList[i - 1].width + gap;
+    } else {
+      top += cardH + gap;
+      left = 0;
+    }
+    dataList[i].top = top;
+    dataList[i].left = left;
+    dataList[i].width = childWidth;
+  }
+  return dataList;
 }

@@ -29,7 +29,7 @@ export default [
   {
     url: '/api/tableLis',
     method: 'get',
-    response: ({ query }) => { 
+    response: ({ query }) => {
       const token = '';
       if (!token) {
         return resultError('Invalid token');
