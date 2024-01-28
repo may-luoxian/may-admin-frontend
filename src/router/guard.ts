@@ -5,7 +5,7 @@ import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
 import { useMenuStoreWithOut } from '@/stores/modules/menu';
 import { useUserStoreWithOut } from '@/stores/modules/user';
 import { getUserRouter, getUserInfo } from '@/api/system';
-import { isEmpty } from '@/utils';
+import { isEmpty } from '@/utils/is';
 const menuHook = useMenuHook();
 const menuStore = useMenuStoreWithOut();
 const userStore = useUserStoreWithOut();

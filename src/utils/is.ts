@@ -70,3 +70,20 @@ export function isPascalCase(str: string): boolean {
   const regex = /^[A-Z][A-Za-z]*$/;
   return regex.test(str);
 }
+
+// 判断字符串是否为JSON
+export function isJSON(str: any) {
+  if (typeof str == 'string') {
+    try {
+      const obj = JSON.parse(str);
+      if (typeof obj == 'object' && obj) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+  return false;
+}

@@ -1,4 +1,4 @@
-import { isEmpty, isJSON } from '@/utils';
+import { isEmpty, isJSON } from '@/utils/is';
 import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
 import Cookies from 'js-cookie';
 

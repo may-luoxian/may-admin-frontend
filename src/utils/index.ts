@@ -1,5 +1,5 @@
 import { mergeWith, unionWith, intersectionWith, isEqual, floor } from 'lodash-es';
-import { isArray, isObject } from '@/utils/is';
+import { isArray, isObject, isEmpty } from '@/utils/is';
 
 /**
  * 树 转 列表
@@ -164,52 +164,6 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
   }
   parameters = parameters.replace(/&$/, '');
   return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters;
-}
-
-// 判断值为空
-export function isEmpty(v: any) {
-  switch (typeof v) {
-    case 'undefined':
-      return true;
-    case 'string':
-      if (v.replace(/(^[ \t\n\r]*)|([ \t\n\r]*$)/g, '').length == 0) return true;
-      break;
-    case 'boolean':
-      if (!v) return true;
-      break;
-    case 'number':
-      if (0 === v || isNaN(v)) return true;
-      break;
-    case 'object':
-      if (null === v || v.length === 0) return true;
-      for (const i in v) {
-        return false;
-      }
-      return true;
-  }
-  return false;
-}
-
-// 判断值非空
-export function isNotEmpty(v: any) {
-  return !isEmpty(v);
-}
-
-// 判断字符串是否为JSON
-export function isJSON(str: any) {
-  if (typeof str == 'string') {
-    try {
-      const obj = JSON.parse(str);
-      if (typeof obj == 'object' && obj) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
-    }
-  }
-  return false;
 }
 
 /**
