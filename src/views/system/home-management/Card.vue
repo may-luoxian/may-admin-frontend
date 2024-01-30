@@ -4,7 +4,7 @@
       <slot name="title">
         <span>未命名模块</span>
       </slot>
-      <el-dropdown trigger="click" v-if="computeWidth" @command="handleChangeStyle">
+      <el-dropdown trigger="click" v-if="editStatus" @command="handleChangeStyle">
         <SvgIcon name="configurate" class="float-right" />
         <template #dropdown>
           <el-dropdown-menu>

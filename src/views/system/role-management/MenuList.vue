@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-input class="mb-4" v-model="queryParams.name" placeholder="请输入菜单名称（enter查询）" @keyup.enter="init" clearable style="width: 240px" />
     <el-tree ref="treeRef" class="tree-node" :data="menuTree" node-key="id" :props="defaultProps" show-checkbox default-expand-all>
       <template #default="{ node, data }">
         <i class="mr-2" :class="'iconfont ' + data.icon"></i>
@@ -24,6 +25,12 @@ const menuData = reactive<any>({
 const { menuTree } = toRefs(menuData);
 const treeRef = ref();
 
+interface QueryParams {
+  name?: string;
+}
+
+const queryParams = reactive<QueryParams>({});
+
 onMounted(() => {
   init();
 });
@@ -36,6 +43,7 @@ const getRoleMenu = () => {
   defHttp
     .get({
       url: '/admin/role/menus',
+      params: queryParams,
     })
     .then(({ data }) => {
       menuData.menuTree = data;

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-input class="mb-4" v-model="queryParams.resourceName" placeholder="请输入资源名称（enter查询）" @keyup.enter="init" clearable style="width: 240px" />
     <el-tree ref="treeRef" class="tree-node" node-key="id" :data="treeData" :props="defaultProps" show-checkbox default-expand-all />
   </div>
 </template>
@@ -18,6 +19,11 @@ let resourceData = reactive<any>({
 let { treeData } = toRefs(resourceData);
 let treeRef = ref();
 
+interface QueryParams {
+  resourceName?: string;
+}
+const queryParams = reactive<QueryParams>({});
+
 onMounted(() => {
   init();
 });
@@ -30,6 +36,7 @@ const getResourceLabel = () => {
   defHttp
     .get({
       url: '/admin/role/resources',
+      params: queryParams,
     })
     .then((res) => {
       resourceData.treeData = res.data;

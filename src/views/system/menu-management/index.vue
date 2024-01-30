@@ -1,7 +1,13 @@
 <template>
   <el-header class="may-title">
-    <span>菜单管理</span>
+    <span class="mr-4">菜单管理</span>
+    <el-input v-model="queryParams.name" placeholder="请输入菜单名称" clearable style="width: 240px; margin-right: 16px" />
+    <el-select v-model="queryParams.menuType" placeholder="请输入菜单名称" clearable style="width: 240px">
+      <el-option :value="0" label="目录"></el-option>
+      <el-option :value="1" label="菜单"></el-option>
+    </el-select>
     <div class="float-right h-full leading-10 flex items-center">
+      <el-button type="primary" @click="init">查询</el-button>
       <el-button type="primary" @click="saveRootMenu">新增顶级菜单</el-button>
     </div>
   </el-header>
@@ -63,12 +69,18 @@
 
 <script setup lang="ts">
 import SaveUpdateDialog from '@/views/system/menu-management/SaveUpdateDialog.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { MENU_TYPE, SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
 import { defHttp } from '@/utils/http/axios';
 import { treeToList } from '@/utils/index';
 import { ElNotification } from 'element-plus';
+
+interface QueryParams {
+  name?: string;
+  menuType?: number;
+}
+const queryParams = reactive<QueryParams>({});
 
 const saveUpdateDialogRef = ref();
 const tableRef = ref();
@@ -84,6 +96,7 @@ const init = () => {
   defHttp
     .get({
       url: '/admin/menus/menu',
+      params: queryParams,
     })
     .then((res) => {
       tableData.value = res.data;
