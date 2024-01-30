@@ -13,12 +13,20 @@
         </template>
       </el-dropdown>
     </header>
+    <div class="p-4 h-52">
+      <div class="h-full flex justify-center items-center" v-if="editStatus">
+        <SvgIcon class="dragged cursor-pointer" name="drag" size="24" />
+      </div>
+      <slot name="content" v-else>
+        <ob-skeleton :count="4" height="2.25rem" width="100%" />
+      </slot>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import SvgIcon from '@/components/icon/src/SvgIcon.vue';
-import { toRefs } from 'vue';
+import { toRefs, inject } from 'vue';
 import { CARD_WIDTH } from '@/views/constant/systemConstant';
 
 interface Props {
@@ -31,6 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
   width: 0,
   computeWidth: false,
 });
+
+const editStatus = inject('editStatus');
 
 const emit = defineEmits(['refreshStyle']);
 

@@ -181,6 +181,7 @@ export function absoluteElPosition(dataList: any[], parentEl: any, cardH: number
   let top = 0,
     left = 0;
   const pwidth = parentEl.offsetWidth - scrollWidth;
+  const oneFourW = (pwidth - gap * 3) / 4;
   const oneThirdW = (pwidth - gap * 2) / 3;
   const halfW = (pwidth - gap) / 2;
   const twoThirdW = (pwidth * 2 - gap) / 3;
@@ -189,15 +190,18 @@ export function absoluteElPosition(dataList: any[], parentEl: any, cardH: number
     let childWidth = 0;
     switch (dataList[i].widthValue) {
       case 1:
-        childWidth = oneThirdW;
+        childWidth = oneFourW;
         break;
       case 2:
-        childWidth = halfW;
+        childWidth = oneThirdW;
         break;
       case 3:
-        childWidth = twoThirdW;
+        childWidth = halfW;
         break;
       case 4:
+        childWidth = twoThirdW;
+        break;
+      case 5:
         childWidth = fullW;
         break;
       default:

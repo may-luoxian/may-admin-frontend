@@ -1,12 +1,15 @@
 <template>
   <div class="enable-modules">
-    <div class="text-lg font-bold w-full">启用</div>
+    <div class="text-xl font-bold w-full">
+      <span>启用</span>
+    </div>
     <div ref="enableRef" class="overflow-auto list-box relative" :style="{ 'height': enableHeight - 240 + 'px' }">
       <Card
-        class="absolute"
+        class="absolute card transition-all"
         v-for="item in hasPositionList"
         :key="item.id"
         :id="item.id"
+        :data-id="item.id"
         :width="item.width"
         :computeWidth="true"
         :style="{ 'top': item.top + 'px', 'left': item.left + 'px' }"
@@ -21,46 +24,78 @@
 </template>
 
 <script setup lang="ts">
-import Card from '@/views/components/Card.vue';
-import { toRefs, ref, watch } from 'vue';
+import Card from '@/views/system/home-management/Card.vue';
+import { ref, onMounted } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { absoluteElPosition } from '@/utils';
-import { isEmpty } from '@/utils/is';
+import Sortable from 'sortablejs';
+import emitter from '@/utils/mitt';
 
 const enableRef = ref();
 let enableHeight = useDomControlsHook(enableRef) || 0;
 
-interface Props {
-  enableList: any[];
-}
+const sortable = ref();
 
-const props = withDefaults(defineProps<Props>(), {
-  enableList: () => [],
-});
-
-const emit = defineEmits(['refreshStyle']);
-
-const { enableList } = toRefs(props);
+const emit = defineEmits(['refreshStyle', 'moveByNotEnable', 'updateEnableModel', 'enableModel']);
 
 const hasPositionList = ref<any[]>([]);
 
-watch(
-  enableList,
-  (newVal) => {
-    if (isEmpty(newVal)) {
-      hasPositionList.value = [];
-    }
-    let dataList = absoluteElPosition(newVal, enableRef.value, 256, 10, 16);
-    hasPositionList.value = dataList;
-  },
-  {
-    deep: true,
-  }
-);
+onMounted(() => {
+  createSortable();
+});
+
+const createSortable = () => {
+  sortable.value = new Sortable(enableRef.value, {
+    group: 'shared',
+    animation: 150,
+    draggable: '.card',
+    handle: '.dragged',
+    scroll: true,
+    onAdd,
+    onMove,
+  });
+};
+
+const refreshList = (data: any) => {
+  let dataList = absoluteElPosition(data, enableRef.value, 256, 10, 16);
+  hasPositionList.value = dataList;
+};
 
 const refreshStyle = (data: any) => {
   emit('refreshStyle', data);
 };
+
+const onAdd = (evt: any) => {
+  emit('enableModel', evt);
+};
+
+const onMove = (evt: any) => {
+  if (evt.to === enableRef.value) {
+    setStyleToEnable(evt.dragged);
+    const models = {
+      current: evt.dragged.dataset.id,
+      related: evt.related.dataset.id,
+    };
+    emit('updateEnableModel', models);
+  } else {
+    emitter.emit('dragToNotEnable', evt);
+  }
+};
+
+const setStyleToEnable = (dom: any) => {
+  dom.style.position = 'absolute';
+  dom.style.marginBottom = 0;
+};
+
+emitter.on('dragToEnable', (evt: any) => {
+  if (evt.to === enableRef.value) {
+    setStyleToEnable(evt.dragged);
+  }
+});
+
+defineExpose({
+  refreshList,
+});
 </script>
 
 <style lang="scss" scoped></style>

@@ -3,6 +3,7 @@ import App from '@/App.vue';
 import router from './router';
 import { setupPinia } from './stores';
 import VueResizeObserver from 'vue-resize-observer';
+import { registerObSkeleton } from '@/components/loadingSkeleton';
 // 国际化
 import { i18n } from './locales';
 
@@ -44,5 +45,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 plugins.forEach((plugin) => {
   app.use(plugin);
 });
+
+registerObSkeleton(app);
 
 app.mount('#app');

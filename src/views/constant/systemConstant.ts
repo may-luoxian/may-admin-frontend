@@ -47,18 +47,22 @@ export const LOGIN_TYPE = [
 export const CARD_WIDTH = [
   {
     value: 1,
-    label: '1/3',
+    label: '1/4',
   },
   {
     value: 2,
-    label: '1/2',
+    label: '1/3',
   },
   {
     value: 3,
-    label: '2/3',
+    label: '1/2',
   },
   {
     value: 4,
+    label: '2/3',
+  },
+  {
+    value: 5,
     label: '100%',
   },
 ];

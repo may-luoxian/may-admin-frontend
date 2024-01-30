@@ -71,7 +71,8 @@ const transform: AxiosTransform = {
    * 50000：系统异常
    * 51000：操作失败
    */
-  transformResponseHook: (res: AxiosResponse<Result>, options: RequestOptions) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  transformResponseHook: (res: AxiosResponse<Result>, _options: RequestOptions) => {
     const resData = res?.data || {};
     if (resData.code && [40001, 40002].includes(resData.code)) {
       ElNotification({
@@ -123,7 +124,8 @@ const transform: AxiosTransform = {
   /**
    * @description 请求失败处理
    */
-  requestCatchHook: (err, opt) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  requestCatchHook: (err, _opt) => {
     return Promise.reject(err);
   },
 };

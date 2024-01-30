@@ -8,7 +8,7 @@ const homeList = (keywords, count: number = 20) => {
     list.push({
       name: `${keywords ?? ''}模块${index + 1}`,
       id: uniqueId(),
-      widthValue: Math.floor(Math.random() * 4 + 1),
+      widthValue: 1,
     });
   }
   return list;

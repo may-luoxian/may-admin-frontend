@@ -17,7 +17,7 @@
         </el-col>
       </el-row>
       <el-form-item class="enter-x">
-        <el-button class="w-full" size="large" color="#0960bd" @click="handleLogin">{{ t('login.buttonSignIn') }}</el-button>
+        <el-button ref="loginBtnRef" class="w-full" size="large" color="#0960bd" @click="handleLogin">{{ t('login.buttonSignIn') }}</el-button>
       </el-form-item>
       <el-form-item class="enter-x">
         <el-row :gutter="10" class="w-full">
@@ -50,6 +50,7 @@ const router = useRouter();
 const userStore = useUserStore();
 const menuStore = useMenuStore();
 const { t } = useI18n();
+const loginBtnRef = ref();
 
 const form = reactive({
   username: 'admin@163.com',
