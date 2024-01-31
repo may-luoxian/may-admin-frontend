@@ -32,9 +32,11 @@
       <el-table-column label="登录地址" align="center" prop="ipSource" min-width="140"></el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="140"></el-table-column>
       <el-table-column label="上次登录时间" align="center" prop="lastLoginTime" min-width="140"></el-table-column>
-      <el-table-column label="操作" align="center" min-width="120">
+      <el-table-column label="操作" align="center" min-width="140">
         <template #default="scope">
           <el-button type="primary" link @click="handleAllotRole(scope.row)">分配角色</el-button>
+          <el-divider direction="vertical"></el-divider>
+          <el-button type="primary" link @click="handlePreviewHome(scope.row)">预览门户</el-button>
           <el-divider direction="vertical"></el-divider>
           <el-popconfirm
             confirm-button-text="确定"
@@ -100,6 +102,10 @@ const getUserList = () => {
 
 const handleAllotRole = (row: any) => {
   allowRoleRef.value.open(row);
+};
+
+const handlePreviewHome = (row: any) => {
+  console.log(row);
 };
 
 const handleSaveModel = () => {

@@ -2,7 +2,7 @@
   <div class="not-enable-modules">
     <div class="text-lg font-bold w-full">未启用</div>
     <div ref="notEnableRef" class="overflow-auto list-box relative" :style="{ 'height': notEnableHeight - 240 + 'px' }">
-      <Card class="mb-4 card" v-for="item in notEnableList" :key="item.id" :data-id="item.id">
+      <Card class="mb-4 card" v-for="item in notEnableList" :key="item.id" :data-id="item.id" :data="item">
         <template #title>
           <span>{{ item.name }}</span>
         </template>

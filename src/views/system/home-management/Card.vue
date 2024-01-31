@@ -4,11 +4,12 @@
       <slot name="title">
         <span>未命名模块</span>
       </slot>
-      <el-dropdown trigger="click" v-if="editStatus" @command="handleChangeStyle">
+      <el-dropdown trigger="click" v-if="editStatus" @command="handleControls">
         <SvgIcon name="configurate" class="float-right" />
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item v-for="item in CARD_WIDTH" :key="item.value" :command="item.value">{{ item.label }}</el-dropdown-item>
+            <el-dropdown-item command="edit">编辑</el-dropdown-item>
+            <el-dropdown-item command="delete">删除</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -21,17 +22,17 @@
         <ob-skeleton :count="4" height="2.25rem" width="100%" />
       </slot>
     </div>
+    <EditHomeDialog ref="editHomeDialogRef" @init="init" />
   </div>
 </template>
 
 <script setup lang="ts">
 import SvgIcon from '@/components/icon/src/SvgIcon.vue';
-import { toRefs, inject } from 'vue';
-import { CARD_WIDTH } from '@/views/constant/systemConstant';
+import EditHomeDialog from './EditHomeDialog.vue';
+import { toRefs, inject, ref } from 'vue';
 
 interface Props {
-  id?: string | number;
-  width?: number;
+  data: any;
   computeWidth?: boolean;
 }
 
@@ -41,15 +42,17 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const editStatus = inject('editStatus');
+const init = inject('init') as (...args: any[]) => any;
 
 const emit = defineEmits(['refreshStyle']);
+const { computeWidth, data } = toRefs(props);
 
-const { width, computeWidth, id } = toRefs(props);
+const editHomeDialogRef = ref();
 
 const getWidth = () => {
   if (computeWidth.value) {
     return {
-      'width': width.value + 'px',
+      'width': data.value.width + 'px',
     };
   } else {
     return {
@@ -58,9 +61,17 @@ const getWidth = () => {
   }
 };
 
+const handleControls = (command: string) => {
+  if (command === 'edit') {
+    editHomeDialogRef.value.open('edit', data.value);
+  } else if (command === 'delete') {
+    console.log('delete');
+  }
+};
+
 const handleChangeStyle = (command: number) => {
   emit('refreshStyle', {
-    id: id.value,
+    id: data.value.id,
     command,
   });
 };

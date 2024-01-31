@@ -3,8 +3,9 @@
     <el-header class="may-title">
       <span>首页管理</span>
       <div class="float-right">
-        <el-button type="primary">创建模块</el-button>
-        <el-button type="primary" :loading="loading" @click="handleEditOrSave">{{ editStatus ? '保存' : '编辑' }}</el-button>
+        <el-button type="primary" @click="handleCreateHome">创建门户块</el-button>
+        <el-button type="primary" :loading="loading" @click="handleEditOrSave">{{ editStatus ? '保存' : '编辑角色门户块' }}</el-button>
+        <el-button type="primary">预览当前用户门户块</el-button>
       </div>
     </el-header>
     <main class="may-container">
@@ -17,12 +18,14 @@
         </el-col>
       </el-row>
     </main>
+    <EditHomeDialog ref="editHomeDialogRef" @init="init" />
   </div>
 </template>
 
 <script setup lang="ts">
 import EnableModels from './EnableModels.vue';
 import NotEnableModels from './NotEnableModels.vue';
+import EditHomeDialog from './EditHomeDialog.vue';
 import { onMounted, reactive, toRefs, ref, provide } from 'vue';
 import { defHttp } from '@/utils/http/axios';
 
@@ -32,6 +35,7 @@ interface HomeList {
 }
 
 const enableModelsRef = ref();
+const editHomeDialogRef = ref();
 
 let homeList = reactive<HomeList>({
   enableList: [],
@@ -52,16 +56,17 @@ onMounted(() => {
 const init = () => {
   getHomeList();
 };
+provide('init', init);
 
 const getHomeList = () => {
   defHttp
     .get({
-      url: '/homeList',
+      url: '/admin/home/list',
     })
     .then((res) => {
-      const { enable, notEnable } = res.result.data;
-      homeList.enableList = enable;
-      homeList.notEnableList = notEnable;
+      const { enableList, notEnableList } = res.data;
+      homeList.enableList = enableList;
+      homeList.notEnableList = notEnableList;
       enableModelsRef.value.refreshList(homeList.enableList);
     });
 };
@@ -109,6 +114,10 @@ const handleEditOrSave = () => {
     editStatus.value = !editStatus.value;
     loading.value = false;
   }, 1000);
+};
+
+const handleCreateHome = () => {
+  editHomeDialogRef.value.open('add');
 };
 </script>
 
