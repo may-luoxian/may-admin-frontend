@@ -19,8 +19,8 @@ interface MenuState {
   selectedMenu: string;
 }
 
-const useStorage = useStorageHook();
-const { getObjectStorage } = useStorage;
+const storageHook = useStorageHook();
+const { getObjectStorage, setObjectStorage, removeObjectStorage } = storageHook;
 
 export const useMenuStore = defineStore('menu', {
   state: (): MenuState => {
@@ -55,7 +55,7 @@ export const useMenuStore = defineStore('menu', {
       });
       if (index !== -1) return;
       this.menuTab.push(menuTab);
-      useStorage.setObjectStorage(localStorage, MAY_STORAGE, 'menuTab', this.menuTab);
+      setObjectStorage(localStorage, MAY_STORAGE, 'menuTab', this.menuTab);
     },
     setSelectedMenu(path: string) {
       this.selectedMenu = path;
@@ -65,10 +65,10 @@ export const useMenuStore = defineStore('menu', {
         return item.path == menuTab.path;
       });
       this.menuTab.splice(index, 1);
-      useStorage.setObjectStorage(localStorage, MAY_STORAGE, 'menuTab', this.menuTab);
+      setObjectStorage(localStorage, MAY_STORAGE, 'menuTab', this.menuTab);
     },
     removeAllMenuTab() {
-      useStorage.removeObjectStorage(sessionStorage, MAY_STORAGE, 'menuTab');
+      removeObjectStorage(localStorage, MAY_STORAGE, 'menuTab');
     },
   },
   getters: {

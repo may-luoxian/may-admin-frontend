@@ -7,7 +7,8 @@
   </el-header>
   <el-main class="may-container">
     <el-table ref="tableRef" :data="userList" :height="tableMaxHeight - 40" size="large" border>
-      <el-table-column label="昵称" align="center" prop="nickname" min-width="80"></el-table-column>
+      <el-table-column label="用户名" align="center" prop="username" min-width="120"></el-table-column>
+      <el-table-column label="昵称" align="center" prop="nickname" min-width="120" show-overflow-tooltip></el-table-column>
       <el-table-column label="头像" align="center" prop="avatar" min-width="120">
         <template #default="scope">
           <img class="w-20 mx-auto my-0 object-cover" :src="avatar(scope.row.avatar)" />
@@ -18,7 +19,7 @@
           <el-tag size="large">{{ filterLoginType(scope.row.loginType) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="角色" align="center" prop="roles" min-width="280">
+      <el-table-column label="角色" align="center" prop="roles" min-width="180">
         <template #default="scope">
           <el-tag class="mr-2" size="large" v-for="role in scope.row.roles" :key="role.id">{{ role.roleName }}</el-tag>
         </template>
@@ -32,7 +33,7 @@
       <el-table-column label="登录地址" align="center" prop="ipSource" min-width="140"></el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="140"></el-table-column>
       <el-table-column label="上次登录时间" align="center" prop="lastLoginTime" min-width="140"></el-table-column>
-      <el-table-column label="操作" align="center" min-width="140">
+      <el-table-column label="操作" align="center" min-width="160">
         <template #default="scope">
           <el-button type="primary" link @click="handleAllotRole(scope.row)">分配角色</el-button>
           <el-divider direction="vertical"></el-divider>
@@ -66,9 +67,11 @@
 import { defHttp } from '@/utils/http/axios';
 import { ref, onMounted, reactive, toRefs } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
+import { useHomeStore } from '@/stores/modules/home';
 import { ElNotification } from 'element-plus';
 import AllowRoleDialog from './AllowRoleDialog.vue';
 import SaveUpdateDialog from './SaveUpdateDialog.vue';
+import router from '@/router';
 
 const tableRef = ref<any>();
 const tableMaxHeight = useDomControlsHook(tableRef);
@@ -105,7 +108,9 @@ const handleAllotRole = (row: any) => {
 };
 
 const handlePreviewHome = (row: any) => {
-  console.log(row);
+  let userInfo = { userInfoId: row.userInfoId, username: row.username };
+  useHomeStore().setPreviewUser(userInfo);
+  router.push('/system/home-management');
 };
 
 const handleSaveModel = () => {

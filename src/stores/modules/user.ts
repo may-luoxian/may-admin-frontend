@@ -1,17 +1,17 @@
 import Cookies from 'js-cookie';
 import { defineStore } from 'pinia';
 import { useStorageHook } from '@/hooks/storage';
-import { useMenuStore } from '@/stores/modules/menu';
 import { MAY_STORAGE, MAY_BLOG_TOKEN } from '@/setting/localeSetting';
 import { pinia } from '..';
 
 const storageHook = useStorageHook();
+const { getObjectStorage, setObjectStorage, removeObjectStorage, removeStorage } = storageHook;
 
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
       token: '' as string,
-      userInfo: storageHook.getObjectStorage(localStorage, MAY_STORAGE, 'user') || {},
+      userInfo: getObjectStorage(localStorage, MAY_STORAGE, 'user') || {},
     };
   },
   actions: {
@@ -23,7 +23,7 @@ export const useUserStore = defineStore('user', {
     },
     setUserInfo(data: any) {
       this.userInfo = data;
-      storageHook.setObjectStorage(localStorage, MAY_STORAGE, 'user', data);
+      setObjectStorage(localStorage, MAY_STORAGE, 'user', data);
     },
     removeToken() {
       this.token = '';
@@ -31,13 +31,12 @@ export const useUserStore = defineStore('user', {
     },
     removeUserInfo() {
       this.userInfo = {};
-      storageHook.removeObjectStorage(localStorage, MAY_STORAGE, 'user');
+      removeObjectStorage(localStorage, MAY_STORAGE, 'user');
     },
     clearOnlineStorage() {
       this.removeToken();
-      this.removeUserInfo();
-      const menuStore = useMenuStore();
-      menuStore.removeAllMenuTab();
+      removeStorage(localStorage, MAY_STORAGE);
+      removeStorage(sessionStorage, MAY_STORAGE);
     },
   },
   getters: {
