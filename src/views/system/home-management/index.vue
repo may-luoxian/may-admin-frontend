@@ -3,13 +3,15 @@
     <el-header class="may-title">
       <span>门户管理</span>
       <div class="float-right">
-        <el-button class="mr-4" type="primary" @click="handleCreateHome">创建门户块</el-button>
-        <el-tag class="mr-4" size="large">编辑状态：用户</el-tag>
-        <el-select class="mr-4" placeholder="请选择角色"></el-select>
-        <el-button class="mr-4" type="primary" :loading="loading" @click="handleEditOrSave">{{ editStatus ? '保存' : '编辑角色门户块' }}</el-button>
+        <el-button class="mr-4" type="primary" :disabled="editStatus" @click="handleCreateHome">创建门户块</el-button>
+        <el-tag class="mr-4" size="large">操作状态：{{ computedControls }}</el-tag>
+        <el-select v-model="queryParams.roleId" class="mr-4" placeholder="请选择角色" clearable>
+          <el-option v-for="item in roleList" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+        <el-button type="primary" @click="handlePreviewRole" :disabled="editStatus">预览角色门户</el-button>
         <el-tag class="mr-4" size="large" :closable="canClose" @close="handleCloseTag">当前预览用户：{{ currentPreView.username }}</el-tag>
-        <el-button type="primary">预览当前用户门户块</el-button>
-        <el-button type="primary">编辑当前用户门户块</el-button>
+        <el-button type="primary" @click="handlePreviewUser" :disabled="editStatus">预览用户门户</el-button>
+        <el-button class="mr-4" type="primary" :loading="loading" @click="handleEditOrSave">{{ editStatus ? '保存' : '启用门户' }}</el-button>
       </div>
     </el-header>
     <main class="may-container">
@@ -18,7 +20,7 @@
           <EnableModels ref="enableModelsRef" @refreshStyle="refreshStyle" @updateEnableModel="updateEnableModel" @enableModel="enableModel" />
         </el-col>
         <el-col :span="6" class="relative">
-          <NotEnableModels :notEnableList="notEnableList" @notEnableModel="notEnableModel" />
+          <NotEnableModels :notEnableList="notEnableList" :isDisableNotEnableDrag="isDisableNotEnableDrag" @notEnableModel="notEnableModel" />
         </el-col>
       </el-row>
     </main>
@@ -35,10 +37,18 @@ import { defHttp } from '@/utils/http/axios';
 import { useUserStore } from '@/stores/modules/user';
 import { useHomeStore } from '@/stores/modules/home';
 import { isEmpty } from '@/utils/is';
+import { getRoles } from '@/api/system';
 
 interface HomeList {
   enableList: any[];
   notEnableList: any[];
+}
+
+enum EditStatusEnum {
+  USER_EDIT,
+  USER_PREVIEW,
+  ROLE_EDIT,
+  ROLE_PREVIEW,
 }
 
 const enableModelsRef = ref();
@@ -64,6 +74,13 @@ const userInfo = {
   userInfoId: getUserInfo.userInfoId,
 };
 let currentPreView = reactive(isEmpty(getPreviewUser) ? userInfo : getPreviewUser);
+const roleList = ref();
+
+const queryParams = reactive({
+  roleId: null,
+});
+
+const controlStatus = ref<number>();
 
 onMounted(() => {
   init();
@@ -74,14 +91,46 @@ onMounted(() => {
  * 1.根据当前预览用户查询门户块，不存在预览用户则默认查询当前用户
  */
 const init = () => {
-  getHomeList();
+  getRoleList();
+  getHomeListByUser();
+  controlStatus.value = EditStatusEnum.USER_PREVIEW;
 };
 provide('init', init);
 
-const getHomeList = () => {
+const getRoleList = () => {
+  getRoles().then((res) => {
+    roleList.value = res.data.map((item: any) => {
+      return {
+        label: item.roleName,
+        value: item.id,
+      };
+    });
+  });
+};
+
+const getHomeListByUser = () => {
   defHttp
     .get({
-      url: '/admin/home/list',
+      url: '/admin/home/listByUser',
+      params: {
+        userId: currentPreView.userInfoId,
+      },
+    })
+    .then((res) => {
+      const { enableList, notEnableList } = res.data;
+      homeList.enableList = enableList;
+      homeList.notEnableList = notEnableList;
+      enableModelsRef.value.refreshList(homeList.enableList);
+    });
+};
+
+const getHomeListByRole = () => {
+  defHttp
+    .get({
+      url: '/admin/home/listByRole',
+      params: {
+        roleId: queryParams.roleId,
+      },
     })
     .then((res) => {
       const { enableList, notEnableList } = res.data;
@@ -128,14 +177,6 @@ const refreshStyle = (data: any) => {
   enableModelsRef.value.refreshList(enableList.value);
 };
 
-const handleEditOrSave = () => {
-  loading.value = true;
-  setTimeout(() => {
-    editStatus.value = !editStatus.value;
-    loading.value = false;
-  }, 1000);
-};
-
 const handleCreateHome = () => {
   editHomeDialogRef.value.open('add');
 };
@@ -146,7 +187,88 @@ const handleCloseTag = () => {
   removePreviewUser();
 };
 
+const handlePreviewUser = () => {
+  getHomeListByUser();
+  controlStatus.value = EditStatusEnum.USER_PREVIEW;
+};
+
+const handlePreviewRole = () => {
+  getHomeListByRole();
+  controlStatus.value = EditStatusEnum.ROLE_PREVIEW;
+};
+
+const handleEditOrSave = async () => {
+  if (editStatus.value) {
+    await saveHome();
+  }
+  editStatus.value = !editStatus.value;
+  setControlStatus();
+};
+
+const saveHome = async () => {
+  let enableData = enableList.value.map((item, index) => {
+    return {
+      homeId: item.id,
+      orderNum: index + 1,
+    };
+  });
+  let enableType = controlStatus.value === EditStatusEnum.USER_EDIT ? 'user' : 'role';
+  let data = {};
+  if (enableType == 'user') {
+    data = {
+      userInfoId: currentPreView.userInfoId,
+      enableType,
+      enableData,
+    };
+  } else {
+    data = {
+      roleId: queryParams.roleId,
+      enableType,
+      enableData,
+    };
+  }
+  loading.value = true;
+  try {
+    const res = await defHttp.post({
+      url: '/admin/home/enable',
+      data,
+    });
+    console.log(res);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const setControlStatus = () => {
+  if (editStatus.value && controlStatus.value === EditStatusEnum.ROLE_PREVIEW) {
+    controlStatus.value = EditStatusEnum.ROLE_EDIT;
+  } else if (editStatus.value && controlStatus.value === EditStatusEnum.USER_PREVIEW) {
+    controlStatus.value = EditStatusEnum.USER_EDIT;
+  } else if (!editStatus.value && controlStatus.value === EditStatusEnum.ROLE_EDIT) {
+    controlStatus.value = EditStatusEnum.ROLE_PREVIEW;
+  } else if (!editStatus.value && controlStatus.value === EditStatusEnum.USER_EDIT) {
+    controlStatus.value = EditStatusEnum.USER_PREVIEW;
+  }
+};
+
 const canClose = computed(() => currentPreView.userInfoId !== getUserInfo.userInfoId);
+
+const computedControls = computed(() => {
+  switch (controlStatus.value) {
+    case EditStatusEnum.ROLE_EDIT:
+      return '角色编辑';
+    case EditStatusEnum.ROLE_PREVIEW:
+      return '角色预览';
+    case EditStatusEnum.USER_EDIT:
+      return '用户编辑';
+    case EditStatusEnum.USER_PREVIEW:
+      return '用户预览';
+    default:
+      return '无';
+  }
+});
+
+const isDisableNotEnableDrag = computed(() => controlStatus.value === EditStatusEnum.USER_EDIT);
 </script>
 
 <style lang="scss" scoped></style>

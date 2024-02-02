@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import Card from '@/views/system/home-management/Card.vue';
-import { ref, toRefs, onMounted } from 'vue';
+import { ref, toRefs, onMounted, watch } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 import Sortable from 'sortablejs';
 import emitter from '@/utils/mitt';
@@ -23,22 +23,29 @@ let notEnableHeight = useDomControlsHook(notEnableRef) || 0;
 
 interface Props {
   notEnableList: any[];
+  isDisableNotEnableDrag: boolean;
 }
 
 const emit = defineEmits(['notEnableModel']);
 
 const props = withDefaults(defineProps<Props>(), {
   notEnableList: () => [],
+  isDisableNotEnableDrag: false,
 });
 
-const { notEnableList } = toRefs(props);
+const { notEnableList, isDisableNotEnableDrag } = toRefs(props);
 
 const sortable = ref();
+
+watch(isDisableNotEnableDrag, (newVal: boolean) => {
+  sortable.value.option('disabled', newVal);
+});
 
 const createSortable = () => {
   sortable.value = new Sortable(notEnableRef.value, {
     group: 'shared',
     animation: 150,
+    disabled: isDisableNotEnableDrag.value,
     draggable: '.card',
     dragClass: 'drag-class',
     handle: '.dragged',

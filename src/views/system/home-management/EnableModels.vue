@@ -72,8 +72,8 @@ const onMove = (evt: any) => {
   if (evt.to === enableRef.value) {
     setStyleToEnable(evt.dragged);
     const models = {
-      current: evt.dragged.dataset.id,
-      related: evt.related.dataset.id,
+      current: Number(evt.dragged.dataset.id),
+      related: Number(evt.related.dataset.id),
     };
     emit('updateEnableModel', models);
   } else {

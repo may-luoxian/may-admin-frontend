@@ -36,3 +36,10 @@ export const getUserRouter = () => {
     url: '/admin/menus/user',
   });
 };
+
+// 获取角色列表
+export const getRoles = () => {
+  return defHttp.get({
+    url: '/admin/role/allow',
+  });
+};
