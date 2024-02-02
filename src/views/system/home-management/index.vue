@@ -161,7 +161,7 @@ const updateEnableModel = (models: any) => {
 const notEnableModel = (evt: any) => {
   let draggedId = evt.item.dataset.id;
   let draggedIndex = enableList.value.findIndex((item) => {
-    return item.id === draggedId;
+    return item.id === Number(draggedId);
   });
   const changeData = enableList.value.splice(draggedIndex, 1);
   notEnableList.value.splice(evt.newIndex, 0, changeData[0]);
