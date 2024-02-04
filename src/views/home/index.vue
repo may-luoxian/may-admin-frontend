@@ -1,6 +1,6 @@
 <template>
   <!-- 容器 -->
-  <div class="home bg-style2 p-4">
+  <div ref="homeRef" class="home bg-style2 p-4 overflow-auto" :style="{ height: homeHeight + 'px' }">
     <!-- 门户块 -->
     <el-row ref="elRow" :gutter="10">
       <el-col class="mb-2" :span="setItemSpan(item.widthValue)" v-for="item in homeList" :key="item.id">
@@ -18,6 +18,7 @@ import { onMounted } from 'vue';
 import { defHttp } from '@/utils/http/axios';
 import { defineAsyncComponent, ref } from 'vue';
 import { HOME } from '@/views/constant/homeConstant';
+import { useDomControlsHook } from '@/hooks/domControls';
 
 /**
  * 异步引入各个门户块
@@ -28,6 +29,8 @@ const homeDemo3 = defineAsyncComponent(() => import('@/views/home/home-demo3/ind
 const homeDemo4 = defineAsyncComponent(() => import('@/views/home/home-demo4/index.vue'));
 
 const homeList = ref();
+const homeRef = ref();
+let homeHeight = useDomControlsHook(homeRef) || 0;
 
 onMounted(() => {
   init();
