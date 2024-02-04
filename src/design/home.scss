@@ -1,0 +1,27 @@
+.home-container {
+  min-height: 370px;
+  background-color: var(--default-bg-color);
+  .home-toolbar {
+    height: 40px;
+    line-height: 40px;
+    .panel-title-standard {
+      font-size: 16px;
+      margin-left: 10px;
+      font-weight: 800;
+      position: relative;
+      &:before {
+        content: '';
+        position: absolute;
+        top: 13px;
+        left: -15px;
+        width: 4px;
+        height: 20px;
+      }
+    }
+  }
+  .home-main {
+    height: 340px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+}
