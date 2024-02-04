@@ -61,7 +61,7 @@ const init = () => {
     grid: {
       left: '2%',
       right: '2%',
-      bottom: '1%',
+      bottom: '8%',
       // containLabel: true,
     },
     tooltip: {
