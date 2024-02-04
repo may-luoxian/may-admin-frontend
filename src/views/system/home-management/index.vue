@@ -8,7 +8,7 @@
         <el-select v-model="queryParams.roleId" class="mr-4" placeholder="请选择角色" clearable>
           <el-option v-for="item in roleList" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
-        <el-button type="primary" @click="handlePreviewRole" :disabled="editStatus">预览角色门户</el-button>
+        <el-button class="mr-4" type="primary" @click="handlePreviewRole" :disabled="editStatus">预览角色门户</el-button>
         <el-tag class="mr-4" size="large" :closable="canClose" @close="handleCloseTag">当前预览用户：{{ currentPreView.username }}</el-tag>
         <el-button type="primary" @click="handlePreviewUser" :disabled="editStatus">预览用户门户</el-button>
         <el-button class="mr-4" type="primary" :loading="loading" @click="handleEditOrSave">{{ editStatus ? '保存' : '启用门户' }}</el-button>
