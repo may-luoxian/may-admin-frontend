@@ -30,6 +30,8 @@
 import SvgIcon from '@/components/icon/src/SvgIcon.vue';
 import EditHomeDialog from './EditHomeDialog.vue';
 import { toRefs, inject, ref } from 'vue';
+import { defHttp } from '@/utils/http/axios';
+import { ElMessageBox } from 'element-plus';
 
 interface Props {
   data: any;
@@ -44,7 +46,6 @@ const props = withDefaults(defineProps<Props>(), {
 const editStatus = inject('editStatus');
 const init = inject('init') as (...args: any[]) => any;
 
-const emit = defineEmits(['refreshStyle']);
 const { computeWidth, data } = toRefs(props);
 
 const editHomeDialogRef = ref();
@@ -65,15 +66,26 @@ const handleControls = (command: string) => {
   if (command === 'edit') {
     editHomeDialogRef.value.open('edit', data.value);
   } else if (command === 'delete') {
-    console.log('delete');
+    ElMessageBox.confirm('确定删除该模块？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+    })
+      .then(() => {
+        defHttp
+          .delete({
+            url: '/admin/home/delete',
+            data: {
+              id: data.value.id,
+            },
+          })
+          .then((res) => {
+            if (res.code === 20000) {
+              init();
+            }
+          });
+      })
+      .catch(() => {});
   }
-};
-
-const handleChangeStyle = (command: number) => {
-  emit('refreshStyle', {
-    id: data.value.id,
-    command,
-  });
 };
 </script>
 
