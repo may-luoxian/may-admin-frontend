@@ -26,7 +26,7 @@ function loadLocaleMessages(): {
  */
 export const i18n = createI18n({
   legacy: false,
-  locale: localStorage.getItem('locale') ? String(localStorage.getItem('locale')) : 'zh_CN',
-  fallbackLocale: localStorage.getItem('locale') ? String(localStorage.getItem('locale')) : 'zh_CN',
+  locale: localStorage.getItem('may-blog-locale') ? String(localStorage.getItem('may-blog-locale')) : 'zh_CN',
+  fallbackLocale: localStorage.getItem('may-blog-locale') ? String(localStorage.getItem('may-blog-locale')) : 'zh_CN',
   messages: loadLocaleMessages(),
 });

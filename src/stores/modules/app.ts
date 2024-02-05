@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { i18n } from '@/locales';
 
 //auto 亮色 dark暗黑
-const themeSetting = String(localStorage.getItem('vueuse-color-scheme')) === 'auto' ? false : true;
+const themeSetting = String(localStorage.getItem('may-blog-theme')) === 'auto' ? false : true;
 export const useAppStore = defineStore('app', {
   state: () => {
     return {
@@ -22,7 +22,7 @@ export const useAppStore = defineStore('app', {
       this.themeConfig.theme = isDark;
     },
     changeLocale(locale: string) {
-      localStorage.setItem('locale', locale);
+      localStorage.setItem('may-blog-locale', locale);
       i18n.global.locale.value = locale;
     },
   },

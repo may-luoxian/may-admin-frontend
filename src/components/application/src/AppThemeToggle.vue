@@ -10,7 +10,10 @@
 import { SvgIcon } from '@/components/icon';
 import { useAppStore } from '@/stores/modules/app';
 import { useDark, useToggle } from '@vueuse/core';
-const isDark = useDark();
+const isDark = useDark({
+  storage: localStorage,
+  storageKey: 'may-blog-theme',
+});
 const appstore = useAppStore();
 
 // 切换风格
