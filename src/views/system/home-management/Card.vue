@@ -19,7 +19,7 @@
         <SvgIcon class="dragged cursor-pointer" name="drag" size="24" />
       </div>
       <slot name="content" v-else>
-        <img class="object-contain border-none w-full h-full" v-if="isEffective" :src="getImgPath()" :onerror="handleErrorImg" />
+        <img class="border-none w-full h-full" v-if="isEffective" :src="imgUrl" :onerror="handleErrorImg" />
         <ob-skeleton v-else :count="4" height="2.25rem" width="100%" />
       </slot>
     </div>
@@ -30,9 +30,10 @@
 <script setup lang="ts">
 import SvgIcon from '@/components/icon/src/SvgIcon.vue';
 import EditHomeDialog from './EditHomeDialog.vue';
-import { toRefs, inject, ref } from 'vue';
+import { toRefs, inject, ref, watch, computed } from 'vue';
 import { defHttp } from '@/utils/http/axios';
 import { ElMessageBox } from 'element-plus';
+import { useAppStore } from '@/stores/modules/app';
 
 interface Props {
   data: any;
@@ -65,9 +66,22 @@ const getWidth = () => {
   }
 };
 
-const getImgPath = () => {
-  return `../src/assets/images/home/${data.value.previewImg}`;
-};
+const imgUrl = ref();
+
+watch(
+  computed(() => useAppStore().getTheme),
+  (newVal) => {
+    isEffective.value = true;
+    if (newVal) {
+      imgUrl.value = `../src/assets/images/home/dark/${data.value.previewImg}`;
+    } else {
+      imgUrl.value = `../src/assets/images/home/light/${data.value.previewImg}`;
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 
 const handleControls = (command: string) => {
   if (command === 'edit') {
