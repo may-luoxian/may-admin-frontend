@@ -19,7 +19,8 @@
         <SvgIcon class="dragged cursor-pointer" name="drag" size="24" />
       </div>
       <slot name="content" v-else>
-        <ob-skeleton :count="4" height="2.25rem" width="100%" />
+        <img class="object-contain border-none w-full h-full" v-if="isEffective" :src="getImgPath()" :onerror="handleErrorImg" />
+        <ob-skeleton v-else :count="4" height="2.25rem" width="100%" />
       </slot>
     </div>
     <EditHomeDialog ref="editHomeDialogRef" @init="init" />
@@ -48,6 +49,8 @@ const init = inject('init') as (...args: any[]) => any;
 
 const { computeWidth, data } = toRefs(props);
 
+const isEffective = ref(true);
+
 const editHomeDialogRef = ref();
 
 const getWidth = () => {
@@ -60,6 +63,10 @@ const getWidth = () => {
       'width': '100%',
     };
   }
+};
+
+const getImgPath = () => {
+  return `../src/assets/images/home/${data.value.previewImg}`;
 };
 
 const handleControls = (command: string) => {
@@ -86,6 +93,10 @@ const handleControls = (command: string) => {
       })
       .catch(() => {});
   }
+};
+
+const handleErrorImg = () => {
+  isEffective.value = false;
 };
 </script>
 

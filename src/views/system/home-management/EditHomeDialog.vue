@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog v-model="visible" width="800" center destroy-on-close :title="title" @close="close">
-      <el-form ref="formRef" :model="formData" label-width="100" size="large" :rules="rules">
+      <el-form ref="formRef" :model="formData" label-width="120" size="large" :rules="rules">
         <el-form-item label="模块名称：" prop="name">
           <el-input v-model="formData.name"></el-input>
         </el-form-item>
@@ -12,6 +12,9 @@
         </el-form-item>
         <el-form-item label="组件名称：" prop="component">
           <el-input v-model="formData.component"></el-input>
+        </el-form-item>
+        <el-form-item label="预览图片名称：" prop="previewImg">
+          <el-input v-model="formData.previewImg"></el-input>
         </el-form-item>
         <el-form-item label="描述：" prop="description">
           <el-input v-model="formData.description" :rows="2" type="textarea"></el-input>

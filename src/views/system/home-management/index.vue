@@ -38,6 +38,7 @@ import { useUserStore } from '@/stores/modules/user';
 import { useHomeStore } from '@/stores/modules/home';
 import { isEmpty } from '@/utils/is';
 import { getRoles } from '@/api/system';
+import { ElNotification } from 'element-plus';
 
 interface HomeList {
   enableList: any[];
@@ -193,6 +194,13 @@ const handlePreviewUser = () => {
 };
 
 const handlePreviewRole = () => {
+  if (!queryParams.roleId) {
+    ElNotification({
+      type: 'warning',
+      message: '请选择角色',
+    });
+    return;
+  }
   getHomeListByRole();
   controlStatus.value = EditStatusEnum.ROLE_PREVIEW;
 };
@@ -233,7 +241,10 @@ const saveHome = async () => {
       url: '/admin/home/enable',
       data,
     });
-    console.log(res);
+    ElNotification({
+      type: 'success',
+      message: res.message,
+    });
   } finally {
     loading.value = false;
   }
