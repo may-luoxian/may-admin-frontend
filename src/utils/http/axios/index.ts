@@ -88,6 +88,7 @@ const transform: AxiosTransform = {
         title: 'Error',
         message: resData.message,
       });
+      return Promise.reject(resData.message);
     }
     return resData;
   },
