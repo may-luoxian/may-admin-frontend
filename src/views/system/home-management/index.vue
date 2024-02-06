@@ -206,11 +206,16 @@ const handlePreviewRole = () => {
 };
 
 const handleEditOrSave = async () => {
-  if (editStatus.value) {
-    await saveHome();
+  try {
+    if (editStatus.value) {
+      await saveHome();
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    editStatus.value = !editStatus.value;
+    setControlStatus();
   }
-  editStatus.value = !editStatus.value;
-  setControlStatus();
 };
 
 const saveHome = async () => {
@@ -222,7 +227,7 @@ const saveHome = async () => {
   });
   let enableType = controlStatus.value === EditStatusEnum.USER_EDIT ? 'user' : 'role';
   let data = {};
-  if (enableType == 'user') {
+  if (enableType === 'user') {
     data = {
       userInfoId: currentPreView.userInfoId,
       enableType,
@@ -246,6 +251,11 @@ const saveHome = async () => {
       message: res.message,
     });
   } finally {
+    if (enableType === 'user') {
+      getHomeListByUser();
+    } else {
+      getHomeListByRole();
+    }
     loading.value = false;
   }
 };
