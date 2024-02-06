@@ -3,7 +3,7 @@
     <div class="text-xl font-bold w-full">
       <span>启用</span>
     </div>
-    <div ref="enableRef" class="overflow-auto list-box relative" :style="{ 'height': enableHeight - 240 + 'px' }">
+    <div ref="enableRef" class="overflow-auto list-box relative rounded transition-all" :style="{ 'height': enableHeight - 240 + 'px' }">
       <Card
         class="absolute card transition-all"
         v-for="item in hasPositionList"
@@ -66,6 +66,7 @@ const refreshStyle = (data: any) => {
 
 const onAdd = (evt: any) => {
   emit('enableModel', evt);
+  clearEnableBorder();
 };
 
 const onMove = (evt: any) => {
@@ -88,9 +89,21 @@ const setStyleToEnable = (dom: any) => {
 
 emitter.on('dragToEnable', (evt: any) => {
   if (evt.to === enableRef.value) {
+    evt.dragged.style.opacity = 0;
+    enableRef.value.style.border = '1px dashed #409EFF';
     setStyleToEnable(evt.dragged);
+  } else {
+    clearEnableBorder();
   }
 });
+
+emitter.on('clearEnableBorder', () => {
+  clearEnableBorder();
+});
+
+const clearEnableBorder = () => {
+  enableRef.value.style.border = 'none';
+};
 
 defineExpose({
   refreshList,

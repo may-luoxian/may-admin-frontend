@@ -47,7 +47,6 @@ const createSortable = () => {
     animation: 150,
     disabled: isDisableNotEnableDrag.value,
     draggable: '.card',
-    dragClass: 'drag-class',
     handle: '.dragged',
     scroll: true,
     onAdd,
@@ -66,6 +65,7 @@ const onAdd = (evt: any) => {
 const onMove = (evt: any) => {
   if (evt.to === notEnableRef.value) {
     setStyleToNotEnable(evt.dragged);
+    emitter.emit('clearEnableBorder');
   } else {
     emitter.emit('dragToEnable', evt);
   }
@@ -79,15 +79,8 @@ const setStyleToNotEnable = (dom: any) => {
   dom.style.top = 'auto';
   dom.style.left = 'auto';
   dom.style.width = '100%';
+  dom.style.opacity = 1;
   dom.style.position = 'static';
   dom.style.marginBottom = '16px';
 };
 </script>
-
-<style lang="scss" scoped></style>
-
-<style>
-.drag-class {
-  background-color: aqua !important;
-}
-</style>

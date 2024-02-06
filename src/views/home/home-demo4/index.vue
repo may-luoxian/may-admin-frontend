@@ -58,7 +58,6 @@ const init = () => {
     var z = t + 2.0 * Math.sin(75 * t);
     data.push([x, y, z]);
   }
-  console.log(data.length);
   const option = {
     tooltip: {},
     visualMap: {
