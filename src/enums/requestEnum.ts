@@ -7,7 +7,6 @@ export enum REQUEST_METHOD_ENUM {
 
 export enum MIME_MAP {
   xlsx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  xls = MIME_MAP.xlsx,
   zip = 'application/zip',
   doc = 'application/doc',
   pdf = 'application/pdf',

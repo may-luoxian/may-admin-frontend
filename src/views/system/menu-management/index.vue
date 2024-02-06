@@ -1,12 +1,12 @@
 <template>
   <el-header class="may-title">
     <span class="mr-4">菜单管理</span>
-    <el-input v-model="queryParams.name" placeholder="请输入菜单名称" clearable style="width: 240px; margin-right: 16px" />
-    <el-select v-model="queryParams.menuType" placeholder="请输入菜单名称" clearable style="width: 240px">
-      <el-option :value="0" label="目录"></el-option>
-      <el-option :value="1" label="菜单"></el-option>
-    </el-select>
     <div class="float-right h-full leading-10 flex items-center">
+      <el-input v-model="queryParams.name" placeholder="请输入菜单名称" clearable style="width: 240px; margin-right: 16px" />
+      <el-select v-model="queryParams.menuType" placeholder="请输入菜单名称" clearable style="width: 240px; margin-right: 16px">
+        <el-option :value="0" label="目录"></el-option>
+        <el-option :value="1" label="菜单"></el-option>
+      </el-select>
       <el-button type="primary" @click="init">查询</el-button>
       <el-button type="primary" @click="saveRootMenu">新增顶级菜单</el-button>
     </div>

@@ -2,11 +2,23 @@
   <el-header class="may-title">
     <span>用户管理</span>
     <div class="float-right h-full leading-10 flex items-center">
+      <el-form :model="form" inline>
+        <el-form-item class="query-page">
+          <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
+        </el-form-item>
+        <el-form-item class="query-page">
+          <el-input v-model="form.nickname" placeholder="请输入昵称"></el-input>
+        </el-form-item>
+        <el-form-item class="query-page">
+          <el-select v-model="form.loginType" placeholder="请选择登录方式"></el-select>
+        </el-form-item>
+      </el-form>
+      <el-button type="primary" @click="handleQuery">查询</el-button>
       <el-button type="primary" @click="handleSaveModel">创建用户</el-button>
     </div>
   </el-header>
   <el-main class="may-container">
-    <el-table ref="tableRef" :data="userList" :height="tableMaxHeight - 40" size="large" border>
+    <el-table ref="tableRef" :data="userList" :height="tableMaxHeight - 100" size="large" border>
       <el-table-column label="用户名" align="center" prop="username" min-width="120"></el-table-column>
       <el-table-column label="昵称" align="center" prop="nickname" min-width="120" show-overflow-tooltip></el-table-column>
       <el-table-column label="头像" align="center" prop="avatar" min-width="120">
@@ -54,6 +66,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="float-right p-2">
+      <el-pagination
+        v-model:current-page="form.current"
+        v-model:page-size="form.size"
+        :page-sizes="[10, 20, 50]"
+        :total="total"
+        background
+        layout="total, sizes, prev, pager, next"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
   </el-main>
 
   <!-- 分配角色弹窗 -->
@@ -78,6 +102,18 @@ const tableMaxHeight = useDomControlsHook(tableRef);
 const allowRoleRef = ref();
 const saveUpdateRef = ref();
 
+interface Form {
+  username?: string;
+  nickname?: string;
+  loginType?: number;
+  current?: number;
+  size?: number;
+}
+
+const form = reactive<Form>({});
+
+const total = ref<number>(0);
+
 let tableData = reactive({
   userList: [],
 });
@@ -96,10 +132,11 @@ const getUserList = () => {
   defHttp
     .get({
       url: '/admin/users/list',
-      params: {},
+      params: form,
     })
     .then((res: any) => {
-      tableData.userList = res.data;
+      tableData.userList = res.data.records;
+      total.value = res.data.count;
     });
 };
 
@@ -115,6 +152,19 @@ const handlePreviewHome = (row: any) => {
 
 const handleSaveModel = () => {
   saveUpdateRef.value.open();
+};
+
+const handleQuery = () => {
+  getUserList();
+};
+
+const handleSizeChange = (size: number) => {
+  form.size = size;
+  getUserList();
+};
+const handleCurrentChange = (current: number) => {
+  form.current = current;
+  getUserList();
 };
 
 const handleDelete = (id: number) => {
@@ -156,3 +206,9 @@ const filterIsDisable = (isDisable: number) => {
   return '否';
 };
 </script>
+
+<style lang="scss" scoped>
+:deep(.el-form-item.query-page) {
+  margin-bottom: 0;
+}
+</style>

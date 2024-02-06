@@ -1,6 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
+    "allowJs": true,
     "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "types": ["vite/client"],
@@ -9,7 +10,7 @@
       "#/*": ["./types/*"]
     },
     "strict": true,
-    "lib": ["dom", "ES2023", "es2018.promise"]
+    "lib": ["dom", "ES2023", "ESNext", "es2018.promise"]
   },
   "include": ["src/**/*", "src/**/*.vue", "types/**/*.d.ts", "types/**/*.ts"],
   "references": [
