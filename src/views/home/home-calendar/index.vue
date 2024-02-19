@@ -22,16 +22,16 @@
     <el-divider></el-divider>
     <!-- 主体区域 -->
     <div class="home-main">
-      <el-dropdown class="mr-2 float-right">
+      <el-dropdown class="mr-2 float-right" @command="handleCommand">
         <span class="el-dropdown-link">
-          Dropdown List
+          {{ currentYear }}
           <el-icon class="el-icon--right">
             <arrow-down />
           </el-icon>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item v-for="item in yearList" :key="item">{{ item }}</el-dropdown-item>
+            <el-dropdown-item v-for="item in yearList" :key="item" :command="item">{{ item }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -57,10 +57,14 @@ const { title } = toRefs(props);
 
 const yearList = ref(['2021', '2022', '2023', '2024']);
 
-const currentYear = ref();
+const myDate = new Date();
+
+const currentYear = ref(String(myDate.getFullYear()));
 const echartRef = ref();
+let echart: any = null;
 
 onMounted(() => {
+  echart = echarts.init(echartRef.value);
   init();
 });
 
@@ -75,15 +79,14 @@ const init = () => {
       max: 10000,
     },
     calendar: {
-      range: '2017',
+      range: currentYear.value,
     },
     series: {
       type: 'heatmap',
       coordinateSystem: 'calendar',
-      data: getVirtualData('2017'),
+      data: getVirtualData(currentYear.value),
     },
   };
-  const echart = echarts.init(echartRef.value);
   echart.setOption(option);
 };
 
@@ -96,6 +99,11 @@ const getVirtualData = (year: string) => {
     data.push([echarts.time.format(time, '{yyyy}-{MM}-{dd}', false), Math.floor(Math.random() * 10000)]);
   }
   return data;
+};
+
+const handleCommand = (year: string) => {
+  currentYear.value = year;
+  init();
 };
 </script>
 
