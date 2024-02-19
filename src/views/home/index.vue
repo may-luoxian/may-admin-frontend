@@ -4,7 +4,7 @@
     <!-- 门户块 -->
     <el-row ref="elRow" :gutter="10">
       <el-col class="mb-2" :span="setItemSpan(item.widthValue)" v-for="item in homeList" :key="item.id">
-        <home-demo1 :title="item.name" v-if="item.component === HOME.HOME_DEMO1" />
+        <home-calendar :title="item.name" v-if="item.component === HOME.HOME_Calendar" />
         <home-demo2 :title="item.name" v-if="item.component === HOME.HOME_DEMO2" />
         <home-demo3 :title="item.name" v-if="item.component === HOME.HOME_DEMO3" />
         <home-demo4 :title="item.name" v-if="item.component === HOME.HOME_DEMO4" />
@@ -23,7 +23,7 @@ import { useDomControlsHook } from '@/hooks/domControls';
 /**
  * 异步引入各个门户块
  */
-const homeDemo1 = defineAsyncComponent(() => import('@/views/home/home-demo1/index.vue'));
+const homeCalendar = defineAsyncComponent(() => import('@/views/home/home-calendar/index.vue'));
 const homeDemo2 = defineAsyncComponent(() => import('@/views/home/home-demo2/index.vue'));
 const homeDemo3 = defineAsyncComponent(() => import('@/views/home/home-demo3/index.vue'));
 const homeDemo4 = defineAsyncComponent(() => import('@/views/home/home-demo4/index.vue'));

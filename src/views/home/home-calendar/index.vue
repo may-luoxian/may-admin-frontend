@@ -22,7 +22,7 @@
     <el-divider></el-divider>
     <!-- 主体区域 -->
     <div class="home-main">
-      <el-dropdown class="float-right mr-2">
+      <el-dropdown class="mr-2 float-right">
         <span class="el-dropdown-link">
           Dropdown List
           <el-icon class="el-icon--right">
@@ -35,7 +35,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <div ref="echartRef" class="h-full w-full"></div>
+      <div ref="echartRef" class="h-full w-full mt-5"></div>
     </div>
   </div>
 </template>
