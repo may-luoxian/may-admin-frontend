@@ -4,21 +4,27 @@
     <!-- 门户块 -->
     <el-row ref="elRow" :gutter="10">
       <el-col class="mb-2" :span="setItemSpan(item.widthValue)" v-for="item in homeList" :key="item.id">
-        <home-calendar :title="item.name" v-if="item.component === HOME.HOME_Calendar" />
-        <home-demo2 :title="item.name" v-if="item.component === HOME.HOME_DEMO2" />
-        <home-demo3 :title="item.name" v-if="item.component === HOME.HOME_DEMO3" />
-        <home-demo4 :title="item.name" v-if="item.component === HOME.HOME_DEMO4" />
+        <!-- 日历图 -->
+        <home-calendar :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_Calendar" />
+        <home-demo2 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO2" />
+        <home-demo3 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO3" />
+        <home-demo4 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO4" />
       </el-col>
     </el-row>
+    <home-dock />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { nextTick, onMounted, reactive, watch } from 'vue';
 import { defHttp } from '@/utils/http/axios';
 import { defineAsyncComponent, ref } from 'vue';
 import { HOME } from '@/views/constant/homeConstant';
 import { useDomControlsHook } from '@/hooks/domControls';
+import { useAppStore } from '@/stores/modules/app';
+
+const homeRef = ref();
+let homeHeight = useDomControlsHook(homeRef) || 0;
 
 /**
  * 异步引入各个门户块
@@ -27,10 +33,28 @@ const homeCalendar = defineAsyncComponent(() => import('@/views/home/home-calend
 const homeDemo2 = defineAsyncComponent(() => import('@/views/home/home-demo2/index.vue'));
 const homeDemo3 = defineAsyncComponent(() => import('@/views/home/home-demo3/index.vue'));
 const homeDemo4 = defineAsyncComponent(() => import('@/views/home/home-demo4/index.vue'));
+const homeDock = defineAsyncComponent(() => import('@/views/home/home-dock/index.vue'));
+
+/**
+ * 获取子组件面板ref
+ */
+const panelRef: any = reactive({});
+const setItemRef = (el: any, component: string) => {
+  panelRef[component] = el;
+};
+
+const { themeConfig } = useAppStore();
+
+watch(
+  () => themeConfig.theme,
+  (nv) => {
+    nextTick(() => {
+      handleEchartsTheme(nv ? 'dark' : 'light');
+    });
+  }
+);
 
 const homeList = ref();
-const homeRef = ref();
-let homeHeight = useDomControlsHook(homeRef) || 0;
 
 onMounted(() => {
   init();
@@ -70,6 +94,30 @@ const setItemSpan = (widthValue: number) => {
     default:
       return 6;
   }
+};
+
+/**
+ * 处理门户块刷新
+ */
+const refreshHome = () => {};
+
+/**
+ * 处理门户块编辑
+ */
+const editHome = () => {};
+
+/**
+ * 处理门户块隐藏
+ */
+const hiddenHome = () => {};
+
+/**
+ * 处理门户块Echarts风格切换
+ */
+const handleEchartsTheme = (theme: string) => {
+  Object.keys(panelRef).forEach((component) => {
+    panelRef[component].initEcharts && panelRef[component].initEcharts(theme);
+  });
 };
 </script>
 

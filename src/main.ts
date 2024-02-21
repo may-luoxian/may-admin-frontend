@@ -28,6 +28,9 @@ import 'element-plus/theme-chalk/dark/css-vars.css';
 import 'virtual:svg-icons-register';
 import '@/assets/css/iconfont.css';
 
+// 引入echarts主题
+import '@/design/echarts-theme/index';
+
 export const app = createApp(App);
 setupPinia(app);
 app.use(router);

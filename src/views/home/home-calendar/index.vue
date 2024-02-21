@@ -1,4 +1,4 @@
-<!-- demo1 -->
+<!-- 日历图 -->
 <template>
   <!-- 容器 -->
   <div class="home-container rounded">
@@ -35,7 +35,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <div ref="echartRef" class="h-full w-full mt-5"></div>
+      <div ref="echartRef" class="h-72 w-full mt-5"></div>
     </div>
   </div>
 </template>
@@ -47,13 +47,15 @@ import * as echarts from 'echarts';
 
 interface Props {
   title: string;
+  theme: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   title: '',
+  theme: true,
 });
 
-const { title } = toRefs(props);
+const { title, theme } = toRefs(props);
 
 const yearList = ref(['2021', '2022', '2023', '2024']);
 
@@ -64,22 +66,57 @@ const echartRef = ref();
 let echart: any = null;
 
 onMounted(() => {
-  echart = echarts.init(echartRef.value);
-  init();
+  initEcharts(theme.value ? 'dark' : 'light');
 });
 
 /**
- * 初始化日历图
+ * 初始化Echarts
  */
-const init = () => {
+const initEcharts = (theme: string = 'light') => {
+  if (echart) {
+    echart.dispose();
+  }
+  echart = echarts.init(echartRef.value, theme);
+  initOption();
+};
+
+/**
+ * 初始化日历图配置
+ */
+const initOption = () => {
   const option = {
     visualMap: {
+      type: 'piecewise',
       show: false,
       min: 0,
-      max: 10000,
+      pieces: [
+        { lte: 0, color: '#eeeeee' },
+        { gt: 0, lt: 10, color: '#d9e591' },
+        { gte: 10, lt: 20, color: '#98c470' },
+        { gte: 20, lt: 30, color: '#5ea14d' },
+        { gte: 30, color: '#35662c' },
+      ],
     },
     calendar: {
       range: currentYear.value,
+      yearLabel: { show: false },
+      cellSize: 25,
+      left: 'center',
+      dayLabel: {
+        color: theme.value ? '#ffffff' : '#000000',
+        nameMap: 'ZH',
+      },
+      monthLabel: {
+        color: theme.value ? '#ffffff' : '#000000',
+        nameMap: 'ZH',
+      },
+      splitLine: {
+        show: false,
+      },
+      itemStyle: {
+        borderColor: '#ffffff',
+        borderWidth: 2,
+      },
     },
     series: {
       type: 'heatmap',
@@ -96,15 +133,19 @@ const getVirtualData = (year: string) => {
   const dayTime = 3600 * 24 * 1000;
   const data = [];
   for (let time = date; time <= end; time += dayTime) {
-    data.push([echarts.time.format(time, '{yyyy}-{MM}-{dd}', false), Math.floor(Math.random() * 10000)]);
+    data.push([echarts.time.format(time, '{yyyy}-{MM}-{dd}', false), Math.floor(Math.random() * 30)]);
   }
   return data;
 };
 
 const handleCommand = (year: string) => {
   currentYear.value = year;
-  init();
+  initOption();
 };
+
+defineExpose({
+  initEcharts,
+});
 </script>
 
 <style lang="scss" scoped>

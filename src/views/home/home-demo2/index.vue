@@ -36,23 +36,30 @@ const echartRef = ref();
 
 interface Props {
   title: string;
+  theme: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   title: '',
+  theme: true,
 });
 
-const { title } = toRefs(props);
+const { title, theme } = toRefs(props);
 
 onMounted(() => {
-  init();
+  initEcharts(theme.value ? 'dark' : 'light');
 });
+
+let mychart: any = null;
 
 /**
  * 初始化chart
  */
-const init = () => {
-  const mychart = echarts.init(echartRef.value);
+const initEcharts = (theme: string) => {
+  if (mychart) {
+    mychart.dispose();
+  }
+  mychart = echarts.init(echartRef.value, theme);
   const option = {
     title: [
       {
@@ -84,6 +91,10 @@ const init = () => {
   };
   mychart.setOption(option);
 };
+
+defineExpose({
+  initEcharts,
+});
 </script>
 
 <style lang="scss" scoped>
