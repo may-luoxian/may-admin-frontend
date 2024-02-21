@@ -17,7 +17,7 @@
         </el-col>
       </el-row>
       <el-form-item class="enter-x">
-        <el-button ref="loginBtnRef" class="w-full" size="large" color="#0960bd" @click="handleLogin">{{ t('login.buttonSignIn') }}</el-button>
+        <el-button ref="loginBtnRef" class="w-full" size="large" color="#0960bd" @click="handleLogin" :loading="loading">{{ t('login.buttonSignIn') }}</el-button>
       </el-form-item>
       <el-form-item class="enter-x">
         <el-row :gutter="10" class="w-full">
@@ -57,6 +57,7 @@ const form = reactive({
   password: 'syk20010416',
 });
 
+const loading = ref(false);
 const remenberMe = ref(false);
 /**
  * 登录
@@ -67,6 +68,7 @@ const remenberMe = ref(false);
 const menuHook = useMenuHook();
 function handleLogin() {
   let { username, password } = toRefs(form);
+  loading.value = true;
   login(username.value, password.value).then(async ({ data }) => {
     try {
       userStore.setToken(data.token);
@@ -77,6 +79,8 @@ function handleLogin() {
       router.push('/');
     } catch (err) {
       console.error(err);
+    } finally {
+      loading.value = false;
     }
   });
 }
