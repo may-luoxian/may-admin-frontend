@@ -53,6 +53,17 @@
             "borderColor": "#ccc"
         }
     },
+    "calendar": {
+      "monthLabel": {
+        "color": "#ffffff"
+      },
+      "dayLabel": {
+        "color": "#ffffff"
+      },
+      "itemStyle": {
+        "borderColor": "#000000"
+      }
+    },
     "scatter": {
         "itemStyle": {
             "borderWidth": 0,

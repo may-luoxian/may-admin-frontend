@@ -65,6 +65,17 @@
             "borderColor": "#ccc"
         }
     },
+    "calendar": {
+      "monthLabel": {
+        "color": "#000000"
+      },
+      "dayLabel": {
+        "color": "#000000"
+      },
+      "itemStyle": {
+        "borderColor": "#ffffff"
+      }
+    },
     "scatter": {
         "itemStyle": {
             "borderWidth": 0,

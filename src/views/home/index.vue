@@ -43,8 +43,10 @@ const setItemRef = (el: any, component: string) => {
   panelRef[component] = el;
 };
 
+/**
+ * 监听风格切换刷新Echarts
+ */
 const { themeConfig } = useAppStore();
-
 watch(
   () => themeConfig.theme,
   (nv) => {

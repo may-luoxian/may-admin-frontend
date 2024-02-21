@@ -114,11 +114,7 @@ export function getPathByKey(curKey: any, data: any, stat: string) {
  *        - "replace": Replace the source array with the target array. 用目标数组替换源数组。
  * @returns The merged object. 合并后的对象。
  */
-export function deepMerge<T extends object | null | undefined, U extends object | null | undefined>(
-  source: T,
-  target: U,
-  mergeArrays: 'union' | 'intersection' | 'concat' | 'replace' = 'replace'
-): T & U {
+export function deepMerge<T extends object | null | undefined, U extends object | null | undefined>(source: T, target: U, mergeArrays: 'union' | 'intersection' | 'concat' | 'replace' = 'replace'): T & U {
   if (!target) {
     return source as T & U;
   }

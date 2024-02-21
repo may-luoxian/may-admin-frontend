@@ -100,22 +100,19 @@ const initOption = () => {
     calendar: {
       range: currentYear.value,
       yearLabel: { show: false },
-      cellSize: 25,
+      cellSize: 30,
       left: 'center',
       dayLabel: {
-        color: theme.value ? '#ffffff' : '#000000',
         nameMap: 'ZH',
       },
       monthLabel: {
-        color: theme.value ? '#ffffff' : '#000000',
         nameMap: 'ZH',
       },
       splitLine: {
         show: false,
       },
       itemStyle: {
-        borderColor: '#ffffff',
-        borderWidth: 2,
+        borderWidth: 3,
       },
     },
     series: {
