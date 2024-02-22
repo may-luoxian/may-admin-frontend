@@ -6,7 +6,7 @@ import { treeMap } from '@/utils';
 import type { RouteMeta, Router, RouteRecordNormalized } from 'vue-router';
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-const modules = import.meta.glob('@/views/**/*.vue');
+const modules = import.meta.glob('@/modules/**/*.vue');
 
 // 路由表类型
 export type LayoutRoute = {
@@ -53,7 +53,7 @@ function buildAsyncRouterMap(routerMap: Array<LayoutRoute> = []): Array<LayoutRo
     };
     route.meta = meta;
     if (route.menuType === 1) {
-      route.component = modules['/src/views' + route.component];
+      route.component = modules['/src/modules' + route.component];
     }
     if (route.children && route.children.length !== 0) {
       buildAsyncRouterMap(route.children);

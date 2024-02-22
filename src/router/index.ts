@@ -4,13 +4,13 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login/index.vue'),
+    component: () => import('@/modules/login/index.vue'),
   },
   {
     path: '/:catchAll(.*)',
     name: 'pageNotFound',
     hidden: true,
-    component: () => import('@/views/error/404.vue'),
+    component: () => import('@/modules/error/404.vue'),
   },
 ];
 
