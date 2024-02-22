@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { LOGIN_TYPE, IS_ANONYMOUS_CONSTANT } from '@/modules/constant/systemConstant';
+import { LOGIN_TYPE, IS_ANONYMOUS_CONSTANT } from '@/modules/system/constant';
 import { defHttp } from '@/utils/http/axios';
 import { ElNotification } from 'element-plus';
 import { reactive, ref } from 'vue';

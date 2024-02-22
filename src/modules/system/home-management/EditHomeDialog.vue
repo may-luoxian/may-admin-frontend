@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from 'vue';
 import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
-import { CARD_WIDTH } from '@/modules/constant/systemConstant';
+import { CARD_WIDTH } from '@/modules/system/constant';
 import { defHttp } from '@/utils/http/axios';
 import { isEmpty } from '@/utils/is';
 

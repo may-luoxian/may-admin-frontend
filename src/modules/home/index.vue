@@ -19,7 +19,7 @@
 import { nextTick, onMounted, reactive, watch } from 'vue';
 import { defHttp } from '@/utils/http/axios';
 import { defineAsyncComponent, ref } from 'vue';
-import { HOME } from '@/modules/constant/homeConstant';
+import { HOME } from '@/modules/home/constant';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { useAppStore } from '@/stores/modules/app';
 

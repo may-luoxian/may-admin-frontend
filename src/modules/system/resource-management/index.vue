@@ -66,7 +66,7 @@ import type { RequestMethod } from '@/api/types';
 import { SAVEORUPDATE_DIALOG_STATE } from '@/enums/menuEnum';
 import { REQUEST_METHOD_ENUM } from '@/enums/requestEnum';
 import { IS_ANONYMOUS } from '@/enums/commonEnum';
-import { REQUEST_METHODS_CONSTANT, IS_ANONYMOUS_CONSTANT } from '@/modules/constant/systemConstant';
+import { REQUEST_METHODS_CONSTANT, IS_ANONYMOUS_CONSTANT } from '@/modules/system/constant';
 import { ref, onMounted, reactive, toRefs, nextTick } from 'vue';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { defHttp } from '@/utils/http/axios';
