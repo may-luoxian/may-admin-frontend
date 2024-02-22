@@ -51,14 +51,7 @@
           <el-divider direction="vertical"></el-divider>
           <el-button type="primary" link @click="handlePreviewHome(scope.row)">预览门户</el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-popconfirm
-            confirm-button-text="确定"
-            cancel-button-text="取消"
-            title="确定删除该用户吗？"
-            :width="180"
-            @confirm="handleDelete(scope.row.id)"
-            @cancel="() => {}"
-          >
+          <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定删除该用户吗？" :width="180" @confirm="handleDelete(scope.row.id)" @cancel="() => {}">
             <template #reference>
               <el-button type="danger" link>删除</el-button>
             </template>
@@ -67,16 +60,7 @@
       </el-table-column>
     </el-table>
     <div class="float-right p-2">
-      <el-pagination
-        v-model:current-page="form.current"
-        v-model:page-size="form.size"
-        :page-sizes="[10, 20, 50]"
-        :total="total"
-        background
-        layout="total, sizes, prev, pager, next"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <el-pagination v-model:current-page="form.current" v-model:page-size="form.size" :page-sizes="[10, 20, 50]" :total="total" background layout="total, sizes, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
   </el-main>
 

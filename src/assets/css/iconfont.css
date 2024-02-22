@@ -1,8 +1,11 @@
 @font-face {
   font-family: 'iconfont';
   src: url('iconfont.eot?t=1642953623912');
-  src: url('iconfont.eot?t=1642953623912#iefix') format('embedded-opentype'), url('iconfont.woff2?t=1642953623912') format('woff2'),
-    url('iconfont.woff?t=1642953623912') format('woff'), url('iconfont.ttf?t=1642953623912') format('truetype'),
+  src:
+    url('iconfont.eot?t=1642953623912#iefix') format('embedded-opentype'),
+    url('iconfont.woff2?t=1642953623912') format('woff2'),
+    url('iconfont.woff?t=1642953623912') format('woff'),
+    url('iconfont.ttf?t=1642953623912') format('truetype'),
     url('iconfont.svg?t=1642953623912#iconfont') format('svg');
 }
 

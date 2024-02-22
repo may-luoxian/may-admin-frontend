@@ -1,16 +1,6 @@
 <template>
   <div class="h-full">
-    <el-menu
-      class="h-full w-52"
-      router
-      :collapse="props.isCollapse"
-      background-color="#001529"
-      text-color="#ffffffb3"
-      active-text-color="#ffffff"
-      :default-active="route.fullPath"
-      unique-opened
-      @select="handleSelectedMenu"
-    >
+    <el-menu class="h-full w-52" router :collapse="props.isCollapse" background-color="#001529" text-color="#ffffffb3" active-text-color="#ffffff" :default-active="route.fullPath" unique-opened @select="handleSelectedMenu">
       <MenuItem :menuTable="menuTable" :selectedMenu="getSelectedMenu" :isCollapse="props.isCollapse"> </MenuItem>
     </el-menu>
   </div>

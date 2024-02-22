@@ -118,9 +118,7 @@ const close = () => {
   visibleDialog.value = false;
 };
 
-const isModel = computed(
-  () => status.value === SAVEORUPDATE_DIALOG_STATE.SAVE_ROOT || (status.value === SAVEORUPDATE_DIALOG_STATE.UPDATE && selectedRow.value.isModel === 1)
-);
+const isModel = computed(() => status.value === SAVEORUPDATE_DIALOG_STATE.SAVE_ROOT || (status.value === SAVEORUPDATE_DIALOG_STATE.UPDATE && selectedRow.value.isModel === 1));
 
 defineExpose({
   open,

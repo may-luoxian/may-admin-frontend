@@ -22,13 +22,7 @@
       </div>
     </div>
     <div class="flex items-center h-8 border-b dark:border-slate-600 border-solid">
-      <div
-        :class="isActive(tab)"
-        class="flex items-center text-xs border-solid border-2 dark:border-slate-700 relative h-7 px-2 mx-1 leading-7 text-center cursor-pointer"
-        v-for="tab in menuTab"
-        :key="tab.path"
-        @click="jumpTo(tab)"
-      >
+      <div :class="isActive(tab)" class="flex items-center text-xs border-solid border-2 dark:border-slate-700 relative h-7 px-2 mx-1 leading-7 text-center cursor-pointer" v-for="tab in menuTab" :key="tab.path" @click="jumpTo(tab)">
         <span>{{ tab.name }}</span>
         <span class="pl-2" v-if="tab.path !== '/'">
           <SvgIcon class="close-icon hover:scale-125" name="close" size="10" @click.stop="removeMenuTab(tab)" />

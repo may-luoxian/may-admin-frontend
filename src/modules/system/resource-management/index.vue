@@ -46,14 +46,7 @@
           <el-divider direction="vertical" v-if="isModel(scope.row.isModel)"></el-divider>
           <el-button type="primary" link @click="handleUpdateResource(scope.row)">修改</el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-popconfirm
-            confirm-button-text="确定"
-            cancel-button-text="取消"
-            title="确定删除该资源吗？"
-            :width="180"
-            @confirm="handleDeleteResource(scope.row)"
-            @cancel="() => {}"
-          >
+          <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定删除该资源吗？" :width="180" @confirm="handleDeleteResource(scope.row)" @cancel="() => {}">
             <template #reference>
               <el-button type="danger" link>删除</el-button>
             </template>
