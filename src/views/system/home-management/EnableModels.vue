@@ -4,16 +4,7 @@
       <span>启用</span>
     </div>
     <div ref="enableRef" class="overflow-auto list-box relative rounded transition-all" :style="{ 'height': enableHeight - 240 + 'px' }">
-      <Card
-        class="absolute card transition-all"
-        v-for="item in hasPositionList"
-        :key="item.id"
-        :data-id="item.id"
-        :data="item"
-        :computeWidth="true"
-        :style="{ 'top': item.top + 'px', 'left': item.left + 'px' }"
-        @refreshStyle="refreshStyle"
-      >
+      <Card class="absolute card transition-all" v-for="item in hasPositionList" :key="item.id" :data-id="item.id" :data="item" :computeWidth="true" :style="{ 'top': item.top + 'px', 'left': item.left + 'px' }" @refreshStyle="refreshStyle">
         <template #title>
           <span>{{ item.name }}</span>
         </template>
@@ -89,6 +80,7 @@ const setStyleToEnable = (dom: any) => {
 
 emitter.on('dragToEnable', (evt: any) => {
   if (evt.to === enableRef.value) {
+    console.log(111);
     evt.dragged.style.opacity = 0;
     enableRef.value.style.border = '1px dashed #409EFF';
     setStyleToEnable(evt.dragged);
@@ -102,7 +94,9 @@ emitter.on('clearEnableBorder', () => {
 });
 
 const clearEnableBorder = () => {
-  enableRef.value.style.border = 'none';
+  if (enableRef.value) {
+    enableRef.value.style.border = 'none';
+  }
 };
 
 defineExpose({

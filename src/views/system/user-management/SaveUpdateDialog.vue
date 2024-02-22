@@ -20,14 +20,7 @@
           <el-input v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item label="头像" prop="avatar">
-          <el-upload
-            class="avatar-uploader"
-            :action="upload.url"
-            :headers="upload.headers"
-            :show-file-list="false"
-            accept=".jpg, .png"
-            :on-success="handleAvatarSuccess"
-          >
+          <el-upload class="avatar-uploader" :action="upload.url" :headers="upload.headers" :show-file-list="false" accept=".jpg, .png" :on-success="handleAvatarSuccess">
             <img v-if="form.avatar" :src="form.avatar" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon">
               <Plus />

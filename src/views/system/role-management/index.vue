@@ -6,14 +6,7 @@
     </div>
     <div class="w-6 cursor-col-resize" @mousedown="mouseDown" @mouseup="mouseUp"></div>
     <div class="w-2/5 h-full border-2 dark:border-slate-700 rounded border-solid">
-      <el-tabs
-        ref="resourceTabsRef"
-        v-model="listTab"
-        class="overflow-auto"
-        :style="{ height: resourceMaxHeight - 240 + 'px' }"
-        type="border-card"
-        @tab-change="handleTabChange"
-      >
+      <el-tabs ref="resourceTabsRef" v-model="listTab" class="overflow-auto" :style="{ height: resourceMaxHeight - 240 + 'px' }" type="border-card" @tab-change="handleTabChange">
         <el-tab-pane :name="LIST_TAB.MENU" label="菜单列表">
           <MenuList ref="menuListRef" />
         </el-tab-pane>

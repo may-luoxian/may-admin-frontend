@@ -10,16 +10,7 @@
         <el-button type="danger" @click="handleDeleteRoles">删除角色</el-button>
       </div>
     </div>
-    <el-table
-      ref="roleTableRef"
-      :data="roleList"
-      :row-class-name="rowClassName"
-      :height="roleMaxHeight - 240"
-      size="large"
-      border
-      @row-click="handleRowClick"
-      @selection-change="handleSelectionChange"
-    >
+    <el-table ref="roleTableRef" :data="roleList" :row-class-name="rowClassName" :height="roleMaxHeight - 240" size="large" border @row-click="handleRowClick" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
       <el-table-column label="角色名" prop="roleName" align="center" min-width="100"></el-table-column>
       <el-table-column label="是否禁用" prop="isDisable" align="center" min-width="80">
@@ -36,16 +27,7 @@
       </el-table-column>
     </el-table>
     <div class="float-right p-2">
-      <el-pagination
-        v-model:current-page="page.current"
-        v-model:page-size="page.size"
-        :page-sizes="[10, 20, 50]"
-        :total="total"
-        background
-        layout="total, sizes, prev, pager, next"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <el-pagination v-model:current-page="page.current" v-model:page-size="page.size" :page-sizes="[10, 20, 50]" :total="total" background layout="total, sizes, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
     <AddRoleDialog ref="addRoleDialogRef" @init="init" />
   </div>

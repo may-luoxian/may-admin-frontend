@@ -28,8 +28,8 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="访问路径" align="center" prop="path" min-width="140"></el-table-column>
-      <el-table-column label="组件路径" align="center" prop="component" min-width="140"></el-table-column>
+      <el-table-column label="访问路径" align="center" prop="path" show-overflow-tooltip min-width="140"></el-table-column>
+      <el-table-column label="组件路径" align="center" prop="component" show-overflow-tooltip min-width="140"></el-table-column>
       <el-table-column label="隐藏" align="center" prop="isHidden" min-width="80">
         <template #default="scope">
           <div>
@@ -45,14 +45,7 @@
             <el-divider direction="vertical" v-if="isShowMenuAdd(scope.row.menuType)" />
             <el-button type="primary" text @click="handleMenuUpdate(scope.row)">修改</el-button>
             <el-divider direction="vertical" />
-            <el-popconfirm
-              confirm-button-text="确定"
-              cancel-button-text="取消"
-              title="确定删除该菜单吗？"
-              :width="180"
-              @confirm="handleMenuDelete(scope.row)"
-              @cancel="() => {}"
-            >
+            <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="确定删除该菜单吗？" :width="180" @confirm="handleMenuDelete(scope.row)" @cancel="() => {}">
               <template #reference>
                 <el-button type="danger" text>删除</el-button>
               </template>
