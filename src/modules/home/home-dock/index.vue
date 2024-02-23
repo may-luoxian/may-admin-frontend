@@ -1,6 +1,6 @@
 <!-- 门户坞 -->
 <template>
-  <div>123</div>
+  <div></div>
 </template>
 
 <script setup lang="ts"></script>

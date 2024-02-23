@@ -9,6 +9,7 @@
         <home-demo2 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO2" />
         <home-demo3 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO3" />
         <home-demo4 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO4" />
+        <home-demo5 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO5" />
       </el-col>
     </el-row>
     <home-dock />
@@ -33,6 +34,7 @@ const homeCalendar = defineAsyncComponent(() => import('@/modules/home/home-cale
 const homeDemo2 = defineAsyncComponent(() => import('@/modules/home/home-demo2/index.vue'));
 const homeDemo3 = defineAsyncComponent(() => import('@/modules/home/home-demo3/index.vue'));
 const homeDemo4 = defineAsyncComponent(() => import('@/modules/home/home-demo4/index.vue'));
+const homeDemo5 = defineAsyncComponent(() => import('@/modules/home/home-demo5/index.vue'));
 const homeDock = defineAsyncComponent(() => import('@/modules/home/home-dock/index.vue'));
 
 /**

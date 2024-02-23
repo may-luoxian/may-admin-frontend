@@ -89,13 +89,7 @@ const initOption = () => {
       type: 'piecewise',
       show: false,
       min: 0,
-      pieces: [
-        { lte: 0, color: '#eeeeee' },
-        { gt: 0, lt: 10, color: '#d9e591' },
-        { gte: 10, lt: 20, color: '#98c470' },
-        { gte: 20, lt: 30, color: '#5ea14d' },
-        { gte: 30, color: '#35662c' },
-      ],
+      pieces: getPiecesStyle(),
     },
     calendar: {
       range: currentYear.value,
@@ -130,9 +124,27 @@ const getVirtualData = (year: string) => {
   const dayTime = 3600 * 24 * 1000;
   const data = [];
   for (let time = date; time <= end; time += dayTime) {
-    data.push([echarts.time.format(time, '{yyyy}-{MM}-{dd}', false), Math.floor(Math.random() * 30)]);
+    data.push([echarts.time.format(time, '{yyyy}-{MM}-{dd}', false), Math.floor(Math.random() * 1)]);
   }
   return data;
+};
+
+const getPiecesStyle = () => {
+  return theme.value
+    ? [
+        { lte: 0, color: '#1d1e1f' },
+        { gt: 0, lt: 10, color: '#ce8818' },
+        { gte: 10, lt: 20, color: '#a87728' },
+        { gte: 20, lt: 30, color: '#cfa157' },
+        { gte: 30, color: '#dcb77b' },
+      ]
+    : [
+        { lte: 0, color: '#eeeeee' },
+        { gt: 0, lt: 10, color: '#d9e591' },
+        { gte: 10, lt: 20, color: '#98c470' },
+        { gte: 20, lt: 30, color: '#5ea14d' },
+        { gte: 30, color: '#35662c' },
+      ];
 };
 
 const handleCommand = (year: string) => {
@@ -148,5 +160,6 @@ defineExpose({
 <style lang="scss" scoped>
 :deep(.el-divider) {
   @apply my-0;
+  color: #ce8818;
 }
 </style>

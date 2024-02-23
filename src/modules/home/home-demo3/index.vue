@@ -36,94 +36,48 @@ const echartRef = ref();
 
 interface Props {
   title: string;
+  theme: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   title: '',
+  theme: true,
 });
 
-const { title } = toRefs(props);
+const { title, theme } = toRefs(props);
 
 onMounted(() => {
-  init();
+  initEcharts(theme.value ? 'dark' : 'light');
 });
 
-const init = () => {
-  const myChart = echarts.init(echartRef.value);
-  let data = [];
-  for (var i = 0; i < 1000; i++) {
-    data.push(randomData());
+let mychart: any = null;
+const initEcharts = (theme: string) => {
+  if (mychart) {
+    mychart.dispose();
   }
+  mychart = echarts.init(echartRef.value, theme);
   const option = {
-    title: {
-      text: 'Dynamic Data & Time Axis',
-    },
-    grid: {
-      left: '2%',
-      right: '2%',
-      bottom: '8%',
-      // containLabel: true,
-    },
-    tooltip: {
-      trigger: 'axis',
-      formatter: function (params) {
-        params = params[0];
-        var date = new Date(params.name);
-        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
-      },
-      axisPointer: {
-        animation: false,
-      },
-    },
-    xAxis: {
-      type: 'time',
-      splitLine: {
-        show: false,
-      },
-    },
-    yAxis: {
-      type: 'value',
-      boundaryGap: [0, '100%'],
-      splitLine: {
-        show: false,
-      },
-    },
-    series: [
-      {
-        name: 'Fake Data',
-        type: 'line',
-        showSymbol: false,
-        data: data,
-      },
-    ],
-  };
-  myChart.setOption(option);
-  setInterval(function () {
-    for (var i = 0; i < 5; i++) {
-      data.shift();
-      data.push(randomData());
-    }
-    myChart.setOption({
-      series: [
-        {
-          data: data,
-        },
+    legend: {},
+    tooltip: {},
+    dataset: {
+      source: [
+        ['product', '2015', '2016', '2017'],
+        ['Matcha Latte', 43.3, 85.8, 93.7],
+        ['Milk Tea', 83.1, 73.4, 55.1],
+        ['Cheese Cocoa', 86.4, 65.2, 82.5],
+        ['Walnut Brownie', 72.4, 53.9, 39.1],
       ],
-    });
-  }, 1000);
-};
-let now = new Date(1997, 9, 3);
-let oneDay = 24 * 3600 * 1000;
-let value = Math.random() * 1000;
-
-const randomData = () => {
-  now = new Date(+now + oneDay);
-  value = value + Math.random() * 21 - 10;
-  return {
-    name: now.toString(),
-    value: [[now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'), Math.round(value)],
+    },
+    xAxis: { type: 'category' },
+    yAxis: {},
+    series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }],
   };
+  mychart.setOption(option);
 };
+
+defineExpose({
+  initEcharts,
+});
 </script>
 
 <style lang="scss" scoped>
