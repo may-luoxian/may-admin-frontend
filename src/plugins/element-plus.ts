@@ -39,6 +39,7 @@ import {
   ElTag,
   ElPopconfirm,
   ElIcon,
+  ElProgress,
 } from 'element-plus';
 
 export const components = [
@@ -81,5 +82,6 @@ export const components = [
   ElTag,
   ElPopconfirm,
   ElIcon,
+  ElProgress,
 ];
 export const plugins = [ElDropdown];

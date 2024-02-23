@@ -10,6 +10,9 @@
         <home-demo3 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO3" />
         <home-demo4 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO4" />
         <home-demo5 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO5" />
+        <home-demo6 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO6" />
+        <home-demo7 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO7" />
+        <home-demo8 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO8" />
       </el-col>
     </el-row>
     <home-dock />
@@ -35,6 +38,9 @@ const homeDemo2 = defineAsyncComponent(() => import('@/modules/home/home-demo2/i
 const homeDemo3 = defineAsyncComponent(() => import('@/modules/home/home-demo3/index.vue'));
 const homeDemo4 = defineAsyncComponent(() => import('@/modules/home/home-demo4/index.vue'));
 const homeDemo5 = defineAsyncComponent(() => import('@/modules/home/home-demo5/index.vue'));
+const homeDemo6 = defineAsyncComponent(() => import('@/modules/home/home-demo6/index.vue'));
+const homeDemo7 = defineAsyncComponent(() => import('@/modules/home/home-demo7/index.vue'));
+const homeDemo8 = defineAsyncComponent(() => import('@/modules/home/home-demo8/index.vue'));
 const homeDock = defineAsyncComponent(() => import('@/modules/home/home-dock/index.vue'));
 
 /**
