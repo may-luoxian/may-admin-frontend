@@ -69,20 +69,22 @@ const menuHook = useMenuHook();
 function handleLogin() {
   let { username, password } = toRefs(form);
   loading.value = true;
-  login(username.value, password.value).then(async ({ data }) => {
-    try {
-      userStore.setToken(data.token);
-      userStore.setUserInfo(data);
-      const routes = (await getUserRouter()).data;
-      menuHook.dynamicAddRoute(routes);
-      menuStore.setIsDynamicAddedRoute(true);
-      router.push('/');
-    } catch (err) {
-      console.error(err);
-    } finally {
+  login(username.value, password.value)
+    .then(async ({ data }) => {
+      try {
+        userStore.setToken(data.token);
+        userStore.setUserInfo(data);
+        const routes = (await getUserRouter()).data;
+        menuHook.dynamicAddRoute(routes);
+        menuStore.setIsDynamicAddedRoute(true);
+        router.push('/');
+      } catch (err) {
+        console.error(err);
+      }
+    })
+    .finally(() => {
       loading.value = false;
-    }
-  });
+    });
 }
 </script>
 

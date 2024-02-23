@@ -75,6 +75,7 @@ const userInfo = {
   userInfoId: getUserInfo.userInfoId,
 };
 let currentPreView = reactive(isEmpty(getPreviewUser) ? userInfo : getPreviewUser);
+provide('currentPreView', currentPreView);
 const roleList = ref();
 
 const queryParams = reactive({
@@ -82,8 +83,11 @@ const queryParams = reactive({
 });
 
 const controlStatus = ref<number>();
+provide('controlStatus', controlStatus);
 
 onMounted(() => {
+  controlStatus.value = EditStatusEnum.USER_PREVIEW;
+  getRoleList();
   init();
 });
 
@@ -92,9 +96,11 @@ onMounted(() => {
  * 1.根据当前预览用户查询门户块，不存在预览用户则默认查询当前用户
  */
 const init = () => {
-  getRoleList();
-  getHomeListByUser();
-  controlStatus.value = EditStatusEnum.USER_PREVIEW;
+  if (controlStatus.value === EditStatusEnum.ROLE_PREVIEW) {
+    getHomeListByRole();
+  } else {
+    getHomeListByUser();
+  }
 };
 provide('init', init);
 

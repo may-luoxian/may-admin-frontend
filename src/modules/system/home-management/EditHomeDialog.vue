@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs } from 'vue';
+import { ref, reactive, toRefs, inject } from 'vue';
 import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
 import { CARD_WIDTH } from '@/modules/system/constant';
 import { defHttp } from '@/utils/http/axios';
@@ -41,6 +41,11 @@ const rules = reactive<FormRules>({
   widthValue: [{ required: true, message: '模块宽度不能为空', trigger: 'change' }],
   component: [{ required: true, message: '组件名称不能为空', trigger: 'blur' }],
 });
+
+// 操作状态
+const controlStatus = inject('controlStatus');
+// 当前选中用户id
+const currentPreView = inject('currentPreView') as any;
 
 const emit = defineEmits(['init']);
 
@@ -56,7 +61,7 @@ let { formData } = toRefs(form);
 const open = (state: string, data: any) => {
   if (!isEmpty(data)) {
     let { id, name, widthValue, component, description } = data;
-    formData.value = { id, name, widthValue, component, description };
+    formData.value = { id, name, widthValue, component, description, controlStatus, userId: currentPreView.userInfoId };
   }
   isAddOrEdit.value = state;
   visible.value = true;
