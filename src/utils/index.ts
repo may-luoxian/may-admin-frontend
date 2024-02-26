@@ -201,7 +201,7 @@ export function absoluteElPosition(dataList: any[], parentEl: any, cardH: number
         childWidth = fullW;
         break;
       default:
-        childWidth = oneThirdW;
+        childWidth = oneFourW;
         break;
     }
     if (i === 0) {

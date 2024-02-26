@@ -81,6 +81,7 @@ const roleList = ref();
 const queryParams = reactive({
   roleId: null,
 });
+provide('queryParams', queryParams);
 
 const controlStatus = ref<number>();
 provide('controlStatus', controlStatus);
@@ -228,6 +229,7 @@ const saveHome = async () => {
   let enableData = enableList.value.map((item, index) => {
     return {
       homeId: item.id,
+      widthValue: item.widthValue,
       orderNum: index + 1,
     };
   });

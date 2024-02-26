@@ -58,10 +58,11 @@ let form = reactive<any>({
 });
 let { formData } = toRefs(form);
 
+const queryParams = inject('queryParams') as any;
 const open = (state: string, data: any) => {
   if (!isEmpty(data)) {
     let { id, name, widthValue, component, description } = data;
-    formData.value = { id, name, widthValue, component, description, controlStatus, userId: currentPreView.userInfoId };
+    formData.value = { id, name, widthValue, component, description, controlStatus, userId: currentPreView.userInfoId, roleId: queryParams.roleId };
   }
   isAddOrEdit.value = state;
   visible.value = true;
