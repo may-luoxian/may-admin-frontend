@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog v-model="visible" title="新增角色" width="400" @open="open">
+    <el-dialog v-model="visible" :title="title" width="400" @open="open">
       <el-form ref="roleFormRef" :model="form" :rules="rules" label-width="80">
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" class="w-full"></el-input>
@@ -32,6 +32,7 @@ import { isEmpty } from '@/utils/is';
 const emit = defineEmits(['init']);
 
 interface Form {
+  id?: number;
   roleName?: string;
   isDisable?: number;
   describe?: string;
@@ -39,6 +40,7 @@ interface Form {
 
 const visible = ref(false);
 const loading = ref(false);
+const title = ref();
 let form = reactive<Form>({
   isDisable: 0,
 });
@@ -58,13 +60,17 @@ const rules = reactive<FormRules>({
   ],
 });
 
-const open = (row: any) => {
+const open = (status: string, row: any) => {
   visible.value = true;
-  if (!isEmpty(row)) {
-    const { roleName, isDisable, describe } = row;
+  if (status === 'EDIT') {
+    title.value = '修改角色';
+    const { id, roleName, isDisable, describe } = row;
+    form.id = id;
     form.roleName = roleName;
     form.isDisable = isDisable;
     form.describe = describe;
+  } else if (status === 'ADD') {
+    title.value = '新增角色';
   }
 };
 

@@ -80,7 +80,6 @@ const setStyleToEnable = (dom: any) => {
 
 emitter.on('dragToEnable', (evt: any) => {
   if (evt.to === enableRef.value) {
-    console.log(111);
     evt.dragged.style.opacity = 0;
     enableRef.value.style.border = '1px dashed #409EFF';
     setStyleToEnable(evt.dragged);

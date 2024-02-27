@@ -6,7 +6,7 @@
         <el-input v-model="page.keywords" placeholder="请输入角色名（enter查询）" style="width: 240px" @keyup.enter="getRoleList"></el-input>
       </div>
       <div>
-        <el-button type="primary" @click="handleOpenRoleDialog">新增角色</el-button>
+        <el-button type="primary" @click="handleOpenRoleDialog('ADD', null)">新增角色</el-button>
         <el-button type="danger" @click="handleDeleteRoles">删除角色</el-button>
       </div>
     </div>
@@ -22,7 +22,7 @@
       <el-table-column label="角色描述" prop="describe" align="center" min-width="360"></el-table-column>
       <el-table-column label="操作" prop="describe" align="center" min-width="60">
         <template #default="scope">
-          <el-button type="primary" text @click.prevent="handleOpenRoleDialog(scope.row)">修改</el-button>
+          <el-button type="primary" text @click.prevent="handleOpenRoleDialog('EDIT', scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -38,7 +38,7 @@ import AddRoleDialog from '@/modules/system/role-management/AddRoleDialog.vue';
 import { defHttp } from '@/utils/http/axios';
 import { useDomControlsHook } from '@/hooks/domControls';
 import { ref, onMounted, reactive, toRefs, unref } from 'vue';
-import { ElNotification } from 'element-plus';
+import { ElNotification, ElMessageBox } from 'element-plus';
 
 const roleTableRef = ref<any>();
 const roleMaxHeight = useDomControlsHook(roleTableRef);
@@ -102,26 +102,33 @@ const rowClassName = ({ row }: any) => {
   return {};
 };
 
-const handleOpenRoleDialog = (row: any) => {
-  addRoleDialogRef.value.open(row);
+const handleOpenRoleDialog = (status: string, row: any) => {
+  addRoleDialogRef.value.open(status, row);
 };
 
 const handleDeleteRoles = () => {
-  defHttp
-    .delete({
-      url: '/admin/role/roles',
-      data: {
-        ids: unref(selectedIds),
-      },
+  ElMessageBox.confirm('确定删除该角色？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+  })
+    .then(() => {
+      defHttp
+        .delete({
+          url: '/admin/role/roles',
+          data: {
+            ids: unref(selectedIds),
+          },
+        })
+        .then((res) => {
+          ElNotification({
+            title: 'success',
+            type: 'success',
+            message: res.message,
+          });
+          init();
+        });
     })
-    .then((res) => {
-      ElNotification({
-        title: 'success',
-        type: 'success',
-        message: res.message,
-      });
-      init();
-    });
+    .catch(() => {});
 };
 
 const handleSizeChange = (size: number) => {
