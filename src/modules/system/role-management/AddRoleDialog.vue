@@ -27,7 +27,6 @@
 import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { defHttp } from '@/utils/http/axios';
-import { isEmpty } from '@/utils/is';
 
 const emit = defineEmits(['init']);
 

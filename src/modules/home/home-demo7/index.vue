@@ -22,11 +22,11 @@
     <el-divider></el-divider>
     <!-- 主体区域 -->
     <div class="home-main">
-      <div><span class="float-left mr-2">通过率：</span><el-progress :percentage="50" :text-inside="true" :stroke-width="26" /></div>
-      <div><span class="float-left mr-2">通过率：</span><el-progress :percentage="100" :text-inside="true" :stroke-width="26" :format="format" /></div>
-      <div><span class="float-left mr-2">通过率： </span><el-progress :percentage="100" :text-inside="true" :stroke-width="26" status="success" /></div>
-      <div><span class="float-left mr-2">通过率：</span><el-progress :percentage="100" :text-inside="true" :stroke-width="26" status="warning" /></div>
-      <div><span class="float-left mr-2">通过率：</span><el-progress :percentage="50" :text-inside="true" :stroke-width="26" status="exception" /></div>
+      <div><el-progress :percentage="50" :text-inside="true" :stroke-width="26" /></div>
+      <div><el-progress :percentage="100" :text-inside="true" :stroke-width="26" :format="format" /></div>
+      <div><el-progress :percentage="100" :text-inside="true" :stroke-width="26" status="success" /></div>
+      <div><el-progress :percentage="100" :text-inside="true" :stroke-width="26" status="warning" /></div>
+      <div><el-progress :percentage="50" :text-inside="true" :stroke-width="26" status="exception" /></div>
     </div>
   </div>
 </template>
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { title } = toRefs(props);
 
-const format = (percentage) => (percentage === 100 ? 'Full' : `${percentage}%`);
+const format = (percentage: any) => (percentage === 100 ? 'Full' : `${percentage}%`);
 </script>
 
 <style lang="scss" scoped>

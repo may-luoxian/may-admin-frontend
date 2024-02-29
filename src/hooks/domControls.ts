@@ -15,7 +15,7 @@ export const useDomControlsHook = (elRef: Ref<HTMLElement>) => {
   });
 
   function computedMaxHeight() {
-    const el: any = elRef.value;
+    const el: any = elRef?.value || elRef;
     const offsetTop = el.offsetTop || el.$el.offsetTop;
     maxHeight.value = window.innerHeight - offsetTop;
   }

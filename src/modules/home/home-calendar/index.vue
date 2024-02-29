@@ -96,6 +96,7 @@ const initOption = () => {
       yearLabel: { show: false },
       cellSize: 30,
       left: 'center',
+      top: '40px',
       dayLabel: {
         nameMap: 'ZH',
       },
