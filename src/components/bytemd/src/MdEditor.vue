@@ -1,5 +1,5 @@
 <template>
-  <Editor ref="bytemdRef" :value="input" :plugins="plugins" :locale="zhHans" :editorConfig="editorConfig" @change="handleChange" :style="{ height: editorHeight + 'px' }" />
+  <Editor ref="bytemdRef" :value="input" :plugins="plugins" :locale="zhHans" :editorConfig="editorConfig" :uploadImages="handleUploadImage" @change="handleChange" :style="{ height: editorHeight + 'px' }" />
   <!-- <Viewer :value="input" class="viewer" :tabindex="2" /> -->
 </template>
 
@@ -8,20 +8,27 @@ import gfm from '@bytemd/plugin-gfm';
 import gemoji from '@bytemd/plugin-gemoji';
 import breaks from '@bytemd/plugin-breaks';
 import frontmatter from '@bytemd/plugin-frontmatter';
-import math from '@bytemd/plugin-math-ssr';
+import math from '@bytemd/plugin-math-ssr'; // 数学公式
 import highlight from '@bytemd/plugin-highlight'; // 代码高亮
 import mediumZoom from '@bytemd/plugin-medium-zoom'; // 缩放图片
-import { Editor, Viewer } from '@bytemd/vue-next';
+import mermaid from '@bytemd/plugin-mermaid'; // 各种图
+import mermaidZh from '@bytemd/plugin-mermaid/locales/zh_Hans.json'; // 图的汉化
+import * as Bytemd from '@bytemd/vue-next';
 import zhHans from 'bytemd/locales/zh_Hans.json'; // 汉化
 import 'bytemd/dist/index.css'; // markdown编辑器样式
 import '../style/cyanosis.scss';
 import { useDomControlsHook } from '@/hooks/domControls';
-import { reactive, ref, toRefs } from 'vue';
+import { reactive, ref, toRefs, type Component } from 'vue';
+
+const { Editor, Viewer } = Bytemd as {
+  Editor: Component;
+  Viewer: Component;
+};
 
 const bytemdRef = ref();
 const editorHeight = useDomControlsHook(bytemdRef);
 
-const plugins = [gfm(), highlight(), gemoji(), mediumZoom(), breaks(), math(), frontmatter()];
+const plugins = [gfm(), highlight(), gemoji(), mediumZoom(), breaks(), math({ locale: { block: '块级公式', blockText: '公式', inline: '行内公式', inlineText: '公式' } }), frontmatter(), mermaid({ locale: mermaidZh })];
 
 const input = ref('');
 
@@ -35,6 +42,11 @@ const { editorConfig } = toRefs(config);
 
 const handleChange = (v: string) => {
   input.value = v;
+};
+
+const handleUploadImage = (file: File[]) => {
+  console.log(file);
+  return file;
 };
 </script>
 

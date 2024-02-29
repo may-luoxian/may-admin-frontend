@@ -175,12 +175,16 @@ $ded-matchingbracket: #ffffff;
 
 // 操作区域变量
 $dc-base-bg-color: #1d1e1f;
+$dc-tippy-bg-color: #191919;
 $dc-border-color: #6a6a6a;
 
 $lc-base-bg-color: #ffffff;
+$lc-tippy-bg-color: #f4f4f4;
 $lc-border-color: #cfcfcf;
+
 @mixin ControlTheme($isDark: false) {
   #{$id}-c-base-bg-color: if($isDark, $dc-base-bg-color, $lc-base-bg-color);
+  #{$id}-tippy-bg-color: if($isDark, $dc-tippy-bg-color, $lc-tippy-bg-color);
   #{$id}-c-border-color: if($isDark, $dc-border-color, $lc-border-color);
 }
 
@@ -942,5 +946,15 @@ html[data-theme='dark'] .bytemd {
     .bytemd-status-right {
       color: var(--may-ed-base-color);
     }
+  }
+  .tippy-box {
+    color: var(--may-ed-base-color);
+    background-color: var(--may-tippy-bg-color);
+    .bytemd-dropdown-item:hover {
+      background-color: var(--may-c-border-color);
+    }
+  }
+  .bytemd-tippy:hover {
+    background-color: var(--may-c-border-color);
   }
 }
