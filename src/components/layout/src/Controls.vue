@@ -27,7 +27,7 @@ const handleLogout = () => {
 };
 
 const avatar = computed(() => {
-  return getUserInfo.avatar || '../src/assets/images/default-avatar.jpg';
+  return getUserInfo.avatar || '/src/assets/images/default-avatar.jpg';
 });
 </script>
 
