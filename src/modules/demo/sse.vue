@@ -1,15 +1,17 @@
 <template>
-  <el-header class="may-title">
-    <span>SSE</span>
-  </el-header>
-  <el-main>
-    <div class="border-solid border-2 border-indigo-600 w-2/5 h-96 mb-2 overflow-auto">
-      <div v-for="item in data" :key="item">{{ item }}</div>
-    </div>
-    <el-button @click="init">初始化</el-button>
-    <el-button type="primary" @click="handleConnectSSE" :disabled="isConnection">{{ isConnection ? '已连接' : '建立连接' }}</el-button>
-    <el-button type="danger" @click="handleCloseSSE">断开连接</el-button>
-  </el-main>
+  <div>
+    <el-header class="may-title">
+      <span>SSE</span>
+    </el-header>
+    <el-main>
+      <div class="border-solid border-2 border-indigo-600 w-2/5 h-96 mb-2 overflow-auto">
+        <div v-for="item in data" :key="item">{{ item }}</div>
+      </div>
+      <el-button @click="init">初始化</el-button>
+      <el-button type="primary" @click="handleConnectSSE" :disabled="isConnection">{{ isConnection ? '已连接' : '建立连接' }}</el-button>
+      <el-button type="danger" @click="handleCloseSSE">断开连接</el-button>
+    </el-main>
+  </div>
 </template>
 
 <script setup lang="ts">
