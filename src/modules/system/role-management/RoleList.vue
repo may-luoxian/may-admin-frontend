@@ -10,7 +10,7 @@
         <el-button type="danger" @click="handleDeleteRoles">删除角色</el-button>
       </div>
     </div>
-    <el-table ref="roleTableRef" :data="roleList" :row-class-name="rowClassName" :height="roleMaxHeight - 240" size="large" border @row-click="handleRowClick" @selection-change="handleSelectionChange">
+    <el-table ref="roleTableRef" :data="roleList" :row-class-name="rowClassName" size="large" border @row-click="handleRowClick" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
       <el-table-column label="角色名" prop="roleName" align="center" min-width="100"></el-table-column>
       <el-table-column label="是否禁用" prop="isDisable" align="center" min-width="80">
@@ -36,12 +36,10 @@
 <script setup lang="ts">
 import AddRoleDialog from '@/modules/system/role-management/AddRoleDialog.vue';
 import { defHttp } from '@/utils/http/axios';
-import { useDomControlsHook } from '@/hooks/domControls';
 import { ref, onMounted, reactive, toRefs, unref } from 'vue';
 import { ElNotification, ElMessageBox } from 'element-plus';
 
 const roleTableRef = ref<any>();
-const roleMaxHeight = useDomControlsHook(roleTableRef);
 const addRoleDialogRef = ref<any>();
 let selectedIds = ref([]);
 const emit = defineEmits(['handleRowClick']);

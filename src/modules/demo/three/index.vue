@@ -1,15 +1,13 @@
 <template>
-  <div ref="threeMapRef" class="three-map" :style="{ height: mapHeight + 'px' }" v-resize="refreshRenderer"></div>
+  <div ref="threeMapRef" class="three-map h-full" v-resize="refreshRenderer"></div>
 </template>
 
 <script setup lang="ts">
-import { useDomControlsHook } from '@/hooks/domControls';
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ChinaMap } from './chinaMap';
 const threeMapRef = ref<any>();
-const mapHeight = useDomControlsHook(threeMapRef);
 
 let renderer: any = null; // 渲染器
 let camera: any = null; // 相机

@@ -1,9 +1,9 @@
 <template>
-  <div class="enable-modules">
+  <div class="enable-modules h-full">
     <div class="text-xl font-bold w-full">
       <span>启用</span>
     </div>
-    <div ref="enableRef" class="overflow-auto list-box relative rounded transition-all" :style="{ 'height': enableHeight - 240 + 'px' }">
+    <div ref="enableRef" class="enable-content overflow-auto list-box relative rounded transition-all">
       <Card class="absolute card transition-all" v-for="item in hasPositionList" :key="item.id" :data-id="item.id" :data="item" :computeWidth="true" :style="{ 'top': item.top + 'px', 'left': item.left + 'px' }" @refreshStyle="refreshStyle">
         <template #title>
           <span>{{ item.name }}</span>
@@ -16,13 +16,11 @@
 <script setup lang="ts">
 import Card from '@/modules/system/home-management/Card.vue';
 import { ref, onMounted } from 'vue';
-import { useDomControlsHook } from '@/hooks/domControls';
 import { absoluteElPosition } from '@/utils';
 import Sortable from 'sortablejs';
 import emitter from '@/utils/mitt';
 
 const enableRef = ref();
-let enableHeight = useDomControlsHook(enableRef) || 0;
 
 const sortable = ref();
 
@@ -103,4 +101,8 @@ defineExpose({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.enable-content {
+  height: calc(100% - 32px);
+}
+</style>

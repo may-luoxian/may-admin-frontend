@@ -1,20 +1,22 @@
 <template>
-  <el-header class="may-title"> 角色管理 </el-header>
-  <div ref="draggedRef" class="may-container flex relative">
-    <div class="w-3/5 h-full border-2 dark:border-slate-700 rounded border-solid">
-      <RoleList @handleRowClick="handleRowClick" />
-    </div>
-    <div class="w-6 cursor-col-resize" @mousedown="mouseDown" @mouseup="mouseUp"></div>
-    <div class="w-2/5 h-full border-2 dark:border-slate-700 rounded border-solid">
-      <el-tabs ref="resourceTabsRef" v-model="listTab" class="overflow-auto" :style="{ height: resourceMaxHeight - 240 + 'px' }" type="border-card" @tab-change="handleTabChange">
-        <el-tab-pane :name="LIST_TAB.MENU" label="菜单列表">
-          <MenuList ref="menuListRef" />
-        </el-tab-pane>
-        <el-tab-pane :name="LIST_TAB.RESOURCE" label="资源列表">
-          <ResourceList ref="resourceListRef" />
-        </el-tab-pane>
-      </el-tabs>
-      <el-button class="my-2 float-right mr-2" type="primary" @click="handleSave">保存</el-button>
+  <div>
+    <el-header class="may-title"> 角色管理 </el-header>
+    <div ref="draggedRef" class="may-container flex relative">
+      <div class="w-3/5 border-2 dark:border-slate-700 rounded border-solid">
+        <RoleList @handleRowClick="handleRowClick" />
+      </div>
+      <div class="w-6 cursor-col-resize" @mousedown="mouseDown" @mouseup="mouseUp"></div>
+      <div class="w-2/5 border-2 dark:border-slate-700 rounded border-solid">
+        <el-tabs ref="resourceTabsRef" v-model="listTab" class="overflow-auto" type="border-card" @tab-change="handleTabChange">
+          <el-tab-pane :name="LIST_TAB.MENU" label="菜单列表">
+            <MenuList ref="menuListRef" />
+          </el-tab-pane>
+          <el-tab-pane :name="LIST_TAB.RESOURCE" label="资源列表">
+            <ResourceList ref="resourceListRef" />
+          </el-tab-pane>
+        </el-tabs>
+        <el-button class="my-2 float-right mr-2" type="primary" @click="handleSave">保存</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -23,7 +25,6 @@
 import RoleList from '@/modules/system/role-management/RoleList.vue';
 import MenuList from '@/modules/system/role-management/MenuList.vue';
 import ResourceList from '@/modules/system/role-management/ResourceList.vue';
-import { useDomControlsHook } from '@/hooks/domControls';
 import { useDomDraggedHook } from '@/hooks/domDragged';
 import { ref } from 'vue';
 import { ElNotification } from 'element-plus';
@@ -36,7 +37,6 @@ enum LIST_TAB {
 
 const resourceTabsRef = ref<any>();
 const draggedRef = ref<any>();
-const resourceMaxHeight = useDomControlsHook(resourceTabsRef);
 const menuListRef = ref<any>();
 const resourceListRef = ref<any>();
 let listTab = ref<number>(LIST_TAB.MENU);

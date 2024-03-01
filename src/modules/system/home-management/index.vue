@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-style2">
+  <div class="bg-style2 h-full">
     <el-header class="may-title">
       <span>门户管理</span>
       <div class="float-right">
@@ -14,12 +14,12 @@
         <el-button class="mr-4" type="primary" :loading="loading" @click="handleEditOrSave">{{ editStatus ? '保存' : '启用门户' }}</el-button>
       </div>
     </el-header>
-    <main class="may-container">
-      <el-row :gutter="40">
-        <el-col :span="18" class="relative">
+    <main class="may-container home-main">
+      <el-row :gutter="20" class="h-full">
+        <el-col :span="18" class="relative h-full">
           <EnableModels ref="enableModelsRef" @refreshStyle="refreshStyle" @updateEnableModel="updateEnableModel" @enableModel="enableModel" />
         </el-col>
-        <el-col :span="6" class="relative">
+        <el-col :span="6" class="relative h-full">
           <NotEnableModels :notEnableList="notEnableList" :isDisableNotEnableDrag="isDisableNotEnableDrag" @notEnableModel="notEnableModel" />
         </el-col>
       </el-row>
@@ -300,4 +300,8 @@ const computedControls = computed(() => {
 const isDisableNotEnableDrag = computed(() => controlStatus.value === EditStatusEnum.USER_EDIT);
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.home-main {
+  height: calc(100% - 76px);
+}
+</style>

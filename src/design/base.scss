@@ -79,3 +79,20 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(144, 147, 153, 0.3);
 }
+
+.fade-slide-leave-active,
+.fade-slide-enter-active {
+  transition: all 0.3s;
+}
+
+.fade-slide-enter-from {
+  transform: translateX(-30px);
+  position: absolute;
+  opacity: 0;
+}
+
+.fade-slide-leave-to {
+  transform: translateX(30px);
+  position: absolute;
+  opacity: 0;
+}

@@ -1,7 +1,7 @@
 <template>
-  <div class="not-enable-modules">
+  <div class="not-enable-modules h-full">
     <div class="text-lg font-bold w-full">未启用</div>
-    <div ref="notEnableRef" class="overflow-auto list-box relative" :style="{ 'height': notEnableHeight - 240 + 'px' }">
+    <div ref="notEnableRef" class="not-enable-content overflow-auto list-box relative">
       <Card class="mb-4 card" v-for="item in notEnableList" :key="item.id" :data-id="item.id" :data="item">
         <template #title>
           <span>{{ item.name }}</span>
@@ -14,12 +14,10 @@
 <script setup lang="ts">
 import Card from '@/modules/system/home-management/Card.vue';
 import { ref, toRefs, onMounted, watch } from 'vue';
-import { useDomControlsHook } from '@/hooks/domControls';
 import Sortable from 'sortablejs';
 import emitter from '@/utils/mitt';
 
 const notEnableRef = ref();
-let notEnableHeight = useDomControlsHook(notEnableRef) || 0;
 
 interface Props {
   notEnableList: any[];
@@ -84,3 +82,9 @@ const setStyleToNotEnable = (dom: any) => {
   dom.style.marginBottom = '16px';
 };
 </script>
+
+<style lang="scss" scoped>
+.not-enable-content {
+  height: calc(100% - 32px);
+}
+</style>

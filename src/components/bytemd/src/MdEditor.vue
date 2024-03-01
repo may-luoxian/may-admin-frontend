@@ -1,5 +1,5 @@
 <template>
-  <Editor ref="bytemdRef" :value="input" :plugins="plugins" :locale="zhHans" :editorConfig="editorConfig" :uploadImages="handleUploadImage" @change="handleChange" :style="{ height: editorHeight + 'px' }" />
+  <Editor ref="bytemdRef" class="h-full" :value="input" :plugins="plugins" :locale="zhHans" :editorConfig="editorConfig" :uploadImages="handleUploadImage" @change="handleChange" />
   <!-- <Viewer :value="input" class="viewer" :tabindex="2" /> -->
 </template>
 
@@ -15,18 +15,14 @@ import mermaid from '@bytemd/plugin-mermaid'; // 各种图
 import mermaidZh from '@bytemd/plugin-mermaid/locales/zh_Hans.json'; // 图的汉化
 import * as Bytemd from '@bytemd/vue-next';
 import zhHans from 'bytemd/locales/zh_Hans.json'; // 汉化
-import 'bytemd/dist/index.css'; // markdown编辑器样式
-import '../style/cyanosis.scss';
-import { useDomControlsHook } from '@/hooks/domControls';
+import 'bytemd/dist/index.css'; // markdown编辑器基础样式
+import '../style/cyanosis.scss'; // markdown编辑器配置样式
 import { reactive, ref, toRefs, type Component } from 'vue';
 
 const { Editor, Viewer } = Bytemd as {
   Editor: Component;
   Viewer: Component;
 };
-
-const bytemdRef = ref();
-const editorHeight = useDomControlsHook(bytemdRef);
 
 const plugins = [gfm(), highlight(), gemoji(), mediumZoom(), breaks(), math({ locale: { block: '块级公式', blockText: '公式', inline: '行内公式', inlineText: '公式' } }), frontmatter(), mermaid({ locale: mermaidZh })];
 
