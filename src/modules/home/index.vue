@@ -1,6 +1,5 @@
 <template>
-  <!-- 容器 -->
-  <div class="home bg-style2 p-4 overflow-auto h-full">
+  <div class="bg-style2 p-4">
     <!-- 门户块 -->
     <el-row ref="elRow" :gutter="10">
       <el-col class="mb-2" :span="setItemSpan(item.widthValue)" v-for="item in homeList" :key="item.id">

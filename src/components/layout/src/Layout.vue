@@ -9,7 +9,7 @@
       </el-header>
       <div ref="layoutContentRef" class="layout-content overflow-auto" :style="{ height: maxHeight + 'px' }">
         <router-view v-slot="{ Component }">
-          <transition name="fade-slide">
+          <transition name="fade-slide" mode="out-in">
             <component :is="Component" />
           </transition>
         </router-view>

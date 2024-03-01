@@ -87,12 +87,10 @@ body {
 
 .fade-slide-enter-from {
   transform: translateX(-30px);
-  position: absolute;
   opacity: 0;
 }
 
 .fade-slide-leave-to {
   transform: translateX(30px);
-  position: absolute;
   opacity: 0;
 }
