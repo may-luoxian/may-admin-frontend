@@ -77,7 +77,6 @@
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-mock": "^2.9.6",
     "vite-plugin-purge-icons": "^0.9.2",
-    "vite-plugin-svg-icons": "^2.0.1",
-    "vue-tsc": "^1.2.0"
+    "vite-plugin-svg-icons": "^2.0.1"
   }
 }

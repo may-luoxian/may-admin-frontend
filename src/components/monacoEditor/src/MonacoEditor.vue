@@ -1,7 +1,6 @@
 <template>
   <div class="h-full">
-    <div ref="monacoRef" class="h-full"></div>
-    <!-- <div>{{ editorOpt.editorOption.value }}</div> -->
+    <div ref="monacoRef" class="monaco"></div>
   </div>
 </template>
 
@@ -13,11 +12,11 @@ import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 import { ref, onMounted, reactive, watch, nextTick, toRefs } from 'vue';
-import { useAppStore } from '@/stores/modules/app.ts';
+import { useAppStore } from '@/stores/modules/app';
 
 const monacoRef = ref();
 const { themeConfig } = useAppStore();
-let monacoEditor = null;
+let monacoInstance: any = null; // 编辑器实例
 
 const editorOpt = reactive({
   editorOption: {
@@ -25,13 +24,22 @@ const editorOpt = reactive({
     language: 'typescript',
     theme: themeConfig.theme ? 'vs-dark' : 'vs-light',
     automaticLayout: true,
+    fontSize: 18,
   },
+  activeValue: '',
 });
+
+const { editorOption, activeValue } = toRefs(editorOpt);
+
 onMounted(async () => {
   await nextTick();
   initMonaco();
+  registerEventListener();
 });
 
+/**
+ * 初始化编辑器
+ */
 const initMonaco = () => {
   self.MonacoEnvironment = {
     getWorker(_, label) {
@@ -50,19 +58,32 @@ const initMonaco = () => {
       return new editorWorker();
     },
   };
-  monacoEditor = monaco.editor.create(monacoRef.value, editorOpt.editorOption);
+  monacoInstance = monaco.editor.create(monacoRef.value, editorOpt.editorOption);
+  activeValue.value = editorOption.value.value;
 };
 
 const updateOption = (config: object) => {
-  if (monacoEditor) {
-    monacoEditor.updateOptions(config);
+  if (monacoInstance) {
+    monacoInstance.updateOptions(config);
   }
+};
+
+/**
+ * 注册编辑器事件
+ */
+const registerEventListener = () => {
+  if (!monacoInstance) {
+    return;
+  }
+  // 监听内容改变
+  monacoInstance.onDidChangeModelContent(() => {
+    activeValue.value = monacoInstance.getValue();
+  });
 };
 
 watch(
   () => themeConfig.theme,
   (nv) => {
-    const { editorOption } = toRefs(editorOpt);
     if (nv) {
       editorOption.value.theme = 'vs-dark';
     } else {
@@ -73,4 +94,8 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.monaco {
+  height: calc(100% - 40px);
+}
+</style>

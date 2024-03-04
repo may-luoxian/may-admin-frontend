@@ -31,7 +31,7 @@ const avatar = computed(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .drowdown-class {
   .el-dropdown-menu__item {
     padding: 6px 24px;
