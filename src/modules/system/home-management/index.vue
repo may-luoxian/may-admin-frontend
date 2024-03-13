@@ -2,10 +2,10 @@
   <div class="bg-style2 h-full">
     <el-header class="may-title">
       <span>门户管理</span>
-      <div class="float-right">
+      <div class="h-full flex items-center float-right">
         <el-button class="mr-4" type="primary" :disabled="editStatus" @click="handleCreateHome">创建门户块</el-button>
         <el-tag class="mr-4" size="large">操作状态：{{ computedControls }}</el-tag>
-        <el-select v-model="queryParams.roleId" class="mr-4" placeholder="请选择角色" clearable>
+        <el-select v-model="queryParams.roleId" class="mr-4" placeholder="请选择角色" clearable style="width: 260px">
           <el-option v-for="item in roleList" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
         <el-button class="mr-4" type="primary" @click="handlePreviewRole" :disabled="editStatus">预览角色门户</el-button>

@@ -188,9 +188,11 @@ $lc-border-color: #cfcfcf;
   #{$id}-c-border-color: if($isDark, $dc-border-color, $lc-border-color);
 }
 
-html .bytemd {
-  @include EditorTheme(false);
-  @include ControlTheme(false);
+html {
+  .bytemd {
+    @include EditorTheme(false);
+    @include ControlTheme(false);
+  }
   .markdown-body {
     @include PreviewTheme(false);
     /* 高亮代码块样式 */
@@ -289,9 +291,11 @@ html .bytemd {
     }
   }
 }
-html[data-theme='dark'] .bytemd {
-  @include EditorTheme(true);
-  @include ControlTheme(true);
+html[data-theme='dark'] {
+  .bytemd {
+    @include EditorTheme(true);
+    @include ControlTheme(true);
+  }
   .markdown-body {
     @include PreviewTheme(true);
     /* 高亮代码块样式 */
