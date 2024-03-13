@@ -1,9 +1,9 @@
 <template>
   <div class="may-container bg-style2 flex gap-2">
-    <el-card class="w-1/2" body-class="card">
+    <el-card class="w-1/2">
       <MdViewer ref="mdViewerRef" :value="viewerValue" />
     </el-card>
-    <el-card class="w-1/2" body-class="card">
+    <el-card class="w-1/2">
       <MonacoEditor ref="monacoEditorRef" />
     </el-card>
   </div>
@@ -28,8 +28,8 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
-.card {
+<style lang="scss" scoped>
+:deep(.el-card__body) {
   height: calc(100vh - 120px);
   @apply overflow-auto;
 }
