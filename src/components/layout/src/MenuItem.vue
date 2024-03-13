@@ -6,7 +6,7 @@
           <i :class="item.icon" class="mr-2"></i>
           <span v-if="!props.isCollapse">{{ item.name }}</span>
         </template>
-        <MenuItem :menuTable="item.children" :selectedMenu="selectedMenu" :isCollapse="false"> </MenuItem>
+        <MenuItem :menuTable="item.children" :selectedMenu="selectedMenu" :isCollapse="false" />
       </el-sub-menu>
       <el-menu-item v-else :class="isActiveMenu(item.path)" :index="item.path">
         <i :class="item.icon" class="mr-2"></i>

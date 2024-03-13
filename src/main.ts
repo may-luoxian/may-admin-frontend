@@ -10,6 +10,7 @@ import { i18n } from './locales';
 import { components, plugins } from '@/plugins/element-plus';
 import { ElNotification } from 'element-plus';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
+import { SvgIcon } from './components/icon';
 
 // 路由守卫
 import '@/router/guard';
@@ -45,6 +46,11 @@ components.forEach((component) => {
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
+const allGlobalComponents: any = { SvgIcon };
+Object.keys(allGlobalComponents).forEach((componentName) => {
+  app.component(componentName, allGlobalComponents[componentName]);
+});
+
 plugins.forEach((plugin) => {
   app.use(plugin);
 });

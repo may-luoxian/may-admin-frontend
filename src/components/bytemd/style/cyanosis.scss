@@ -93,7 +93,7 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
 }
 
 // 编辑区域变量
-$led-baseBgColor: #f7f7f7;
+$led-baseBgColor: #ffffff;
 $led-baseColor: #3a3432;
 $led-bgSelected: #d6d5d4;
 $led-bgSelection: #d6d5d4;
@@ -119,7 +119,7 @@ $led-cmError: #5c5855;
 $led-bgActiveline: #e8f2ff;
 $led-matchingbracket: #a16a94;
 
-$ded-baseBgColor: #090300;
+$ded-baseBgColor: #1d1e1f;
 $ded-baseColor: #d6d5d4;
 $ded-bgSelected: #3a3432;
 $ded-bgSelection: rgba(58, 52, 50, 0.99);
@@ -174,11 +174,11 @@ $ded-matchingbracket: #ffffff;
 }
 
 // 操作区域变量
-$dc-base-bg-color: #1d1e1f;
+$dc-base-bg-color: #131313;
 $dc-tippy-bg-color: #191919;
 $dc-border-color: #6a6a6a;
 
-$lc-base-bg-color: #ffffff;
+$lc-base-bg-color: #fbfbfb;
 $lc-tippy-bg-color: #f4f4f4;
 $lc-border-color: #cfcfcf;
 
@@ -906,7 +906,7 @@ html[data-theme='dark'] .bytemd {
   border: 1px solid var(--may-c-border-color);
   .bytemd-toolbar {
     color: var(--may-ed-base-color);
-    background-color: var(--may-ed-base-bg-color);
+    background-color: var(--may-c-base-bg-color);
     border-bottom: 1px solid var(--may-c-border-color);
   }
   .bytemd-preview {
@@ -914,6 +914,14 @@ html[data-theme='dark'] .bytemd {
   }
   .bytemd-status {
     border-top: 1px solid var(--may-c-border-color);
+    background-color: var(--may-c-base-bg-color);
+    &::after {
+      content: '';
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
+    }
     .bytemd-status-left,
     .bytemd-status-right {
       color: var(--may-ed-base-color);

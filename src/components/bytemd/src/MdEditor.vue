@@ -1,6 +1,5 @@
 <template>
-  <Editor ref="bytemdRef" class="h-full" :value="input" :plugins="plugins" :locale="zhHans" :editorConfig="editorConfig" :uploadImages="handleUploadImage" @change="handleChange" />
-  <!-- <Viewer :value="input" class="viewer" :tabindex="2" /> -->
+  <Editor ref="bytemdRef" class="editor h-full" :value="props.value" :plugins="plugins" :locale="zhHans" :editorConfig="editorConfig" :uploadImages="handleUploadImage" @change="handleChange" />
 </template>
 
 <script setup lang="ts">
@@ -17,16 +16,21 @@ import * as Bytemd from '@bytemd/vue-next';
 import zhHans from 'bytemd/locales/zh_Hans.json'; // 汉化
 import 'bytemd/dist/index.css'; // markdown编辑器基础样式
 import '../style/cyanosis.scss'; // markdown编辑器配置样式
-import { reactive, ref, toRefs, type Component } from 'vue';
+import { reactive, toRefs, type Component } from 'vue';
 
-const { Editor, Viewer } = Bytemd as {
+const { Editor } = Bytemd as {
   Editor: Component;
   Viewer: Component;
 };
 
 const plugins = [gfm(), highlight(), gemoji(), mediumZoom(), breaks(), math({ locale: { block: '块级公式', blockText: '公式', inline: '行内公式', inlineText: '公式' } }), frontmatter(), mermaid({ locale: mermaidZh })];
 
-const input = ref('');
+interface Props {
+  value: string;
+}
+const props = withDefaults(defineProps<Props>(), {});
+
+const emit = defineEmits(['update:value']);
 
 const config = reactive({
   editorConfig: {
@@ -37,7 +41,7 @@ const config = reactive({
 const { editorConfig } = toRefs(config);
 
 const handleChange = (v: string) => {
-  input.value = v;
+  emit('update:value', v);
 };
 
 const handleUploadImage = (file: File[]) => {

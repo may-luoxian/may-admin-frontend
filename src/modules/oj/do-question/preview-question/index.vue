@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { MonacoEditor } from '@/components/MonacoEditor/index';
+import { MonacoEditor } from '@/components/monacoEditor';
 </script>
 
 <style lang="scss" scoped></style>

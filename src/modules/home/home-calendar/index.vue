@@ -42,7 +42,6 @@
 
 <script setup lang="ts">
 import { toRefs, onMounted, ref } from 'vue';
-import SvgIcon from '@/components/icon/src/SvgIcon.vue';
 import * as echarts from 'echarts';
 
 interface Props {
