@@ -3,8 +3,8 @@
     <el-header class="may-title">
       <span class="mr-4">菜单管理</span>
       <div class="float-right h-full leading-10 flex items-center">
-        <el-input v-model="queryParams.name" placeholder="请输入菜单名称" clearable style="width: 240px; margin-right: 16px" />
-        <el-select v-model="queryParams.menuType" placeholder="请输入菜单名称" clearable style="width: 240px; margin-right: 16px">
+        <el-input v-model="queryParams.name" placeholder="请输入菜单名称" clearable style="width: 260px; margin-right: 16px" />
+        <el-select v-model="queryParams.menuType" placeholder="请输入菜单名称" clearable style="width: 260px; margin-right: 16px">
           <el-option :value="0" label="目录"></el-option>
           <el-option :value="1" label="菜单"></el-option>
         </el-select>

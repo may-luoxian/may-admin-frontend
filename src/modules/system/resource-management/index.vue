@@ -3,30 +3,18 @@
     <el-header class="may-title">
       <span>接口管理</span>
       <div class="float-right h-full leading-10 flex items-center">
+        <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" style="width: 260px; margin-right: 16px" />
+        <el-select v-model="queryParams.requestMethod" placeholder="请选择请求类型" clearable style="width: 260px; margin-right: 16px">
+          <el-option v-for="item in REQUEST_METHODS_CONSTANT" :key="item.id" :value="item.method" :label="item.method" />
+        </el-select>
+        <el-select v-model="queryParams.isAnonymous" placeholder="请选择是否匿名" clearable style="width: 260px; margin-right: 16px">
+          <el-option v-for="item in IS_ANONYMOUS_CONSTANT" :key="item.id" :value="item.id" :label="item.label"></el-option>
+        </el-select>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
         <el-button type="primary" @click="handleSaveModel">新增模块</el-button>
       </div>
     </el-header>
     <div class="may-container fix">
-      <div class="may-condition">
-        <el-form :model="queryParams" label-width="120" inline>
-          <el-form-item label="资源名称：">
-            <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" />
-          </el-form-item>
-          <el-form-item label="请求类型：">
-            <el-select v-model="queryParams.requestMethod" placeholder="请选择请求类型" clearable>
-              <el-option v-for="item in REQUEST_METHODS_CONSTANT" :key="item.id" :value="item.method" :label="item.method" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="是否匿名：">
-            <el-select v-model="queryParams.isAnonymous" placeholder="请选择是否匿名" clearable>
-              <el-option v-for="item in IS_ANONYMOUS_CONSTANT" :key="item.id" :value="item.id" :label="item.label"></el-option>
-            </el-select>
-          </el-form-item>
-          <div class="float-right">
-            <el-button type="primary" @click="handleSearch">查询</el-button>
-          </div>
-        </el-form>
-      </div>
       <el-table ref="tableRef" :data="tableData" :tree-props="{ children: 'children' }" row-key="id" size="large">
         <el-table-column label="资源名称" align="center" prop="resourceName" min-width="120"></el-table-column>
         <el-table-column label="请求类型" align="center" min-width="120">
@@ -151,7 +139,7 @@ const handleDeleteResource = (row: any) => {
 
 const filterRequestMethod = (requestMethod: RequestMethod) => {
   if (requestMethod === REQUEST_METHOD_ENUM.GET) {
-    return '';
+    return 'info';
   } else if (requestMethod === REQUEST_METHOD_ENUM.POST) {
     return 'success';
   } else if (requestMethod === REQUEST_METHOD_ENUM.PUT) {

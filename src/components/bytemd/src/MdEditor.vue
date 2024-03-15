@@ -45,7 +45,6 @@ const handleChange = (v: string) => {
 };
 
 const handleUploadImage = (file: File[]) => {
-  console.log(file);
   return file;
 };
 </script>

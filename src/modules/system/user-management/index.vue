@@ -11,7 +11,7 @@
             <el-input v-model="form.nickname" placeholder="请输入昵称"></el-input>
           </el-form-item>
           <el-form-item class="query-page">
-            <el-select v-model="form.loginType" placeholder="请选择登录方式"></el-select>
+            <el-select v-model="form.loginType" placeholder="请选择登录方式" style="width: 230px"></el-select>
           </el-form-item>
         </el-form>
         <el-button type="primary" @click="handleQuery">查询</el-button>
