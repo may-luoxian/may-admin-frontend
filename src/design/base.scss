@@ -41,9 +41,6 @@ body {
   padding: 8px;
 }
 
-.fix {
-  *zoom: 1;
-}
 .fix::after {
   content: '';
   display: block;
