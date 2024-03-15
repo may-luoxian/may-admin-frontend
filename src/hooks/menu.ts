@@ -62,9 +62,21 @@ function buildAsyncRouterMap(routerMap: Array<LayoutRoute> = []): Array<LayoutRo
   return routerMap;
 }
 
+//递归过滤所有隐藏的菜单
+function menuFilter(items: any) {
+  return items.filter((item: any) => {
+    const show = !item.meta?.isHidden && !item.isHidden;
+    if (show && item.children) {
+      item.children = menuFilter(item.children);
+    }
+    return show;
+  });
+}
+
 // 将路由转换成菜单
 function transformRouteToMenu(routes: any) {
-  const cloneModList = cloneDeep(routes);
+  let cloneModList = cloneDeep(routes);
+  cloneModList = menuFilter(cloneModList);
   const list = treeMap(cloneModList, {
     conversion: (node: any) => {
       return {
@@ -72,6 +84,7 @@ function transformRouteToMenu(routes: any) {
         path: node.path,
         meta: node.meta,
         icon: node.icon,
+        isHidden: node.isHidden,
       };
     },
   });

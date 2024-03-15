@@ -3,7 +3,7 @@
     <header class="may-title px-4">
       <span>创建题目</span>
       <div class="float-right">
-        <el-button type="primary" @click="handleSubmit">提交</el-button>
+        <el-button type="primary" :loading="loading" @click="handleSubmit">提交</el-button>
       </div>
     </header>
     <main class="may-container mx-12">
@@ -13,7 +13,7 @@
         </el-form-item>
         <el-form-item label="标签：">
           <el-select class="w-full" v-model="question.tags" multiple filterable allow-create default-first-option :reserve-keyword="false" placeholder="请输入题目标签">
-            <el-option v-for="item in tagsOption" :key="item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="(item, index) in tagsOption" :key="index" :label="item" :value="item" />
           </el-select>
         </el-form-item>
         <el-form-item label="题目内容：" style="height: 500px">
@@ -42,7 +42,8 @@
 
 <script setup lang="ts">
 import { MdEditor } from '@/components/bytemd';
-import { reactive, toRefs } from 'vue';
+import { defHttp } from '@/utils/http/axios';
+import { reactive, toRefs, ref } from 'vue';
 
 interface Form {
   question: Question;
@@ -58,15 +59,16 @@ interface Question {
   judgeCase: Array<JudgeCase>; // 判题用例
 }
 
+// 用例
 interface JudgeCase {
   input: string;
   output: string;
 }
 
 interface JudgeConfig {
-  timeLimit: number;
-  memoryLimit: number;
-  stackLimit: number;
+  timeLimit: number; // 时间限制
+  memoryLimit: number; // 内存限制
+  stackLimit: number; // 堆栈限制
 }
 
 const form = reactive<Form>({
@@ -85,6 +87,8 @@ const form = reactive<Form>({
   tagsOption: [],
 });
 
+const loading = ref(false);
+
 let { question, tagsOption } = toRefs(form);
 
 const handleAddCase = () => {
@@ -99,7 +103,18 @@ const handleDeleteCase = (index: number) => {
 };
 
 const handleSubmit = () => {
-  console.log(question.value);
+  loading.value = true;
+  defHttp
+    .post({
+      url: '/oj/question/',
+      data: question.value,
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const handleUpdateContent = (v: string) => {

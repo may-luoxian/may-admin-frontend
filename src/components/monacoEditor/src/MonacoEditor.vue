@@ -96,6 +96,6 @@ watch(
 
 <style lang="scss" scoped>
 .monaco {
-  height: calc(100% - 40px);
+  height: 100%;
 }
 </style>

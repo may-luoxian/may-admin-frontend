@@ -1,11 +1,21 @@
 <template>
-  <div class="may-container bg-style2 flex gap-2">
-    <el-card class="w-1/2">
-      <MdViewer ref="mdViewerRef" :value="viewerValue" />
-    </el-card>
-    <el-card class="w-1/2">
-      <MonacoEditor ref="monacoEditorRef" />
-    </el-card>
+  <div class="may-container flex gap-4">
+    <div class="w-1/2">
+      <el-card class="left-content">
+        <template #header>
+          <el-button class="inline-block" text>题目描述</el-button>
+          <el-divider direction="vertical"></el-divider>
+          <el-button class="inline-block" text>提交记录</el-button>
+        </template>
+        <MdViewer :value="viewerValue" />
+      </el-card>
+    </div>
+    <div class="w-1/2 flex flex-col gap-4">
+      <el-card class="monaco-card h-2/3">
+        <MonacoEditor />
+      </el-card>
+      <el-card class="h-1/3"> </el-card>
+    </div>
   </div>
 </template>
 
@@ -29,8 +39,18 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.el-card__body) {
-  height: calc(100vh - 120px);
-  @apply overflow-auto;
+.left-content {
+  :deep(.el-card__header) {
+    @apply px-2 py-0 h-10 leading-10;
+  }
+  :deep(.el-card__body) {
+    height: calc(100vh - 180px);
+    @apply overflow-auto;
+  }
+}
+.monaco-card {
+  :deep(.el-card__body) {
+    height: 100%;
+  }
 }
 </style>
