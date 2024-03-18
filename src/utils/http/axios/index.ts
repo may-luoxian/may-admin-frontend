@@ -163,7 +163,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           urlPrefix: import.meta.env.VITE_GLOB_API_URL_PREFIX,
           //  是否加入时间戳
           joinTime: true,
-          // 忽略重复请求
+          // 是否忽略重复请求
           ignoreCancelToken: true,
           // 是否携带token
           withToken: true,

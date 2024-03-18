@@ -1,5 +1,6 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import type { RequestOptions, Result, UploadFileParams } from '#/axios';
+import { AxiosCanceler } from './axiosCancel';
 import { cloneDeep } from 'lodash-es';
 import { isFunction } from '@/utils/is';
 import qs from 'qs';
@@ -19,6 +20,42 @@ export class VAxios {
   }
 
   /**
+   * @description: 创建Axios实例
+   */
+  private createAxios(config: CreateAxiosOptions) {
+    this.axiosInstance = axios.create(config);
+  }
+
+  private getTransform() {
+    const { transform } = this.options;
+    return transform;
+  }
+
+  getAxios(): AxiosInstance {
+    return this.axiosInstance;
+  }
+
+  /**
+   * @description: 重置Axios配置
+   */
+  configAxios(config: CreateAxiosOptions) {
+    if (!this.axiosInstance) {
+      return;
+    }
+    this.createAxios(config);
+  }
+
+  /**
+   * @description: 设置请求头
+   */
+  setHeader(headers: any): void {
+    if (!this.axiosInstance) {
+      return;
+    }
+    Object.assign(this.axiosInstance.defaults.headers, headers);
+  }
+
+  /**
    * @description: 配置，注册拦截器
    */
   private setupInterceptors() {
@@ -31,8 +68,14 @@ export class VAxios {
     }
     const { requestInterceptors, requestInterceptorsCatch, responseInterceptors, responseInterceptorsCatch } = transform;
 
+    const axiosCanceler = new AxiosCanceler();
+
     this.axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
       // 取消请求流程
+      const requestOptions = (config as unknown as any).requestOptions ?? this.options.requestOptions;
+      const ignoreCancelToken = requestOptions?.ignoreCancelToken ?? true;
+
+      !ignoreCancelToken && axiosCanceler.addPending(config);
 
       // 请求拦截处理
       if (requestInterceptors && isFunction(requestInterceptors)) {
@@ -46,7 +89,7 @@ export class VAxios {
 
     this.axiosInstance.interceptors.response.use((res: AxiosResponse<any>) => {
       // 取消请求流程
-
+      res && axiosCanceler.removePending(res.config);
       // 响应拦截处理
       if (responseInterceptors && isFunction(responseInterceptors)) {
         res = responseInterceptors(res);
@@ -62,9 +105,42 @@ export class VAxios {
       });
   }
 
-  private getTransform() {
-    const { transform } = this.options;
-    return transform;
+  /**
+   * @description: 文件上传
+   */
+  uploadFile<T = any>(config: AxiosRequestConfig, params: UploadFileParams) {
+    const formData = new window.FormData();
+    const customFilename = params.name || 'file';
+
+    if (params.filename) {
+      formData.append(customFilename, params.file, params.filename);
+    } else {
+      formData.append(customFilename, params.file);
+    }
+
+    if (params.data) {
+      Object.keys(params.data).forEach((key) => {
+        const value = params.data![key];
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            formData.append(`${key}[]`, item);
+          });
+          return;
+        }
+
+        formData.append(key, params.data![key]);
+      });
+    }
+
+    return this.axiosInstance.request<T>({
+      ...config,
+      method: 'POST',
+      data: formData,
+      headers: {
+        'Content-type': ContentTypeEnum.FORM_DATA,
+        ignoreCancelToken: true,
+      },
+    });
   }
 
   // 支持 form-data
@@ -91,15 +167,20 @@ export class VAxios {
       conf.signal = config.signal;
     }
     const transform = this.getTransform();
+
     const { requestOptions } = this.options;
+
     const opt: RequestOptions = Object.assign({}, requestOptions, options);
+
     const { beforeRequestHook, transformResponseHook, requestCatchHook } = transform || {};
     // 请求前处理
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
       conf = beforeRequestHook(conf, opt);
     }
     conf.requestOptions = opt;
+
     conf = this.supportFormData(conf);
+
     return new Promise((resolve, reject) => {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)

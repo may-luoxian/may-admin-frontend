@@ -59,7 +59,7 @@ onMounted(() => {
     @apply px-2 py-0 h-10 leading-10;
   }
   :deep(.el-card__body) {
-    height: calc(100vh - 180px);
+    height: calc(100vh - 160px);
     @apply overflow-auto;
   }
 }
