@@ -20,7 +20,7 @@
           <el-input v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item label="头像" prop="avatar">
-          <el-upload class="avatar-uploader" :action="upload.url" :headers="upload.headers" :show-file-list="false" accept=".jpg, .png" :on-success="handleAvatarSuccess">
+          <el-upload class="avatar-uploader" :http-request="handleUpload" :show-file-list="false" accept=".jpg, .png">
             <img v-if="form.avatar" :src="form.avatar" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon">
               <Plus />
@@ -76,12 +76,6 @@ interface Form {
 
 const visible = ref(false);
 const formRef = ref<FormInstance>();
-const upload = reactive({
-  url: import.meta.env.VITE_DEV_URL + '/admin/users/avatar',
-  headers: {
-    'Authorization': getToken(),
-  },
-});
 const form = reactive<Form>({
   loginType: 3,
   isSubscribe: 0,
@@ -103,8 +97,20 @@ const open = () => {
   visible.value = true;
 };
 
-const handleAvatarSuccess: UploadProps['onSuccess'] = (res) => {
-  form.avatar = res.data;
+const handleUpload = (e: any) => {
+  defHttp
+    .uploadFile(
+      {
+        url: '/api/admin/users/avatar',
+      },
+      {
+        file: e.file,
+        filename: e.file.name,
+      }
+    )
+    .then(({ data }) => {
+      form.avatar = data.data;
+    });
 };
 
 const confirm = () => {
