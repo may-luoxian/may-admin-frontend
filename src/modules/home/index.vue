@@ -1,10 +1,12 @@
 <template>
-  <div class="bg-style2 p-4">
+  <div class="min-h-full bg-style2 p-4">
     <!-- 门户块 -->
     <el-row ref="elRow" :gutter="10">
-      <el-col class="mb-2" :span="setItemSpan(item.widthValue)" v-for="item in homeList" :key="item.id">
+      <el-col class="mb-2 enter-y" :span="setItemSpan(item.widthValue)" v-for="item in homeList" :key="item.id">
         <!-- 日历图 -->
-        <home-calendar :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_Calendar" />
+        <home-calendar :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_CALENDAR" />
+        <!-- 快捷导航 -->
+        <home-quick-navigation :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_QUICK_NAVIGATION" />
         <!-- home-demo2 -->
         <home-demo2 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO2" />
         <!-- home-demo3 -->
@@ -37,6 +39,7 @@ import { useAppStore } from '@/stores/modules/app';
  * 异步引入各个门户块
  */
 const homeCalendar = defineAsyncComponent(() => import('@/modules/home/home-calendar/index.vue'));
+const homeQuickNavigation = defineAsyncComponent(() => import('@/modules/home/home-quick-navigation/index.vue'));
 const homeDemo2 = defineAsyncComponent(() => import('@/modules/home/home-demo2/index.vue'));
 const homeDemo3 = defineAsyncComponent(() => import('@/modules/home/home-demo3/index.vue'));
 const homeDemo4 = defineAsyncComponent(() => import('@/modules/home/home-demo4/index.vue'));
@@ -133,5 +136,3 @@ const handleEchartsTheme = (theme: string) => {
   });
 };
 </script>
-
-<style lang="scss" scoped></style>

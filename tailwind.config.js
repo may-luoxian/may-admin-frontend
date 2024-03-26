@@ -10,9 +10,9 @@ module.exports = {
 
 /**
  * 用于显示元素时的动画。
- * @param maxOutput maxOutput越大，css的延迟时间越长。
+ * @param maxOutput maxOutput越大，允许后续更多块延迟。
  */
-function createEnterPlugin(maxOutput = 6) {
+function createEnterPlugin(maxOutput = 30) {
   const createCss = (index, d = 'x') => {
     const upd = d.toUpperCase();
     return {
