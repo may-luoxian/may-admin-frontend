@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import router from './index';
 import { useMenuHook } from '@/hooks/menu';
-import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
+import { MAY_BLOG_TOKEN } from '@/hooks/storage';
 import { useMenuStoreWithOut } from '@/stores/modules/menu';
 import { useUserStoreWithOut } from '@/stores/modules/user';
 import { getUserRouter, getUserInfo } from '@/api/system';

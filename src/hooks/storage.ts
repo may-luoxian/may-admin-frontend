@@ -1,7 +1,9 @@
 import { isEmpty, isJSON } from '@/utils/is';
-import { MAY_BLOG_TOKEN } from '@/setting/localeSetting';
 import Cookies from 'js-cookie';
 
+export const MAY_STORAGE = 'may_blog';
+
+export const MAY_BLOG_TOKEN = 'may_blog_token';
 interface LooseObject {
   [key: string]: any;
 }

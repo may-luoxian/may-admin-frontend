@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { pinia } from '..';
-import { MAY_STORAGE } from '@/setting/localeSetting';
+import { MAY_STORAGE } from '@/hooks/storage';
 import { useStorageHook } from '@/hooks/storage';
 
 export interface PreviewUser {

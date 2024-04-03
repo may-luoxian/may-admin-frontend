@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useStorageHook } from '@/hooks/storage';
-import { MAY_STORAGE } from '@/setting/localeSetting';
+import { MAY_STORAGE } from '@/hooks/storage';
 import type { LayoutRoute } from '@/hooks/menu';
 import type { RouteRecordName } from 'vue-router';
 import { pinia } from '..';

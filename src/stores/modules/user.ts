@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { defineStore } from 'pinia';
 import { useStorageHook } from '@/hooks/storage';
-import { MAY_STORAGE, MAY_BLOG_TOKEN } from '@/setting/localeSetting';
+import { MAY_STORAGE, MAY_BLOG_TOKEN } from '@/hooks/storage';
 import { pinia } from '..';
 
 const storageHook = useStorageHook();

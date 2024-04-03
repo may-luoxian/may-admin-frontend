@@ -6,8 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useStorageHook } from '@/hooks/storage';
-import { MAY_STORAGE } from '@/setting/localeSetting';
+import { useStorageHook, MAY_STORAGE } from '@/hooks/storage';
 const useStorage = useStorageHook();
 const { setObjectStorage, removeObjectStorage } = useStorage;
 const testStorage = function () {

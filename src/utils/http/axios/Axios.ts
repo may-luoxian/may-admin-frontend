@@ -1,5 +1,5 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import type { RequestOptions, Result, UploadFileParams } from '#/axios';
+import type { RequestOptions, Result, UploadFileParams } from '.';
 import { AxiosCanceler } from './axiosCancel';
 import { cloneDeep } from 'lodash-es';
 import { isFunction } from '@/utils/is';

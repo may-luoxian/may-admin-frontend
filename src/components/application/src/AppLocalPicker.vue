@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { Icon } from '@/components/icon';
 import { useAppStore } from '@/stores/modules/app';
-import { LocaleList } from '@/setting/localeSetting';
+import { LocaleList } from '@/locales/index';
 import { storeToRefs } from 'pinia';
 
 const appStore = useAppStore();
