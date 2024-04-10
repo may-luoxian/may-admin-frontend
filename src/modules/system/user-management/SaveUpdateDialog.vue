@@ -57,9 +57,7 @@ import { LOGIN_TYPE, IS_ANONYMOUS_CONSTANT } from '@/modules/system/constant';
 import { defHttp } from '@/utils/http/axios';
 import { ElNotification } from 'element-plus';
 import { reactive, ref } from 'vue';
-import type { FormInstance, FormRules, UploadProps } from 'element-plus';
-import { useStorageHook } from '@/hooks/storage';
-const { getToken } = useStorageHook();
+import type { FormInstance, FormRules } from 'element-plus';
 
 interface Form {
   loginType?: number;
