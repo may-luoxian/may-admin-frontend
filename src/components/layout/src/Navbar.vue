@@ -81,8 +81,8 @@ const getMatched = (currentMatched: RouteRecordNormalized[]) => {
   let footPath = getPathByKey(matched[0].name, menuList, 'name');
   footPath = footPath.map((item: any) => ({ name: item.name, path: item.path, meta: item.meta }));
   breadcrumb.value = footPath;
-  let currentPath = breadcrumb.value[breadcrumb.value.length - 1].path;
-  menuStore.setSelectedMenu(currentPath);
+  let currentPath = breadcrumb.value[breadcrumb.value.length - 1]?.path;
+  currentPath && menuStore.setSelectedMenu(currentPath);
 };
 const saveTab = (currentRoutes: any) => {
   let currentRoute = currentRoutes.slice(-1)[0];

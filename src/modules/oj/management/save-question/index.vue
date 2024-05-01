@@ -3,6 +3,7 @@
     <header class="may-title px-4">
       <span>创建题目</span>
       <div class="float-right">
+        <el-button type="primary" :loading="loading" @click="handleReset">重置</el-button>
         <el-button type="primary" :loading="loading" @click="handleSubmit">提交</el-button>
       </div>
     </header>
@@ -44,6 +45,7 @@
 import { MdEditor } from '@/components/bytemd';
 import { defHttp } from '@/utils/http/axios';
 import { reactive, toRefs, ref } from 'vue';
+import { ElNotification } from 'element-plus';
 
 interface Form {
   question: Question;
@@ -110,11 +112,32 @@ const handleSubmit = () => {
       data: question.value,
     })
     .then((res) => {
-      console.log(res);
+      ElNotification({
+        title: 'success',
+        type: 'success',
+        message: res.message,
+      });
+      handleReset();
     })
     .finally(() => {
       loading.value = false;
     });
+};
+
+const handleReset = () => {
+  form.question = {
+    title: '',
+    content: '',
+    tags: [],
+    answer: '',
+    judgeConfig: {
+      timeLimit: 1000,
+      memoryLimit: 1000,
+      stackLimit: 1000,
+    },
+    judgeCase: [],
+  };
+  form.tagsOption = [];
 };
 
 const handleUpdateContent = (v: string) => {

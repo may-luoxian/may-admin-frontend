@@ -35,10 +35,13 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
 import { MonacoEditor } from '@/components/monacoEditor';
 import { MdViewer } from '@/components/bytemd';
 import { ref, onMounted } from 'vue';
 import { defHttp } from '@/utils/http/axios';
+
+const route = useRoute();
 
 const viewerValue = ref('');
 
@@ -46,6 +49,9 @@ onMounted(() => {
   defHttp
     .get({
       url: '/oj/value',
+      params: {
+        id: route.params.id,
+      },
     })
     .then((res) => {
       viewerValue.value = res.result.data;

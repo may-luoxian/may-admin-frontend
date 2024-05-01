@@ -20,8 +20,7 @@
         <el-table-column align="center" label="通过数" prop="acceptNum"></el-table-column>
         <el-table-column align="center" label="操作">
           <template #default="scope">
-            <el-button type="primary" link @click="handleModify(scope.row)">修改</el-button>
-            <el-button type="danger" link @click="handleDelete(scope.row)">删除</el-button>
+            <el-button type="primary" link @click="handleDoQuestion(scope.row)">做题</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -67,17 +66,13 @@ const handleSearch = () => {
 };
 
 /**
- * 修改题目
+ * 做题
  */
-const handleModify = (row: any) => {
+const handleDoQuestion = (row: any) => {
   router.push({
-    path: `/oj/management/save-question/${row.id}`,
+    path: `/oj/do-question/preview-question/${row.id}`,
   });
 };
-/**
- * 删除题目
- */
-const handleDelete = (row: any) => {};
 </script>
 
 <style lang="scss" scoped></style>
