@@ -68,6 +68,7 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
       proxy: {
         '/api': {
           target: 'http://localhost:8080',
+          // target: 'http://49.232.158.14:8080',
           // target: 'http://localhost:8081',
           // target: "http://www.luoxian.tech:8080",
           changeOrigin: true,

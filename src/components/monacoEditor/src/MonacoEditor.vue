@@ -63,10 +63,11 @@ const editorOpt = reactive({
     scrollBeyondLastLine: false, // 设置编辑器是否可以滚动到最后一行之后
     readOnly: false, // 是否为只读模式
   },
-  activeValue: '',
 });
 
-const { editorOption, activeValue } = toRefs(editorOpt);
+const { editorOption } = toRefs(editorOpt);
+
+const emit = defineEmits(['update:code']);
 
 onMounted(async () => {
   await nextTick();
@@ -96,7 +97,7 @@ const initMonaco = () => {
     },
   };
   monacoInstance = monaco.editor.create(monacoRef.value, editorOpt.editorOption as any);
-  activeValue.value = editorOption.value.value;
+  emit('update:code', monacoInstance.getValue());
 };
 
 const updateOption = (config: object) => {
@@ -114,7 +115,7 @@ const registerEventListener = () => {
   }
   // 监听内容改变
   monacoInstance.onDidChangeModelContent(() => {
-    activeValue.value = monacoInstance.getValue();
+    emit('update:code', monacoInstance.getValue());
   });
 };
 

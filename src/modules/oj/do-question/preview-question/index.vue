@@ -15,11 +15,11 @@
         <template #header>
           <el-select placeholder="代码" style="width: 140px"></el-select>
         </template>
-        <MonacoEditor />
+        <MonacoEditor v-model:code="code" />
         <template #footer>
           <div class="float-right">
-            <el-button>运行</el-button>
-            <el-button type="success">提交</el-button>
+            <el-button @click="handleOperation">运行</el-button>
+            <el-button type="success" @click="handleSubmit">提交</el-button>
           </div>
         </template>
       </el-card>
@@ -29,34 +29,62 @@
           <el-divider direction="vertical"></el-divider>
           <el-button class="inline-block" text>测试用例</el-button>
         </template>
+        <JudgeCaseCard :judgeCase="judgeCase" v-model:activeCase="activeCase" />
       </el-card>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import JudgeCaseCard from '@/modules/oj/do-question/preview-question/JudgeCaseCard.vue';
+
 import { useRoute } from 'vue-router';
 import { MonacoEditor } from '@/components/monacoEditor';
 import { MdViewer } from '@/components/bytemd';
 import { ref, onMounted } from 'vue';
 import { defHttp } from '@/utils/http/axios';
+import type { JudgeCase } from '../interface';
+import { ElNotification } from 'element-plus';
 
 const route = useRoute();
 
 const viewerValue = ref('');
+const judgeCase = ref<Array<JudgeCase>>();
+const activeCase = ref(0);
+const code = ref('');
 
 onMounted(() => {
+  let id = route.params.id;
   defHttp
     .get({
-      url: '/oj/value',
-      params: {
-        id: route.params.id,
-      },
+      url: `/oj/question/selectById/${id}`,
     })
     .then((res) => {
-      viewerValue.value = res.result.data;
+      viewerValue.value = `### ${res.data.title}\n${res.data.content}`;
+      judgeCase.value = res.data.judgeCase;
     });
 });
+
+/**
+ * 点击运行
+ */
+const handleOperation = () => {
+  if (!judgeCase.value) {
+    ElNotification.warning({
+      title: 'warning',
+      message: '不存在测试用例',
+    });
+    return;
+  }
+  const input = judgeCase.value[activeCase.value].input;
+  console.log(input, code.value);
+};
+/**
+ * 点击提交
+ */
+const handleSubmit = () => {
+  console.log(code.value);
+};
 </script>
 
 <style lang="scss" scoped>
