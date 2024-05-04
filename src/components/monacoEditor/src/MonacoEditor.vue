@@ -20,8 +20,8 @@ let monacoInstance: any = null; // 编辑器实例
 
 const editorOpt = reactive({
   editorOption: {
-    value: 'function twoSum(nums: number[], target: number): number[] {\n  return [];\n}',
-    language: 'typescript',
+    value: 'function twoSum(nums, target) {\n  return [];\n}',
+    language: 'javascript',
     theme: themeConfig.theme ? 'vs-dark' : 'vs-light',
     fontSize: 18,
     acceptSuggestionOnCommitCharacter: true, // 接受关于提交字符的建议
@@ -67,7 +67,14 @@ const editorOpt = reactive({
 
 const { editorOption } = toRefs(editorOpt);
 
-const emit = defineEmits(['update:code']);
+interface Props {
+  language: string;
+}
+const props = withDefaults(defineProps<Props>(), {
+  language: 'javascript',
+});
+const { language } = toRefs(props);
+const emit = defineEmits(['update:code', 'update:languages']);
 
 onMounted(async () => {
   await nextTick();
@@ -119,6 +126,9 @@ const registerEventListener = () => {
   });
 };
 
+/**
+ * 监听主题变化，修改monaco编辑器主题
+ */
 watch(
   () => themeConfig.theme,
   (nv) => {
@@ -130,6 +140,15 @@ watch(
     updateOption(editorOption.value);
   }
 );
+
+/**
+ * 监听语言变化，修改monaco编辑器语言
+ */
+watch(language, (nv) => {
+  if (monacoInstance) {
+    monaco.editor.setModelLanguage(monacoInstance.getModel(), nv);
+  }
+});
 </script>
 
 <style lang="scss" scoped>
