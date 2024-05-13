@@ -15,7 +15,7 @@
       </div>
     </el-header>
     <div class="may-container fix">
-      <el-table ref="tableRef" :data="tableData" :tree-props="{ children: 'children' }" row-key="id" size="large">
+      <el-table ref="tableRef" border :data="tableData" :tree-props="{ children: 'children' }" row-key="id" size="large">
         <el-table-column label="资源名称" align="center" prop="resourceName" min-width="120"></el-table-column>
         <el-table-column label="请求类型" align="center" min-width="120">
           <template #default="scope">

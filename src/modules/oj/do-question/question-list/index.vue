@@ -9,7 +9,7 @@
       </div>
     </el-header>
     <div class="may-container fix">
-      <el-table ref="tableRef" :data="tableData">
+      <el-table ref="tableRef" :data="tableData" border>
         <el-table-column align="center" label="标题" prop="title"></el-table-column>
         <el-table-column align="center" label="标签" prop="tags">
           <template #default="scope">

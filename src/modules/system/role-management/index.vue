@@ -2,12 +2,12 @@
   <div>
     <el-header class="may-title"> 角色管理 </el-header>
     <div ref="draggedRef" class="may-container flex relative">
-      <div class="w-3/5 border-2 dark:border-slate-700 rounded border-solid">
+      <div ref="leftRef" class="w-3/5 border-2 border-slate-300 dark:border-slate-700 rounded border-solid overflow-auto" :style="{ height: leftHeight - 200 + 'px' }">
         <RoleList @handleRowClick="handleRowClick" />
       </div>
       <div class="w-6 cursor-col-resize" @mousedown="mouseDown" @mouseup="mouseUp"></div>
-      <div class="w-2/5 border-2 dark:border-slate-700 rounded border-solid">
-        <el-tabs ref="resourceTabsRef" v-model="listTab" class="overflow-auto" type="border-card" @tab-change="handleTabChange">
+      <div ref="rightRef" class="w-2/5 border-2 border-slate-300 dark:border-slate-700 rounded border-solid overflow-auto" :style="{ height: rightHeight - 200 + 'px' }">
+        <el-tabs v-model="listTab" class="overflow-auto" type="border-card" @tab-change="handleTabChange">
           <el-tab-pane :name="LIST_TAB.MENU" label="菜单列表">
             <MenuList ref="menuListRef" />
           </el-tab-pane>
@@ -15,7 +15,10 @@
             <ResourceList ref="resourceListRef" />
           </el-tab-pane>
         </el-tabs>
-        <el-button class="my-2 float-right mr-2" type="primary" @click="handleSave">保存</el-button>
+        <div class="fix">
+          <el-button class="my-2 float-right mr-2" type="primary" @click="handleSave">保存</el-button>
+        </div>
+        <el-divider style="margin: 0"></el-divider>
       </div>
     </div>
   </div>
@@ -29,13 +32,18 @@ import { useDomDraggedHook } from '@/hooks/domDragged';
 import { ref } from 'vue';
 import { ElNotification } from 'element-plus';
 import { defHttp } from '@/utils/http/axios';
+import { useDomControlsHook } from '@/hooks/domControls';
 
 enum LIST_TAB {
   MENU,
   RESOURCE,
 }
 
-const resourceTabsRef = ref<any>();
+const leftRef = ref();
+const leftHeight = useDomControlsHook(leftRef);
+const rightRef = ref();
+const rightHeight = useDomControlsHook(leftRef);
+
 const draggedRef = ref<any>();
 const menuListRef = ref<any>();
 const resourceListRef = ref<any>();
@@ -91,5 +99,3 @@ const handleSave = async () => {
   }
 };
 </script>
-
-<style lang="scss" scope></style>
