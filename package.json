@@ -33,6 +33,7 @@
     "mitt": "^3.0.1",
     "mockjs": "^1.1.0",
     "monaco-editor": "^0.46.0",
+    "ol": "^9.1.0",
     "path": "^0.12.7",
     "pinia": "2.1.4",
     "pinia-plugin-persistedstate": "^3.2.1",
