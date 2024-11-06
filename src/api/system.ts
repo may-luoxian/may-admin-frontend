@@ -7,7 +7,7 @@ export const login = (username: string, password: string) => {
     password,
   };
   return defHttp.post({
-    url: '/users/login',
+    url: '/auth/users/login',
     data,
     headers: {
       'Content-Type': ContentTypeEnum.FORM_URLENCODED,
