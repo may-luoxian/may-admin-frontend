@@ -41,6 +41,7 @@ import {
   ElIcon,
   ElProgress,
   ElInputNumber,
+  ElCascader,
 } from 'element-plus';
 
 export const components = [
@@ -85,5 +86,6 @@ export const components = [
   ElIcon,
   ElProgress,
   ElInputNumber,
+  ElCascader,
 ];
 export const plugins = [ElDropdown];

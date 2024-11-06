@@ -53,7 +53,7 @@ const { t } = useI18n();
 const loginBtnRef = ref();
 
 const form = reactive({
-  username: 'admin',
+  username: 'admin@163.com',
   password: 'syk20010416',
 });
 
