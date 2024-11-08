@@ -33,13 +33,13 @@ export const getUserInfo = () => {
 // 获取当前用户路由
 export const getUserRouter = () => {
   return defHttp.get({
-    url: '/admin/menus/user',
+    url: '/management-center/menus/user',
   });
 };
 
 // 获取角色列表
 export const getRoles = () => {
   return defHttp.get({
-    url: '/admin/role/allow',
+    url: '/management-center/admin/role/allow',
   });
 };

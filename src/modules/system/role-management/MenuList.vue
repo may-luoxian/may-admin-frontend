@@ -42,7 +42,7 @@ const init = () => {
 const getRoleMenu = () => {
   defHttp
     .get({
-      url: '/admin/role/menus',
+      url: '/management-center/admin/role/menus',
       params: queryParams,
     })
     .then(({ data }) => {

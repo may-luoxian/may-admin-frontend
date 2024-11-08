@@ -79,12 +79,12 @@ const handleConfirm = (formRef: FormInstance | undefined) => {
         let res = null;
         if (isAddOrEdit.value === 'add') {
           res = await defHttp.post({
-            url: '/admin/home/add',
+            url: '/management-center/admin/home/add',
             data: formData.value,
           });
         } else if (isAddOrEdit.value === 'edit') {
           res = await defHttp.post({
-            url: '/admin/home/edit',
+            url: '/management-center/admin/home/edit',
             data: formData.value,
           });
         }

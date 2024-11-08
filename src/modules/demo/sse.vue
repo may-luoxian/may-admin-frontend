@@ -82,7 +82,7 @@ const handleChange = (e: any) => {
 // const handleConnectSSE = () => {
 //   if ('EventSource' in window) {
 //     // 创建EventSource实例
-//     SSEConnection.value = new EventSource('http://localhost:8080/sse');
+//     SSEConnection.value = new EventSource('http://localhost:8080/management-center/sse');
 //     // 监听事件
 //     SSEConnection.value.onopen = () => {
 //       // 连接建立

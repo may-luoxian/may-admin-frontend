@@ -78,7 +78,7 @@ const handleConfirm = () => {
     if (!valid) return;
     defHttp
       .post({
-        url: '/admin/role/roles',
+        url: '/management-center/admin/role/roles',
         data: form,
       })
       .then((res) => {

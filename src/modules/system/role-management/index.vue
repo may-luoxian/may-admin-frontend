@@ -78,14 +78,14 @@ const handleSave = async () => {
       let ids = menuListRef.value.getCheckedKeys();
       params.roleMenuIds = ids;
       res = await defHttp.post({
-        url: '/admin/role/menus',
+        url: '/management-center/admin/role/menus',
         params,
       });
     } else if (listTab.value === LIST_TAB.RESOURCE) {
       let ids = resourceListRef.value.getCheckedKeys();
       params.roleResourceIds = ids;
       res = await defHttp.post({
-        url: '/admin/role/resources',
+        url: '/management-center/admin/role/resources',
         params,
       });
     }

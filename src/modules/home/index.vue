@@ -83,7 +83,7 @@ onMounted(() => {
 const init = () => {
   defHttp
     .get({
-      url: '/admin/home/list',
+      url: '/management-center/admin/home/list',
     })
     .then((res) => {
       if (res.code === 20000) {

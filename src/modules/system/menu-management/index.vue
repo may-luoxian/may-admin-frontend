@@ -88,7 +88,7 @@ onMounted(() => {
 const init = () => {
   defHttp
     .get({
-      url: '/admin/menus/menu',
+      url: '/management-center/menus/menu',
       params: queryParams,
     })
     .then((res) => {
@@ -115,7 +115,7 @@ const handleMenuDelete = (row: any) => {
   const ids = treeToList([row]).map((item) => item.id);
   defHttp
     .delete({
-      url: '/admin/menus/menu',
+      url: '/management-center/menus/menu',
       data: ids,
     })
     .then((res) => {

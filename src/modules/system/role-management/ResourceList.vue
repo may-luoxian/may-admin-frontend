@@ -35,7 +35,7 @@ const init = () => {
 const getResourceLabel = () => {
   defHttp
     .get({
-      url: '/admin/role/resources',
+      url: '/management-center/admin/role/resources',
       params: queryParams,
     })
     .then((res) => {

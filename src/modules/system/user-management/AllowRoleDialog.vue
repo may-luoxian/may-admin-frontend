@@ -47,7 +47,7 @@ const open = async (userData: any) => {
 const getRoleList = () => {
   return defHttp
     .get({
-      url: '/admin/role/allow',
+      url: '/management-center/admin/role/allow',
     })
     .then((res) => {
       dialogData.roleList = res.data;
@@ -59,7 +59,7 @@ const confirm = () => {
   let id = dialogData.userData.userInfoId;
   defHttp
     .put({
-      url: '/admin/role/allow',
+      url: '/management-center/admin/role/allow',
       data: {
         id,
         roleIds,

@@ -94,7 +94,7 @@ const handleControls = (command: string) => {
       .then(() => {
         defHttp
           .delete({
-            url: '/admin/home/delete',
+            url: '/management-center/admin/home/delete',
             data: {
               id: data.value.id,
             },

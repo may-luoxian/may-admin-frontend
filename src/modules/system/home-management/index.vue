@@ -119,7 +119,7 @@ const getRoleList = () => {
 const getHomeListByUser = () => {
   defHttp
     .get({
-      url: '/admin/home/listByUser',
+      url: '/management-center/admin/home/listByUser',
       params: {
         userId: currentPreView.userInfoId,
       },
@@ -135,7 +135,7 @@ const getHomeListByUser = () => {
 const getHomeListByRole = () => {
   defHttp
     .get({
-      url: '/admin/home/listByRole',
+      url: '/management-center/admin/home/listByRole',
       params: {
         roleId: queryParams.roleId,
       },
@@ -251,7 +251,7 @@ const saveHome = async () => {
   loading.value = true;
   try {
     const res = await defHttp.post({
-      url: '/admin/home/enable',
+      url: '/management-center/admin/home/enable',
       data,
     });
     ElNotification({

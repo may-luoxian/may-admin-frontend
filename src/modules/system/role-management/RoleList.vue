@@ -80,7 +80,7 @@ const reset = () => {
 const getRoleList = () => {
   defHttp
     .get({
-      url: '/admin/role/roles',
+      url: '/management-center/admin/role/roles',
       params: rolesParams.page,
     })
     .then((res) => {
@@ -112,7 +112,7 @@ const handleDeleteRoles = () => {
     .then(() => {
       defHttp
         .delete({
-          url: '/admin/role/roles',
+          url: '/management-center/admin/role/roles',
           data: {
             ids: unref(selectedIds),
           },

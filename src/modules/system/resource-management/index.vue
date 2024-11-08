@@ -91,7 +91,7 @@ const init = () => {
 const getResourceList = () => {
   defHttp
     .get({
-      url: '/admin/resource/resources',
+      url: '/management-center/admin/resource/resources',
       params: condition.queryParams,
     })
     .then((res: any) => {
@@ -124,7 +124,7 @@ const handleDeleteResource = (row: any) => {
   const ids = treeToList([row]).map((item) => item.id);
   defHttp
     .delete({
-      url: '/admin/resource/resources',
+      url: '/management-center/admin/resource/resources',
       data: ids,
     })
     .then((res) => {
