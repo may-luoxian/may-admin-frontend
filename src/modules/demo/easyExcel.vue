@@ -27,7 +27,7 @@ import { reactive, toRefs, computed } from 'vue';
 const handleExportModel = () => {
   defHttp
     .get({
-      url: '/management-center/excel/exportModel',n
+      url: '/management-center/excel/exportModel',
     })
     .then((res: any) => {
       downloadBlob(res, MIME_MAP.xlsx);

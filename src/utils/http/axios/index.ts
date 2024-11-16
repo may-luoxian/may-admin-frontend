@@ -131,6 +131,7 @@ const transform: AxiosTransform = {
         title: 'Error',
         message: resData.message,
       });
+      
       clearOnlineStorage();
       router.push('/login');
     } else if (resData.code && [50000, 51000].includes(resData.code)) {

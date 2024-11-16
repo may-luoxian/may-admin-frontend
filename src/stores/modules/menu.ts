@@ -8,6 +8,7 @@ import { pinia } from '..';
 export type MenuTab = {
   path: string;
   name: RouteRecordName | null | undefined;
+  fullPath: string;
 };
 
 interface MenuState {
@@ -29,7 +30,7 @@ export const useMenuStore = defineStore('menu', {
       menuList: [],
       fold: false,
       isDynamicAddedRoute: false,
-      menuTab: [{ name: '首页', path: '/' }],
+      menuTab: [{ name: '首页', path: '/', fullPath: '/' }],
       selectedMenu: '/',
     };
   },
@@ -53,9 +54,12 @@ export const useMenuStore = defineStore('menu', {
       const index = this.menuTab.findIndex((item) => {
         return item.path == menuTab.path;
       });
-      if (index !== -1) return;
-      this.menuTab.push(menuTab);
-      setObjectStorage(localStorage, MAY_STORAGE, 'menuTab', this.menuTab);
+      if (index !== -1) {
+        this.menuTab[index].fullPath = menuTab.fullPath;
+      } else {
+        this.menuTab.push(menuTab);
+        setObjectStorage(localStorage, MAY_STORAGE, 'menuTab', this.menuTab);
+      }
     },
     setSelectedMenu(path: string) {
       this.selectedMenu = path;

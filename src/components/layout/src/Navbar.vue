@@ -89,6 +89,7 @@ const saveTab = (currentRoutes: any) => {
   let currentTab = {
     path: currentRoute.path,
     name: currentRoute.name,
+    fullPath: route.fullPath,
   };
   menuStore.setMenuTab(currentTab);
 };
@@ -107,14 +108,29 @@ const removeMenuTab = (tab: MenuTab) => {
 };
 
 const isActive = (tab: MenuTab) => {
-  if (route.fullPath === tab.path) {
+  let matched = matchRoute(tab.path);
+  if (matched) {
     return 'is-active';
   }
   return '';
 };
 
 const jumpTo = (tab: MenuTab) => {
-  router.push({ path: tab.path });
+  router.push({ path: tab.fullPath || tab.path });
+};
+
+const matchRoute = (path: string): boolean => {
+  let split = path.split('/');
+  let routeSplit = route.fullPath.split('/');
+  if (split.length !== routeSplit.length) {
+    return false;
+  } else {
+    // 生成一个将路径中变量部分能够匹配任意字符串的正则表达式
+    const regex = new RegExp(':[^/]+', 'g');
+    const result = path.replace(regex, '([^/]+)');
+    let reg = new RegExp(result);
+    return reg.test(route.fullPath);
+  }
 };
 
 const isFold = computed(() => (props.isCollapse ? 'menu-expand' : 'menu-fold'));
