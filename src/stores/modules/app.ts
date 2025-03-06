@@ -18,6 +18,11 @@ export const useAppStore = defineStore('app', {
   actions: {
     toggleTheme(isDark: boolean) {
       this.themeConfig.theme = isDark;
+
+      // 修改根目录data-theme
+      const htmlRoot = document.getElementById('htmlRoot');
+      const htmlTheme = isDark ? 'dark' : 'light';
+      htmlRoot?.setAttribute('data-theme', htmlTheme);
     },
     changeLocale(locale: string) {
       localStorage.setItem('may-blog-locale', locale);

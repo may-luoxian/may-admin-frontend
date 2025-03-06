@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <el-header class="may-title">
+  <div class="may-container">
+    <div class="may-card min-container-h">
+      <el-header class="may-title">
       <span>接口管理</span>
       <div class="float-right h-full leading-10 flex items-center">
         <el-input v-model="queryParams.resourceName" placeholder="请输入资源名称" style="width: 260px; margin-right: 16px" />
@@ -14,7 +15,6 @@
         <el-button type="primary" @click="handleSaveModel">新增模块</el-button>
       </div>
     </el-header>
-    <div class="may-container fix">
       <el-table ref="tableRef" border :data="tableData" :tree-props="{ children: 'children' }" row-key="id" size="large">
         <el-table-column label="资源名称" align="center" prop="resourceName" min-width="120"></el-table-column>
         <el-table-column label="请求类型" align="center" min-width="120">

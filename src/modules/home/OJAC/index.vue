@@ -1,12 +1,13 @@
 <!-- demo1 -->
 <template>
   <!-- 容器 -->
-  <div class="home-container rounded">
+  <div ref="containerRef" class="home-container rounded">
     <!-- 顶部工具栏 -->
-    <div class="home-toolbar px-3">
+    <div class="home-toolbar px-3 border-b border-default-c">
       <span class="panel-title-standard">{{ title }}</span>
       <div class="float-right">
         <!-- 操作按钮 -->
+        <el-icon class="mt-1 mr-3" @click="handleFullScreen"><FullScreen /></el-icon>
         <el-dropdown trigger="hover" style="vertical-align: baseline">
           <SvgIcon name="configurate" />
           <template #dropdown>
@@ -19,7 +20,6 @@
         </el-dropdown>
       </div>
     </div>
-    <el-divider></el-divider>
     <!-- 主体区域 -->
     <div class="home-main">
       <div class="w-full h-full" ref="echartRef"></div>
@@ -29,10 +29,13 @@
 
 <script setup lang="ts">
 import SvgIcon from '@/components/icon/src/SvgIcon.vue';
+import { defHttp } from '@/utils/http/axios';
 import * as echarts from 'echarts';
 import { ref, onMounted, toRefs } from 'vue';
+import { useDebounceFn, useResizeObserver, useFullscreen } from '@vueuse/core';
 
 const echartRef = ref();
+const containerRef = ref();
 
 interface Props {
   title: string;
@@ -46,11 +49,51 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { title, theme } = toRefs(props);
 
+const resize = () => {
+  mychart?.resize({
+    animation: {
+      duration: 300,
+      easing: 'quadraticIn',
+    },
+  });
+};
+const resizeHandler: () => void = useDebounceFn(resize, 200);
+setTimeout(() => {
+  useResizeObserver(echartRef as never, resizeHandler);
+}, 2000);
+
 onMounted(() => {
   initEcharts(theme.value ? 'dark' : 'light');
+  getData();
 });
 
+const { toggle } = useFullscreen(containerRef);
+
 let mychart: any = null;
+let option = {};
+
+let acceptList = ref([]);
+let sumList = ref([]);
+let dateList = ref([]);
+
+const getData = () => {
+  defHttp
+    .get({
+      url: '/oj/statistic/ac',
+    })
+    .then((res) => {
+      acceptList.value = res.data.map((item: any) => {
+        return item.accept;
+      });
+      sumList.value = res.data.map((item: any) => {
+        return item.sum;
+      });
+      dateList.value = res.data.map((item: any) => {
+        return item.createTime;
+      });
+      initEcharts(theme.value ? 'dark' : 'light');
+    });
+};
 
 /**
  * 初始化chart
@@ -60,7 +103,7 @@ const initEcharts = (theme: string) => {
     mychart.dispose();
   }
   mychart = echarts.init(echartRef.value, theme);
-  const option = {
+  option = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -71,7 +114,7 @@ const initEcharts = (theme: string) => {
       },
     },
     legend: {
-      data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine'],
+      data: ['通过数', '提交数'],
     },
     toolbox: {
       feature: {
@@ -87,8 +130,7 @@ const initEcharts = (theme: string) => {
     xAxis: [
       {
         type: 'category',
-        boundaryGap: false,
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        data: dateList.value,
       },
     ],
     yAxis: [
@@ -98,66 +140,39 @@ const initEcharts = (theme: string) => {
     ],
     series: [
       {
-        name: 'Email',
+        name: '通过数',
         type: 'line',
         stack: 'Total',
         areaStyle: {},
         emphasis: {
           focus: 'series',
         },
-        data: [120, 132, 101, 134, 90, 230, 210],
+        smooth: false,
+        data: acceptList.value,
       },
       {
-        name: 'Union Ads',
+        name: '提交数',
         type: 'line',
         stack: 'Total',
         areaStyle: {},
         emphasis: {
           focus: 'series',
         },
-        data: [220, 182, 191, 234, 290, 330, 310],
-      },
-      {
-        name: 'Video Ads',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series',
-        },
-        data: [150, 232, 201, 154, 190, 330, 410],
-      },
-      {
-        name: 'Direct',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series',
-        },
-        data: [320, 332, 301, 334, 390, 330, 320],
-      },
-      {
-        name: 'Search Engine',
-        type: 'line',
-        stack: 'Total',
-        label: {
-          show: true,
-          position: 'top',
-        },
-        areaStyle: {},
-        emphasis: {
-          focus: 'series',
-        },
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        smooth: false,
+        data: sumList.value,
       },
     ],
   };
   mychart.setOption(option);
 };
 
+const handleFullScreen = () => {
+  toggle();
+};
+
 defineExpose({
   initEcharts,
+  mychart,
 });
 </script>
 

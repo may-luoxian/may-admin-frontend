@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-style2 h-full">
-    <el-header class="may-title">
+  <div class="may-container h-full">
+    <el-header class="may-title may-card h-full">
       <span>门户管理</span>
       <div class="h-full flex items-center float-right">
         <el-button class="mr-4" type="primary" :disabled="editStatus" @click="handleCreateHome">创建门户块</el-button>
@@ -14,7 +14,7 @@
         <el-button class="mr-4" type="primary" :loading="loading" @click="handleEditOrSave">{{ editStatus ? '保存' : '启用门户' }}</el-button>
       </div>
     </el-header>
-    <main class="may-container home-main">
+    <main class="home-main h-full mt-2">
       <el-row :gutter="20" class="h-full">
         <el-col :span="18" class="relative h-full">
           <EnableModels ref="enableModelsRef" @refreshStyle="refreshStyle" @updateEnableModel="updateEnableModel" @enableModel="enableModel" />
@@ -302,6 +302,6 @@ const isDisableNotEnableDrag = computed(() => controlStatus.value === EditStatus
 
 <style lang="scss" scoped>
 .home-main {
-  height: calc(100% - 76px);
+  height: calc(100% - 60px);
 }
 </style>

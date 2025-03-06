@@ -35,6 +35,8 @@ html[data-theme='light'] {
 }
 
 .may-login {
+  background: url('@/assets/images/login-bg.png') no-repeat;
+  background-size: cover;
   &::before {
     content: '';
     position: absolute;

@@ -3,7 +3,7 @@
   <!-- 容器 -->
   <div class="home-container rounded">
     <!-- 顶部工具栏 -->
-    <div class="home-toolbar px-3">
+    <div class="home-toolbar px-3 border-b border-default-c">
       <span class="panel-title-standard">{{ title }}</span>
       <div class="float-right">
         <!-- 操作按钮 -->
@@ -19,7 +19,6 @@
         </el-dropdown>
       </div>
     </div>
-    <el-divider></el-divider>
     <!-- 主体区域 -->
     <div class="home-main">
       <div ref="echartRef" class="w-full h-full"></div>
@@ -30,6 +29,7 @@
 <script setup lang="ts">
 import SvgIcon from '@/components/icon/src/SvgIcon.vue';
 import { toRefs, ref, onMounted } from 'vue';
+import { useDebounceFn, useResizeObserver } from '@vueuse/core';
 import * as echarts from 'echarts';
 
 interface Props {
@@ -44,6 +44,19 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { title, theme } = toRefs(props);
 const echartRef = ref();
+
+const resize = () => {
+  mychart?.resize({
+    animation: {
+      duration: 300,
+      easing: 'quadraticIn',
+    },
+  });
+};
+const resizeHandler: () => void = useDebounceFn(resize, 200);
+setTimeout(() => {
+  useResizeObserver(echartRef as never, resizeHandler);
+}, 2000);
 
 onMounted(() => {
   initEcharts(theme.value ? 'dark' : 'light');
@@ -96,6 +109,7 @@ const initEcharts = (theme: string) => {
 
 defineExpose({
   initEcharts,
+  mychart,
 });
 </script>
 

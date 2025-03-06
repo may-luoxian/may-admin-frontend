@@ -1,6 +1,6 @@
 <template>
   <div class="enable-modules h-full">
-    <div class="text-xl font-bold w-full">
+    <div class="text-xl font-bold w-full mb-2">
       <span>启用</span>
     </div>
     <div ref="enableRef" class="enable-content overflow-auto list-box relative rounded transition-all">

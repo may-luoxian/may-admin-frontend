@@ -42,6 +42,11 @@ import {
   ElProgress,
   ElInputNumber,
   ElCascader,
+  ElCheckTag,
+  ElCollapse,
+  ElCollapseItem,
+  ElAlert,
+  ElRadioButton,
 } from 'element-plus';
 
 export const components = [
@@ -87,5 +92,10 @@ export const components = [
   ElProgress,
   ElInputNumber,
   ElCascader,
+  ElCheckTag,
+  ElCollapse,
+  ElCollapseItem,
+  ElAlert,
+  ElRadioButton,
 ];
 export const plugins = [ElDropdown];

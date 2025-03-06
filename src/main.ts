@@ -24,7 +24,6 @@ import 'tailwindcss/tailwind.css';
 // element-plus样式文件
 import 'element-plus/theme-chalk/index.css';
 import 'element-plus/theme-chalk/dark/css-vars.css';
-import '@/design/element-variables.scss';
 
 // 注册icon图标
 import 'virtual:svg-icons-register';

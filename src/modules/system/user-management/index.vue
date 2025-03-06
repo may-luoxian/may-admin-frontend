@@ -1,24 +1,28 @@
 <template>
-  <div>
-    <el-header class="may-title">
-      <span>用户管理</span>
-      <div class="float-right h-full leading-10 flex items-center">
-        <el-form :model="form" inline>
-          <el-form-item class="query-page">
-            <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
-          </el-form-item>
-          <el-form-item class="query-page">
-            <el-input v-model="form.nickname" placeholder="请输入昵称"></el-input>
-          </el-form-item>
-          <el-form-item class="query-page">
-            <el-select v-model="form.loginType" placeholder="请选择登录方式" style="width: 230px"></el-select>
-          </el-form-item>
-        </el-form>
-        <el-button type="primary" @click="handleQuery">查询</el-button>
-        <el-button type="primary" @click="handleSaveModel">创建用户</el-button>
-      </div>
-    </el-header>
-    <el-main class="may-container">
+  <div class="may-container">
+    <div class="may-card min-container-h relative pb-14">
+      <el-header class="may-title">
+        <span>用户管理</span>
+        <div class="float-right h-full leading-10 flex items-center">
+          <el-form :model="form" inline>
+            <el-form-item class="query-page">
+              <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
+            </el-form-item>
+            <el-form-item class="query-page">
+              <el-input v-model="form.nickname" placeholder="请输入昵称"></el-input>
+            </el-form-item>
+            <el-form-item class="query-page">
+              <el-select v-model="form.loginType" placeholder="请选择登录方式" style="width: 230px">
+                <el-option :value="1">邮箱</el-option>
+                <el-option :value="2">QQ</el-option>
+                <el-option :value="3">内网用户</el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <el-button type="primary" @click="handleQuery">查询</el-button>
+          <el-button type="primary" @click="handleSaveModel">创建用户</el-button>
+        </div>
+      </el-header>
       <el-table :data="userList" size="large" border>
         <el-table-column label="用户名" align="center" prop="username" min-width="120"></el-table-column>
         <el-table-column label="昵称" align="center" prop="nickname" min-width="120" show-overflow-tooltip></el-table-column>
@@ -60,10 +64,10 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="float-right p-2">
-        <el-pagination v-model:current-page="form.current" v-model:page-size="form.size" :page-sizes="[10, 20, 50]" :total="total" background layout="total, sizes, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+      <div class="p-2 absolute bottom-1 w-full">
+        <el-pagination v-model:current-page="form.current" v-model:page-size="form.size" :page-sizes="[10, 20, 50]" :total="total" background layout="total, sizes, prev, pager, next" @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float: right" />
       </div>
-    </el-main>
+    </div>
 
     <!-- 分配角色弹窗 -->
     <AllowRoleDialog ref="allowRoleRef" @init="init" />
@@ -89,11 +93,14 @@ interface Form {
   username?: string;
   nickname?: string;
   loginType?: number;
-  current?: number;
-  size?: number;
+  current: number;
+  size: number;
 }
 
-const form = reactive<Form>({});
+const form = reactive<Form>({
+  current: 1,
+  size: 10,
+});
 
 const total = ref<number>(0);
 
@@ -118,8 +125,8 @@ const getUserList = () => {
       params: form,
     })
     .then((res: any) => {
-      tableData.userList = res.data.records;
-      total.value = res.data.count;
+      tableData.userList = res.records;
+      total.value = res.count;
     });
 };
 
@@ -153,7 +160,7 @@ const handleCurrentChange = (current: number) => {
 const handleDelete = (id: number) => {
   defHttp
     .delete({
-      url: '/admin/users/user',
+      url: '/management-center/users/user',
       data: {
         id,
       },

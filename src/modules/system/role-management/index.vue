@@ -1,13 +1,12 @@
 <template>
-  <div>
-    <el-header class="may-title"> 角色管理 </el-header>
-    <div ref="draggedRef" class="may-container flex relative">
-      <div ref="leftRef" class="w-3/5 border-2 border-slate-300 dark:border-slate-700 rounded border-solid overflow-auto" :style="{ height: leftHeight - 200 + 'px' }">
+  <div class="may-container">
+    <div ref="draggedRef" class="flex relative">
+      <div ref="leftRef" class="w-3/5 rounded overflow-auto may-card p-2" :style="{ height: leftHeight - 116 + 'px' }">
         <RoleList @handleRowClick="handleRowClick" />
       </div>
       <div class="w-6 cursor-col-resize" @mousedown="mouseDown" @mouseup="mouseUp"></div>
-      <div ref="rightRef" class="w-2/5 border-2 border-slate-300 dark:border-slate-700 rounded border-solid overflow-auto" :style="{ height: rightHeight - 200 + 'px' }">
-        <el-tabs v-model="listTab" class="overflow-auto" type="border-card" @tab-change="handleTabChange">
+      <div ref="rightRef" class="w-2/5 rounded overflow-auto may-card" :style="{ height: rightHeight - 116 + 'px' }">
+        <el-tabs v-model="listTab" class="overflow-auto" type="border-card" @tab-change="handleTabChange" style="height: calc(100% - 48px);">
           <el-tab-pane :name="LIST_TAB.MENU" label="菜单列表">
             <MenuList ref="menuListRef" />
           </el-tab-pane>
@@ -15,10 +14,9 @@
             <ResourceList ref="resourceListRef" />
           </el-tab-pane>
         </el-tabs>
-        <div class="fix">
+        <div class="absolute bottom-0 right-0">
           <el-button class="my-2 float-right mr-2" type="primary" @click="handleSave">保存</el-button>
         </div>
-        <el-divider style="margin: 0"></el-divider>
       </div>
     </div>
   </div>

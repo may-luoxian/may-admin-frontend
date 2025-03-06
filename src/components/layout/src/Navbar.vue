@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <div class="flex justify-between items-center h-12 border-b border-slate-300 border-solid dark:border-slate-600 px-4">
+    <div class="flex justify-between items-center h-12 border-b border-default-c px-4">
       <div class="flex items-center">
         <div class="cursor-pointer h-full flex items-center mr-4">
           <SvgIcon :name="isFold" size="22" @click="toggleMenu" />
@@ -21,8 +21,9 @@
         </div>
       </div>
     </div>
-    <div class="flex items-center h-8 border-b border-slate-300 dark:border-slate-600 border-solid">
-      <div :class="isActive(tab)" class="flex items-center text-xs border-solid border-2 dark:border-slate-700 relative h-7 px-2 mx-1 leading-7 text-center cursor-pointer" v-for="tab in menuTab" :key="tab.path" @click="jumpTo(tab)">
+    <div class="flex items-center h-8 border-b border-default-c">
+      <div :class="isActive(tab)" class="flex items-center text-xs border border-default-c relative h-7 px-2 mx-1 leading-7 text-center cursor-pointer" v-for="tab in menuTab" :key="tab.path" @click="jumpTo(tab)">
+        <i :class="tab.icon" class="mr-2"></i>
         <span>{{ tab.name }}</span>
         <span class="pl-2" v-if="tab.path !== '/'">
           <SvgIcon class="close-icon hover:scale-125" name="close" size="10" @click.stop="removeMenuTab(tab)" />
@@ -89,6 +90,7 @@ const saveTab = (currentRoutes: any) => {
   let currentTab = {
     path: currentRoute.path,
     name: currentRoute.name,
+    icon: currentRoute.meta.icon,
     fullPath: route.fullPath,
   };
   menuStore.setMenuTab(currentTab);
@@ -104,7 +106,7 @@ const toggleMenu = () => {
 
 const removeMenuTab = (tab: MenuTab) => {
   menuStore.removeMenuTab(tab);
-  router.push({ path: menuStore.getMenuTab[menuStore.getMenuTab.length - 1].path });
+  router.push({ path: menuStore.getMenuTab[menuStore.getMenuTab.length - 1].fullPath });
 };
 
 const isActive = (tab: MenuTab) => {
@@ -116,7 +118,7 @@ const isActive = (tab: MenuTab) => {
 };
 
 const jumpTo = (tab: MenuTab) => {
-  router.push({ path: tab.fullPath || tab.path });
+  router.push({ path: tab.fullPath });
 };
 
 const matchRoute = (path: string): boolean => {
@@ -138,7 +140,7 @@ const isFold = computed(() => (props.isCollapse ? 'menu-expand' : 'menu-fold'));
 
 <style lang="scss" scoped>
 .is-active {
-  background-color: #2a5eb7;
-  color: white;
+  background-color: var(--tab-bg);
+  color: var(--tab-color);
 }
 </style>

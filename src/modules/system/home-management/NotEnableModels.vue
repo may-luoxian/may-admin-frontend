@@ -1,6 +1,6 @@
 <template>
   <div class="not-enable-modules h-full">
-    <div class="text-lg font-bold w-full">未启用</div>
+    <div class="text-lg font-bold w-full mb-2">未启用</div>
     <div ref="notEnableRef" class="not-enable-content overflow-auto list-box relative">
       <Card class="mb-4 card" v-for="item in notEnableList" :key="item.id" :data-id="item.id" :data="item">
         <template #title>

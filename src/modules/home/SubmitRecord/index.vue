@@ -3,7 +3,7 @@
   <!-- 容器 -->
   <div class="home-container rounded">
     <!-- 顶部工具栏 -->
-    <div class="home-toolbar px-3">
+    <div class="home-toolbar px-3 border-b border-default-c">
       <span class="panel-title-standard">{{ title }}</span>
       <div class="float-right">
         <!-- 操作按钮 -->
@@ -19,22 +19,8 @@
         </el-dropdown>
       </div>
     </div>
-    <el-divider></el-divider>
     <!-- 主体区域 -->
     <div class="home-main">
-      <el-dropdown class="mr-2 float-right" @command="handleCommand">
-        <span class="el-dropdown-link">
-          {{ currentYear }}
-          <el-icon class="el-icon--right">
-            <arrow-down />
-          </el-icon>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item v-for="item in yearList" :key="item" :command="item">{{ item }}</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
       <div ref="echartRef" class="h-72 w-full mt-5"></div>
     </div>
   </div>
@@ -42,6 +28,8 @@
 
 <script setup lang="ts">
 import { toRefs, onMounted, ref } from 'vue';
+import { useDebounceFn, useResizeObserver } from '@vueuse/core';
+import { defHttp } from '@/utils/http/axios';
 import * as echarts from 'echarts';
 
 interface Props {
@@ -56,13 +44,26 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { title, theme } = toRefs(props);
 
-const yearList = ref(['2021', '2022', '2023', '2024']);
-
 const myDate = new Date();
+const currentYear = myDate.getFullYear();
 
-const currentYear = ref(String(myDate.getFullYear()));
 const echartRef = ref();
-let echart: any = null;
+let mychart: any = null;
+
+const dateList = ref([]);
+
+const resize = () => {
+  mychart?.resize({
+    animation: {
+      duration: 300,
+      easing: 'quadraticIn',
+    },
+  });
+};
+const resizeHandler: () => void = useDebounceFn(resize, 200);
+setTimeout(() => {
+  useResizeObserver(echartRef as never, resizeHandler);
+}, 2000);
 
 onMounted(() => {
   initEcharts(theme.value ? 'dark' : 'light');
@@ -72,11 +73,12 @@ onMounted(() => {
  * 初始化Echarts
  */
 const initEcharts = (theme: string = 'light') => {
-  if (echart) {
-    echart.dispose();
+  if (mychart) {
+    mychart.dispose();
   }
-  echart = echarts.init(echartRef.value, theme);
+  mychart = echarts.init(echartRef.value, theme);
   initOption();
+  getData();
 };
 
 /**
@@ -84,15 +86,25 @@ const initEcharts = (theme: string = 'light') => {
  */
 const initOption = () => {
   const option = {
+    tooltip: {
+      trigger: 'item',
+      borderWidth: 0,
+      formatter: (params: any) => {
+        return `<div><b>${params.value[0]}</b> : ${params.value[1]}</div>`;
+      },
+    },
     visualMap: {
       type: 'piecewise',
-      show: false,
+      show: true,
       min: 0,
+      textStyle: {
+        color: theme.value ? '#cccccc' : '#000000',
+      },
       pieces: getPiecesStyle(),
     },
     calendar: {
-      range: currentYear.value,
-      yearLabel: { show: false },
+      range: currentYear,
+      yearLabel: { show: true },
       cellSize: 30,
       left: 'center',
       top: '40px',
@@ -112,21 +124,23 @@ const initOption = () => {
     series: {
       type: 'heatmap',
       coordinateSystem: 'calendar',
-      data: getVirtualData(currentYear.value),
+      data: dateList.value,
     },
   };
-  echart.setOption(option);
+  mychart.setOption(option);
 };
 
-const getVirtualData = (year: string) => {
-  const date = +echarts.time.parse(year + '-01-01');
-  const end = +echarts.time.parse(year + '-12-31');
-  const dayTime = 3600 * 24 * 1000;
-  const data = [];
-  for (let time = date; time <= end; time += dayTime) {
-    data.push([echarts.time.format(time, '{yyyy}-{MM}-{dd}', false), Math.floor(Math.random() * 1)]);
-  }
-  return data;
+const getData = () => {
+  defHttp
+    .get({
+      url: `/oj/statistic/calendar/${currentYear}`,
+    })
+    .then((res) => {
+      dateList.value = res.data.map((item: any) => {
+        return [item.date, item.submitNum];
+      });
+      initOption();
+    });
 };
 
 const getPiecesStyle = () => {
@@ -147,13 +161,9 @@ const getPiecesStyle = () => {
       ];
 };
 
-const handleCommand = (year: string) => {
-  currentYear.value = year;
-  initOption();
-};
-
 defineExpose({
   initEcharts,
+  mychart,
 });
 </script>
 

@@ -50,6 +50,7 @@ function buildAsyncRouterMap(routerMap: Array<LayoutRoute> = []): Array<LayoutRo
     route.icon = 'iconfont ' + route.icon;
     const meta = {
       menuType: route.menuType,
+      icon: 'iconfont ' + route.icon,
     };
     route.meta = meta;
     if (route.menuType === 1) {

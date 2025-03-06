@@ -1,6 +1,7 @@
 .home-container {
-  min-height: 370px;
+  height: 370px;
   background-color: var(--default-card-bgcolor);
+  border: 1px solid #36363a;
   .home-toolbar {
     height: 40px;
     line-height: 40px;
@@ -20,8 +21,16 @@
     }
   }
   .home-main {
-    height: 340px;
+    height: calc(100% - 40px);
     padding: 10px;
     box-sizing: border-box;
+  }
+}
+
+html {
+  &[data-theme='light'] {
+    .home-container {
+      border: 1px solid #e4e4e7;
+    }
   }
 }

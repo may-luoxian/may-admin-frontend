@@ -1,6 +1,6 @@
 <template>
-  <div class="h-full">
-    <el-menu class="h-full w-52" router :collapse="props.isCollapse" background-color="#001529" text-color="#ffffffb3" active-text-color="#ffffff" :default-active="route.fullPath" unique-opened @select="handleSelectedMenu">
+  <div class="h-full side-bar">
+    <el-menu class="h-full w-52" router :collapse="props.isCollapse" :default-active="route.fullPath" unique-opened @select="handleSelectedMenu">
       <MenuItem :menuTable="menuTable" :selectedMenu="getSelectedMenu" :isCollapse="props.isCollapse"> </MenuItem>
     </el-menu>
   </div>
@@ -32,4 +32,21 @@ const handleSelectedMenu = (index: string) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.side-bar {
+  --el-menu-active-color: var(--side-bar-active-color) !important;
+  --el-menu-text-color: var(--side-bar-text-color) !important;
+  :deep(.active-bg-menu) {
+    background-color: var(--side-bar-active-bg) !important;
+  }
+  :deep(.el-menu-item) {
+    border-radius: 8px !important;
+  }
+  :deep(.el-menu-item:hover) {
+    color: var(--side-bar-text-color) !important;
+  }
+  :deep(.el-sub-menu__title:hover, .el-sub-menu__title:focus) {
+    color: var(--side-bar-text-color) !important;
+  }
+}
+</style>

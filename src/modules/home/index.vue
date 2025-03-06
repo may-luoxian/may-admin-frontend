@@ -3,16 +3,16 @@
     <!-- 门户块 -->
     <el-row ref="elRow" :gutter="10">
       <el-col class="mb-2 enter-y" :span="setItemSpan(item.widthValue)" v-for="item in homeList" :key="item.id">
-        <!-- 日历图 -->
-        <home-calendar :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_CALENDAR" />
+        <!-- OJ-提交记录 -->
+        <SubmitRecord :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.SubmitRecord" />
         <!-- 快捷导航 -->
         <home-quick-navigation :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_QUICK_NAVIGATION" />
-        <!-- home-demo2 -->
-        <home-demo2 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO2" />
-        <!-- home-demo3 -->
-        <home-demo3 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO3" />
-        <!-- home-demo4 -->
-        <home-demo4 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO4" />
+        <!-- OJ-Ac率 -->
+        <OJAC :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.OJAC" />
+        <!-- 用户分布 -->
+        <userDistribution :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.userDistribution" />
+        <!-- OJ-排名 -->
+        <OJRank :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.OJRank" />
         <!-- home-demo5 -->
         <home-demo5 :ref="(el) => setItemRef(el, item.component)" :title="item.name" :theme="themeConfig.theme" @refreshHome="refreshHome" @editHome="editHome" @hiddenHome="hiddenHome" v-if="item.component === HOME.HOME_DEMO5" />
         <!-- home-demo6 -->
@@ -38,11 +38,11 @@ import { useAppStore } from '@/stores/modules/app';
 /**
  * 异步引入各个门户块
  */
-const homeCalendar = defineAsyncComponent(() => import('@/modules/home/home-calendar/index.vue'));
+const SubmitRecord = defineAsyncComponent(() => import('@/modules/home/SubmitRecord/index.vue'));
 const homeQuickNavigation = defineAsyncComponent(() => import('@/modules/home/home-quick-navigation/index.vue'));
-const homeDemo2 = defineAsyncComponent(() => import('@/modules/home/home-demo2/index.vue'));
-const homeDemo3 = defineAsyncComponent(() => import('@/modules/home/home-demo3/index.vue'));
-const homeDemo4 = defineAsyncComponent(() => import('@/modules/home/home-demo4/index.vue'));
+const OJAC = defineAsyncComponent(() => import('@/modules/home/OJAC/index.vue'));
+const userDistribution = defineAsyncComponent(() => import('@/modules/home/userDistribution/index.vue'));
+const OJRank = defineAsyncComponent(() => import('@/modules/home/OJ-Rank/index.vue'));
 const homeDemo5 = defineAsyncComponent(() => import('@/modules/home/home-demo5/index.vue'));
 const homeDemo6 = defineAsyncComponent(() => import('@/modules/home/home-demo6/index.vue'));
 const homeDemo7 = defineAsyncComponent(() => import('@/modules/home/home-demo7/index.vue'));

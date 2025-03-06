@@ -6,6 +6,27 @@ html {
   text-size-adjust: 100%;
 }
 
+::view-transition-new(root),
+::view-transition-old(root) {
+  @apply animate-none mix-blend-normal;
+}
+
+::view-transition-old(root) {
+  @apply z-[1];
+}
+
+::view-transition-new(root) {
+  @apply z-[2147483646];
+}
+
+html.dark::view-transition-old(root) {
+  @apply z-[2147483646];
+}
+
+html.dark::view-transition-new(root) {
+  @apply z-[1];
+}
+
 html,
 body {
   width: 100%;
@@ -19,9 +40,44 @@ body {
   height: 100%;
 }
 
+// element-plus全局样式
+:root {
+  // el-menu样式
+  --el-menu-active-color: var(--side-bar-active-color);
+  --el-menu-text-color: var(--side-bar-text-color);
+  .active-bg-menu {
+    background-color: var(--side-bar-active-bg);
+  }
+  .el-menu-item {
+    border-radius: 8px;
+  }
+  .el-menu-item:hover {
+    color: var(--side-bar-text-color);
+  }
+  .el-sub-menu__title:hover, .el-sub-menu__title:focus {
+    color: var(--side-bar-text-color);
+  }
+  
+  .el-table th.el-table__cell {
+    background-color: var(--table-header-bg-color);
+  }
+  .el-table tr {
+    background-color: var(--table-body-bg-color);
+  }
+}
+
 .may-container {
   box-sizing: border-box;
-  @apply m-4;
+  background-color: var(--default-bg-color2);
+  @apply min-h-full p-4;
+}
+
+.min-container-h {
+  min-height: calc(100vh - 116px);
+}
+
+.may-card {
+  background-color: var(--default-card-bgcolor);
 }
 
 .may-title {
@@ -39,6 +95,10 @@ body {
 
 .el-button.is-text {
   padding: 8px;
+}
+
+.border-default-c {
+  border-color: var(--default-bor-color);
 }
 
 .fix::after {

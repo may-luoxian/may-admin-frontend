@@ -7,11 +7,12 @@
 <script setup lang="ts">
 import * as monaco from 'monaco-editor';
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
+// import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
-import { ref, onMounted, reactive, watch, nextTick, toRefs } from 'vue';
+import javaKeyWorkJson from '@/assets/json/java-keyword.json';
+import { ref, onMounted, reactive, watch, nextTick, toRefs, onBeforeUnmount } from 'vue';
 import { useAppStore } from '@/stores/modules/app';
 
 const monacoRef = ref();
@@ -20,8 +21,8 @@ let monacoInstance: any = null; // 编辑器实例
 
 const editorOpt = reactive({
   editorOption: {
-    value: 'function twoSum(nums, target) {\n  return [];\n}',
-    language: 'javascript',
+    value: '',
+    language: 'java',
     theme: themeConfig.theme ? 'vs-dark' : 'vs-light',
     fontSize: 18,
     acceptSuggestionOnCommitCharacter: true, // 接受关于提交字符的建议
@@ -69,9 +70,10 @@ const { editorOption } = toRefs(editorOpt);
 
 interface Props {
   language: string;
+  code: string;
 }
 const props = withDefaults(defineProps<Props>(), {
-  language: 'javascript',
+  language: 'java',
 });
 const { language } = toRefs(props);
 const emit = defineEmits(['update:code', 'update:languages']);
@@ -86,11 +88,19 @@ onMounted(async () => {
  * 初始化编辑器
  */
 const initMonaco = () => {
+  // 加载Java关键字
+  const javaKeyWord = javaKeyWorkJson.keywords.join('|');
+  monaco.languages.setMonarchTokensProvider('java', {
+    tokenizer: {
+      root: [[new RegExp(`\\b(${javaKeyWord})\\b`), 'keyword']],
+    },
+  });
   window.MonacoEnvironment = {
     getWorker(_, label) {
-      if (label === 'json') {
-        return new jsonWorker();
-      }
+      console.log(_, label);
+      // if (label === 'json') {
+      //   return new jsonWorker();
+      // }
       if (label === 'css' || label === 'scss' || label === 'less') {
         return new cssWorker();
       }
@@ -100,11 +110,15 @@ const initMonaco = () => {
       if (label === 'typescript' || label === 'javascript') {
         return new tsWorker();
       }
+      if (label === 'java' && monacoInstance) {
+        monaco.editor.setModelLanguage(monacoInstance.getModel(), 'java');
+      }
       return new editorWorker();
     },
   };
   monacoInstance = monaco.editor.create(monacoRef.value, editorOpt.editorOption as any);
-  emit('update:code', monacoInstance.getValue());
+  // emit('update:code', monacoInstance.getValue());
+  // monacoInstance.setValue(['public class Main {', '\tpublic static void main(String[] args) {', '\t}', '}'].join('\n'));
 };
 
 const updateOption = (config: object) => {
@@ -127,6 +141,15 @@ const registerEventListener = () => {
 };
 
 /**
+ * 提供给父组件初始化code
+ */
+const changeCode = (code: string) => {
+  if (monacoInstance) {
+    monacoInstance.setValue([code].join('\n'));
+  }
+};
+
+/**
  * 监听主题变化，修改monaco编辑器主题
  */
 watch(
@@ -145,9 +168,29 @@ watch(
  * 监听语言变化，修改monaco编辑器语言
  */
 watch(language, (nv) => {
-  if (monacoInstance) {
-    monaco.editor.setModelLanguage(monacoInstance.getModel(), nv);
+  if (!monacoInstance) {
+    return;
   }
+  monaco.editor.setModelLanguage(monacoInstance.getModel(), nv);
+  // if (nv === 'java') {
+  //   monacoInstance.setValue(['public class Main {', '\tpublic static void main(String[] args) {', '\t}', '}'].join('\n'));
+  // }
+  // if (nv === 'javascript') {
+  //   monacoInstance.setValue(['function main() {', '\treturn [];', '}'].join('\n'));
+  // }
+  // if (nv === 'typescript') {
+  //   monacoInstance.setValue(['function main() {\n  return [];\n}'].join('\n'));
+  // }
+});
+
+onBeforeUnmount(() => {
+  if (monacoInstance) {
+    monacoInstance.dispose();
+  }
+});
+
+defineExpose({
+  changeCode,
 });
 </script>
 

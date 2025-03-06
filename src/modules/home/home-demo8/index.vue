@@ -3,7 +3,7 @@
   <!-- 容器 -->
   <div class="home-container rounded">
     <!-- 顶部工具栏 -->
-    <div class="home-toolbar px-3">
+    <div class="home-toolbar px-3 border-b border-default-c">
       <span class="panel-title-standard">{{ title }}</span>
       <div class="float-right">
         <!-- 操作按钮 -->
@@ -19,7 +19,6 @@
         </el-dropdown>
       </div>
     </div>
-    <el-divider></el-divider>
     <!-- 主体区域 -->
     <div class="home-main">
       <div ref="echartRef" class="w-full h-full"></div>
@@ -96,6 +95,7 @@ const initEcharts = (theme: string) => {
 
 defineExpose({
   initEcharts,
+  mychart,
 });
 </script>
 

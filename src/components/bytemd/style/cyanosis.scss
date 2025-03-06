@@ -192,10 +192,21 @@ html {
   .bytemd {
     @include EditorTheme(false);
     @include ControlTheme(false);
+    .CodeMirror-lines {
+      max-width: none !important;
+    }
   }
   .markdown-body {
     @include PreviewTheme(false);
+    max-width: none !important;
     /* 高亮代码块样式 */
+    p, pre, ul, ol{
+      font-size: 18px;
+    }
+    pre {
+      border-left: 4px solid #d7d7d7;
+      padding-left: 8px;
+    }
     pre code.hljs {
       display: block;
       overflow-x: auto;
@@ -299,6 +310,9 @@ html[data-theme='dark'] {
   .markdown-body {
     @include PreviewTheme(true);
     /* 高亮代码块样式 */
+    pre {
+      border-left: 4px solid #535353;
+    }
     pre code.hljs {
       display: block;
       overflow-x: auto;

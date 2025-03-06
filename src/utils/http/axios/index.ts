@@ -1,6 +1,6 @@
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { isString } from '@/utils/is';
+import { isString, isEmpty } from '@/utils/is';
 import { ContentTypeEnum, REQUEST_METHOD_ENUM } from '@/enums/requestEnum';
 import { clone } from 'lodash-es';
 import { VAxios } from './Axios';
@@ -125,13 +125,15 @@ const transform: AxiosTransform = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   transformResponseHook: (res: AxiosResponse<Result>, _options: RequestOptions) => {
     const resData = res?.data || {};
+    if (isEmpty(resData)) {
+      return Promise.reject();
+    }
     if (resData.code && [40001, 40002].includes(resData.code)) {
       ElNotification({
         type: 'error',
         title: 'Error',
         message: resData.message,
       });
-      
       clearOnlineStorage();
       router.push('/login');
     } else if (resData.code && [50000, 51000].includes(resData.code)) {
@@ -187,7 +189,6 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new VAxios(
     deepMerge(
       {
-        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
         // authenticationScheme: 'Bearer',
         authenticationScheme: '',
         timeout: 10 * 1000,

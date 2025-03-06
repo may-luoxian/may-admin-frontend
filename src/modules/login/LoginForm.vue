@@ -1,14 +1,14 @@
 <template>
-  <div class="px-5 py-8 w404">
-    <LoginFormTitle class="mb-4 enter-x" />
-    <el-form :model="form" class="enter-x">
-      <el-form-item class="enter-x">
+  <div class="px-5 py-8 w404 rounded-lg backdrop-sepia-0 bg-white/50 enter-x dark:bg-black/50">
+    <LoginFormTitle class="mb-4" />
+    <el-form :model="form">
+      <el-form-item>
         <el-input class="w-96" v-model="form.username" size="large" :placeholder="t('login.username')" />
       </el-form-item>
-      <el-form-item class="enter-x">
+      <el-form-item>
         <el-input class="w-96" type="password" v-model="form.password" size="large" :placeholder="t('login.password')" show-password />
       </el-form-item>
-      <el-row class="mb-4 enter-x">
+      <el-row class="mb-4">
         <el-col :span="12">
           <el-checkbox v-model="remenberMe">{{ t('login.rememberMe') }}</el-checkbox>
         </el-col>
@@ -16,10 +16,10 @@
           <el-link type="primary">{{ t('login.forgetPassword') }}</el-link>
         </el-col>
       </el-row>
-      <el-form-item class="enter-x">
-        <el-button ref="loginBtnRef" class="w-full" size="large" color="#0960bd" @click="handleLogin" :loading="loading">{{ t('login.buttonSignIn') }}</el-button>
+      <el-form-item>
+        <el-button ref="loginBtnRef" class="w-full" size="large" color="#0b93ee" @click="handleLogin" :loading="loading">{{ t('login.buttonSignIn') }}</el-button>
       </el-form-item>
-      <el-form-item class="enter-x">
+      <el-form-item>
         <el-row :gutter="10" class="w-full">
           <el-col :span="8">
             <el-button class="w-full">{{ t('login.mobileSignIn') }}</el-button>

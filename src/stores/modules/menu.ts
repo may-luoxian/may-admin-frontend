@@ -9,6 +9,7 @@ export type MenuTab = {
   path: string;
   name: RouteRecordName | null | undefined;
   fullPath: string;
+  icon: string;
 };
 
 interface MenuState {
@@ -30,13 +31,13 @@ export const useMenuStore = defineStore('menu', {
       menuList: [],
       fold: false,
       isDynamicAddedRoute: false,
-      menuTab: [{ name: '首页', path: '/', fullPath: '/' }],
+      menuTab: [{ name: '首页', path: '/', fullPath: '/', icon: 'iconfont el-icon-myshouye' }],
       selectedMenu: '/',
     };
   },
   actions: {
     initMenuTab() {
-      this.menuTab = getObjectStorage(localStorage, MAY_STORAGE, 'menuTab') || [{ name: '首页', path: '/' }];
+      this.menuTab = getObjectStorage(localStorage, MAY_STORAGE, 'menuTab') || [{ name: '首页', path: '/', fullPath: '/', icon: 'iconfont el-icon-myshouye' }];
     },
     setUserRoutes(routerMap: LayoutRoute[]) {
       this.userRoutes = routerMap;

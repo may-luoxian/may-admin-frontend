@@ -17,7 +17,7 @@ export const login = (username: string, password: string) => {
 
 export const logout = (userId: number) => {
   return defHttp.get({
-    url: '/admin/users/logout',
+    url: '/management-center/users/logout',
     params: {
       userId,
     },
@@ -26,7 +26,7 @@ export const logout = (userId: number) => {
 
 export const getUserInfo = () => {
   return defHttp.get({
-    url: '/admin/users/info',
+    url: '/management-center/users/info',
   });
 };
 

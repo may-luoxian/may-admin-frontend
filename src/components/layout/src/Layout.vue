@@ -42,4 +42,8 @@ const maxHeight = useDomControlsHook(layoutContentRef);
   padding: 0;
   height: 80px;
 }
+
+.layout-content {
+  min-width: 1280px;
+}
 </style>

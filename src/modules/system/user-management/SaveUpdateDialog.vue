@@ -84,7 +84,7 @@ const rules = reactive<FormRules>({
   nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-  avatar: [{ required: true, message: '请上传头像', trigger: 'blur' }],
+  // avatar: [{ required: true, message: '请上传头像', trigger: 'blur' }],
   isSubscribe: [{ required: true, message: '请选择是否订阅', trigger: 'change' }],
   isDisable: [{ required: true, message: '请选择是否禁用', trigger: 'change' }],
 });
@@ -116,7 +116,7 @@ const confirm = () => {
     if (!valid) return;
     defHttp
       .post({
-        url: '/admin/users/user',
+        url: '/management-center/users/user',
         data: form,
       })
       .then((res) => {
